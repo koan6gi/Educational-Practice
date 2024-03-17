@@ -1,0 +1,56 @@
+﻿unit WorkWithLists;
+
+interface
+
+uses
+  AllTypesInProject;
+
+implementation
+
+{ Work with ArtistList }
+Procedure WatchArtistList(ArtistList: TAdrOfList);
+begin
+  Writeln('|-----------------|-------------------|--------------------|-------------------------|');
+  Writeln('| Код исполнителя |  Имя исполнителя  | Страна исполнителя | Направление исполнителя |');
+  Writeln('|-----------------|-------------------|--------------------|-------------------------|');
+  while ArtistList^.next <> nil do
+  begin
+    ArtistList := ArtistList^.next;
+    Writeln('|', ArtistList^.Artist.ID:15, ' |', ArtistList^.Artist.Name:18,
+      ' |', ArtistList^.Artist.Country:19, ' |', ArtistList^.Artist.Direction
+      :24, ' |');
+  end;
+  Writeln('|-----------------|-------------------|--------------------|-------------------------|');
+end;
+
+{ Work with AlbumList }
+Procedure WatchALbumList(AlbumList: TAdrOfList);
+begin
+  Writeln('|-------------|-----------------|--------------------|------------|');
+  Writeln('| Код альбома | Код исполнителя |  Название альбома  | Год записи |');
+  Writeln('|-------------|-----------------|--------------------|------------|');
+  while AlbumList^.next <> nil do
+  begin
+    AlbumList := AlbumList^.next;
+    Writeln('|', AlbumList^.Album.ID:13, ' |', AlbumList^.Album.ID_Artist:16,
+      ' |', AlbumList^.Album.Name:19, ' |', AlbumList^.Album.Year:11, ' |');
+  end;
+  Writeln('|-------------|-----------------|--------------------|------------|');
+end;
+
+{ Work with SongList }
+Procedure WatchSongList(ЫщтпList: TAdrOfList);
+begin
+  Writeln('|----------------|-------------|--------------------|');
+  Writeln('| Название песни | Код альбома | Длительность песни |');
+  Writeln('|----------------|-------------|--------------------|');
+  while ЫщтпList^.next <> nil do
+  begin
+    ЫщтпList := ЫщтпList^.next;
+    Writeln('|', ЫщтпList^.Album.ID:13, ' |', ЫщтпList^.Album.ID_Artist:16,
+      ' |', ЫщтпList^.Album.Name:19, ' |', ЫщтпList^.Album.Year:11, ' |');
+  end;
+  Writeln('|----------------|-------------|--------------------|');
+end;
+
+end.

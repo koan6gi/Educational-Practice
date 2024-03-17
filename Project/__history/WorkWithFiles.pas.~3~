@@ -1,0 +1,67 @@
+unit WorkWithFiles;
+
+interface
+
+uses ListTypeInProject;
+
+Procedure ReadArtistListFromFile(ArtistList: TAdrOfList;
+  var ArtistFile: TArtistFile);
+
+Procedure ReadAlbumListFromFile(AlbumList: TAdrOfList;
+  var AlbumFile: TAlbumFile);
+
+Procedure ReadSongListFromFile(SongList: TAdrOfList; var SongFile: TSongFile);
+
+implementation
+
+Procedure ReadArtistListFromFile(ArtistList: TAdrOfList;
+  var ArtistFile: TArtistFile);
+var
+  MaxID: ^Integer;
+begin
+  Assign(ArtistFile, 'ArtistFile');
+  Reset(ArtistFile);
+  MaxID := @ArtistList^.Max_Id;
+  repeat
+    New(ArtistList^.next);
+    ArtistList := ArtistList^.next;
+    Inc(MaxID^);
+    Read(ArtistFile, ArtistList^.Artist);
+  until Eof(ArtistFile);
+  Close(ArtistFile);
+end;
+
+Procedure ReadAlbumListFromFile(AlbumList: TAdrOfList;
+  var AlbumFile: TAlbumFile);
+var
+  MaxID: ^Integer;
+begin
+  Assign(AlbumFile, 'AlbumFile');
+  Reset(AlbumFile);
+  MaxID := @AlbumList^.Max_Id;
+  repeat
+    New(AlbumList^.next);
+    AlbumList := AlbumList^.next;
+    Inc(MaxID^);
+    Read(AlbumFile, AlbumList^.Album);
+  until Eof(AlbumFile);
+  Close(AlbumFile);
+end;
+
+Procedure ReadSongListFromFile(SongList: TAdrOfList; var SongFile: TSongFile);
+var
+  MaxID: ^Integer;
+begin
+  Assign(SongFile, 'SongFile');
+  Reset(SongFile);
+  MaxID := @SongList^.Max_Id;
+  repeat
+    New(SongList^.next);
+    SongList := SongList^.next;
+    Inc(MaxID^);
+    Read(SongFile, SongList^.Song);
+  until Eof(SongFile);
+  Close(SongFile);
+end;
+
+end.
