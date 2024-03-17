@@ -2,14 +2,15 @@ program EducationalPractice;
 
 uses
   WorkWithFiles in 'WorkWithFiles.pas',
-  AllTypesInProject in 'AllTypesInProject.pas';
+  AllTypesInProject in 'AllTypesInProject.pas',
+  MenuItems in 'MenuItems.pas';
 
 var
   ArtistList, AlbumList, SongList: TAdrOfList;
   ArtistFile: TArtistFile;
   AlbumFile: TAlbumFile;
   SongFile: TSongFile;
-  Menu: Integer = 0;
+  Menu: Integer;
 
 begin
   New(ArtistList);
@@ -23,7 +24,20 @@ begin
   New(SongList);
   SongList^.ListType := Song;
   SongList^.Max_Id := 0;
+  WriteLn('Программа для работы со списками, связанным с музыкой');
   Repeat
+    WriteLn('Меню приложения:');
+    WriteLn('1. Прочитать данные из файла.');
+    WriteLn('2. Просмотреть списки.');
+    WriteLn('3. Сортировать данные.');
+    WriteLn('4. Найти данные по фильтрам.');
+    WriteLn('5. Добавить данные в списки.');
+    WriteLn('6. Удалить данные из списков.');
+    WriteLn('7. Редактировать списки.');
+    WriteLn('8. Создать PlayList.');
+    WriteLn('9. Выйти из программы с сохранением.');
+    WriteLn('0. Выйти из программы без сохранения.');
+    ReadLn(Menu);
     case Menu of
       1:
         begin
@@ -33,7 +47,7 @@ begin
 
       2:
         begin
-
+          MenuItem2_WatchLists(ArtistList, AlbumList, SongList);
         end;
 
       3:
@@ -48,7 +62,7 @@ begin
 
       5:
         begin
-
+          MenuItem5_Insert(ArtistList, AlbumList, SongList);
         end;
 
       6:
@@ -73,7 +87,5 @@ begin
         end;
     end;
   Until (Menu = 0) or (Menu = 9);;
-
-  readln;
 
 end.

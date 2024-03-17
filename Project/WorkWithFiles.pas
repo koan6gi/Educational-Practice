@@ -28,12 +28,13 @@ begin
   Reset(ArtistFile);
   MaxID := @ArtistList^.Max_Id;
 
-  repeat
+  while Not(Eof(ArtistFile)) do
+  begin
     New(ArtistList^.next);
     ArtistList := ArtistList^.next;
     Inc(MaxID^);
     Read(ArtistFile, ArtistList^.Artist);
-  until Eof(ArtistFile);
+  end;
 
   Close(ArtistFile);
 end;
@@ -66,12 +67,13 @@ begin
   Reset(AlbumFile);
   MaxID := @AlbumList^.Max_Id;
 
-  repeat
+  while Not(Eof(AlbumFile)) do
+  begin
     New(AlbumList^.next);
     AlbumList := AlbumList^.next;
     Inc(MaxID^);
     Read(AlbumFile, AlbumList^.Album);
-  until Eof(AlbumFile);
+  end;
 
   Close(AlbumFile);
 end;
@@ -102,12 +104,13 @@ begin
   Reset(SongFile);
   MaxID := @SongList^.Max_Id;
 
-  repeat
+  while Not(Eof(SongFile)) do
+  begin
     New(SongList^.next);
     SongList := SongList^.next;
     Inc(MaxID^);
     Read(SongFile, SongList^.Song);
-  until Eof(SongFile);
+  end;
 
   Close(SongFile);
 end;

@@ -10,7 +10,7 @@ Type
     ID: Integer;
     Name: String[20];
     Country: String[20];
-    Direction: String[20];
+    Direction: String[10];
   end;
 
   TArtistFile = File of TArtist;
