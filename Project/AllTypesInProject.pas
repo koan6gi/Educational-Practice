@@ -1,6 +1,7 @@
 unit AllTypesInProject;
 
 interface
+
 Type
   TypeOfList = (Artist, Album, Song);
 
@@ -25,6 +26,7 @@ Type
   TAlbumFile = File of TAlbum;
 
   TSong = record
+    ID: Integer;
     Name: String[20];
     ID_Album: Integer;
     Length: Integer;
@@ -43,6 +45,7 @@ Type
       Song:
         (Song: TSong);
   end;
+
 implementation
 
 end.

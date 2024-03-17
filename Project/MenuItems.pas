@@ -45,9 +45,9 @@ begin
       1:
         InsertArtist(ArtistList);
       2:
-        InsertAlbum(AlbumList);
+        InsertAlbum(AlbumList, ArtistList);
       3:
-        InsertSong(SongList);
+        InsertSong(SongList, AlbumList, ArtistList);
     end;
   until Menu = 0;
 end;

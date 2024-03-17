@@ -9,8 +9,8 @@ Procedure WatchALbumList(AlbumList: TAdrOfList);
 Procedure WatchSongList(SongList: TAdrOfList);
 
 Procedure InsertArtist(ArtistList: TAdrOfList);
-Procedure InsertAlbum(AlbumList: TAdrOfList);
-Procedure InsertSong(SongList: TAdrOfList);
+Procedure InsertAlbum(AlbumList, ArtistList: TAdrOfList);
+Procedure InsertSong(SongList, AlbumList, ArtistList: TAdrOfList);
 
 implementation
 
@@ -60,35 +60,131 @@ begin
   while AlbumList^.next <> nil do
   begin
     AlbumList := AlbumList^.next;
-    Writeln('|', AlbumList^.Album.ID:13, ' |', AlbumList^.Album.ID_Artist:16,
+    Writeln('|', AlbumList^.Album.ID:12, ' |', AlbumList^.Album.ID_Artist:16,
       ' |', AlbumList^.Album.Name:19, ' |', AlbumList^.Album.Year:11, ' |');
   end;
   Writeln('|-------------|-----------------|--------------------|------------|');
 end;
 
-Procedure InsertAlbum(AlbumList: TAdrOfList);
+Procedure ReadID_Artist(var ID: Integer; ArtistList: TAdrOfList);
+var
+  Flag: Boolean;
+  ArtL: TAdrOfList;
+  Menu: Integer;
 begin
+  repeat
+    Write('Введите код исполнителя: ');
+    ReadLn(ID);
+    Flag := false;
+    ArtL := ArtistList^.next;
+    while (ArtL <> nil) and not(Flag) do
+    begin
+      if ArtL^.Artist.ID = ID then
+        Flag := True;
+      ArtL := ArtL^.next;
+    end;
 
+    if Flag = false then
+    begin
+      Writeln('Исполнителя с таким кодом не существует.');
+      Writeln('Желаете создать нового исполнителя?');
+      Writeln('1. Да. / 0. Нет (Ввести код заново).');
+      ReadLn(Menu);
+      if Menu = 1 then
+      begin
+        ID := ArtistList^.Max_Id + 1;
+        InsertArtist(ArtistList);
+      end;
+    end;
+  until Flag;
+end;
+
+Procedure InsertAlbum(AlbumList, ArtistList: TAdrOfList);
+var
+  MaxId: Integer;
+  Tmp: TAdrOfList;
+begin
+  Inc(AlbumList^.Max_Id);
+  MaxId := AlbumList^.Max_Id;
+  while AlbumList^.next <> nil do
+    AlbumList := AlbumList^.next;
+  New(AlbumList^.next);
+  AlbumList := AlbumList^.next;
+  AlbumList^.Album.ID := MaxId;
+
+  ReadID_Artist(AlbumList^.Album.ID_Artist, ArtistList);
+  Write('Введите название альбома: ');
+  ReadLn(AlbumList^.Album.Name);
+  Write('Введите год выпуска альбома: ');
+  ReadLn(AlbumList^.Album.Year);
 end;
 
 { Work with SongList }
 Procedure WatchSongList(SongList: TAdrOfList);
 begin
-  Writeln('|----------------|-------------|--------------------|');
-  Writeln('| Название песни | Код альбома | Длительность песни |');
-  Writeln('|----------------|-------------|--------------------|');
+  Writeln('|-----------|----------------|-------------|--------------------|');
+  Writeln('| Код песни | Название песни | Код альбома | Длительность песни |');
+  Writeln('|-----------|----------------|-------------|--------------------|');
   while SongList^.next <> nil do
   begin
     SongList := SongList^.next;
-    Writeln('|', SongList^.Song.Name:15, ' |', SongList^.Song.ID_Album:12, ' |',
-      SongList^.Song.Length:19, ' |');
+    Writeln('|', SongList^.Song.ID:10, ' |', SongList^.Song.Name:15, ' |',
+      SongList^.Song.ID_Album:12, ' |', SongList^.Song.Length:19, ' |');
   end;
-  Writeln('|----------------|-------------|--------------------|');
+  Writeln('|-----------|----------------|-------------|--------------------|');
 end;
 
-Procedure InsertSong(SongList: TAdrOfList);
+Procedure ReadID_Album(var ID: Integer; AlbumList, ArtistList: TAdrOfList);
+var
+  Flag: Boolean;
+  AlbL: TAdrOfList;
+  Menu: Integer;
 begin
+  repeat
+    Write('Введите код альбома: ');
+    ReadLn(ID);
+    Flag := false;
+    AlbL := AlbumList^.next;
+    while (AlbL <> nil) and not(Flag) do
+    begin
+      if AlbL^.Artist.ID = ID then
+        Flag := True;
+      AlbL := AlbL^.next;
+    end;
 
+    if Flag = false then
+    begin
+      Writeln('Альбома с таким кодом не существует.');
+      Writeln('Желаете создать новый альбом?');
+      Writeln('1. Да. / 0. Нет (Ввести код заново).');
+      ReadLn(Menu);
+      if Menu = 1 then
+      begin
+        ID := AlbumList^.Max_Id + 1;
+        InsertAlbum(AlbumList, ArtistList);
+      end;
+    end;
+  until Flag;
+end;
+
+Procedure InsertSong(SongList, AlbumList, ArtistList: TAdrOfList);
+var
+  MaxId: Integer;
+  Tmp: TAdrOfList;
+begin
+  Inc(SongList^.Max_Id);
+  MaxId := SongList^.Max_Id;
+  Tmp := SongList^.next;
+  New(SongList^.next);
+  SongList := SongList^.next;
+  SongList^.Song.ID := MaxId;
+  SongList^.next := Tmp;
+
+  ReadID_Album(SongList^.Song.ID_Album, AlbumList, ArtistList);
+  Write('Введите название песни: ');
+  ReadLn(SongList^.Song.Name);
+  Write('Введите длину песни в секундах: ');
+  ReadLn(SongList^.Song.Length);
 end;
 
 end.
