@@ -7,11 +7,14 @@ Type
 
   TAdrOfList = ^TList;
 
+  NameString = String[20];
+  DirectionString = String[15];
+
   TArtist = record
     ID: Integer;
-    Name: String[20];
-    Country: String[20];
-    Direction: String[10];
+    Name: NameString;
+    Country: NameString;
+    Direction: DirectionString;
   end;
 
   TArtistFile = File of TArtist;
@@ -19,7 +22,7 @@ Type
   TAlbum = record
     ID: Integer;
     ID_Artist: Integer;
-    Name: String[20];
+    Name: NameString;
     Year: Integer;
   end;
 
@@ -27,7 +30,7 @@ Type
 
   TSong = record
     ID: Integer;
-    Name: String[20];
+    Name: NameString;
     ID_Album: Integer;
     Length: Integer;
   end;

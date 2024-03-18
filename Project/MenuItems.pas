@@ -4,6 +4,7 @@ interface
 
 uses AllTypesInProject, WorkWithLists;
 Procedure MenuItem2_WatchLists(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure MenuItem4_Search(ArtistList, AlbumList, SongList: TAdrOfList);
 Procedure MenuItem5_Insert(ArtistList, AlbumList, SongList: TAdrOfList);
 Procedure MenuItem6_Delete(ArtistList, AlbumList, SongList: TAdrOfList);
 
@@ -27,6 +28,28 @@ begin
         WatchAlbumList(AlbumList);
       3:
         WatchSongList(SongList);
+    end;
+  until Menu = 0;
+end;
+
+Procedure MenuItem4_Search(ArtistList, AlbumList, SongList: TAdrOfList);
+var
+  Menu: Integer;
+begin
+  repeat
+    WriteLn('Меню подпункта поиска по коду:');
+    WriteLn('1. Искать в списке исполнителей.');
+    WriteLn('2. Искать в списке альбомов.');
+    WriteLn('3. Искать в списке песен.');
+    WriteLn('0. Выйти из подпункта меню.');
+    readln(Menu);
+    case Menu of
+      1:
+        SearchArtist(ArtistList);
+      2:
+        SearchAlbum(AlbumList);
+      3:
+        SearchSong(SongList);
     end;
   until Menu = 0;
 end;
