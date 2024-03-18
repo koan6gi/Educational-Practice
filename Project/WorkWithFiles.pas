@@ -16,7 +16,7 @@ Procedure ReWriteAllListsInFiles(ArtistList, AlbumList, SongList: TAdrOfList;
 
 implementation
 
-{ Work with ArtistFile }
+{ \\\\\\\\\\ Work with ArtistFile ////////// }
 
 // Read ArtistList from file
 Procedure ReadArtistListFromFile(ArtistList: TAdrOfList;
@@ -28,11 +28,15 @@ begin
   Reset(ArtistFile);
   MaxID := @ArtistList^.Max_Id;
 
+  New(ArtistList^.next);
+  ArtistList := ArtistList^.next;
+  Read(ArtistFile, ArtistList^.Artist);
+
+  MaxID^ := ArtistList^.Artist.ID;
   while Not(Eof(ArtistFile)) do
   begin
     New(ArtistList^.next);
     ArtistList := ArtistList^.next;
-    Inc(MaxID^);
     Read(ArtistFile, ArtistList^.Artist);
   end;
 
@@ -55,7 +59,7 @@ begin
   Close(ArtistFile);
 end;
 
-{ Work with AlbumFile }
+{ \\\\\\\\\\ Work with AlbumFile ////////// }
 
 // Read AlbumList from file
 Procedure ReadAlbumListFromFile(AlbumList: TAdrOfList;
@@ -67,13 +71,15 @@ begin
   Reset(AlbumFile);
   MaxID := @AlbumList^.Max_Id;
 
+  MaxID^ := AlbumList^.Album.ID;
   while Not(Eof(AlbumFile)) do
   begin
     New(AlbumList^.next);
     AlbumList := AlbumList^.next;
-    Inc(MaxID^);
     Read(AlbumFile, AlbumList^.Album);
   end;
+
+  MaxID^ := AlbumList^.Album.ID;
 
   Close(AlbumFile);
 end;
@@ -94,7 +100,7 @@ begin
   Close(AlbumFile);
 end;
 
-{ Work with SongFile }
+{ \\\\\\\\\\ Work with SongFile ////////// }
 // Read SongList from file
 Procedure ReadSongListFromFile(SongList: TAdrOfList; var SongFile: TSongFile);
 var
@@ -104,11 +110,15 @@ begin
   Reset(SongFile);
   MaxID := @SongList^.Max_Id;
 
+  New(SongList^.next);
+  SongList := SongList^.next;
+  Read(SongFile, SongList^.Song);
+
+  MaxID^ := SongList^.Song.ID;
   while Not(Eof(SongFile)) do
   begin
     New(SongList^.next);
     SongList := SongList^.next;
-    Inc(MaxID^);
     Read(SongFile, SongList^.Song);
   end;
 
