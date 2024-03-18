@@ -12,9 +12,13 @@ Procedure InsertArtist(ArtistList: TAdrOfList);
 Procedure InsertAlbum(AlbumList, ArtistList: TAdrOfList);
 Procedure InsertSong(SongList, AlbumList, ArtistList: TAdrOfList);
 
+Procedure DeleteArtist(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure DeleteAlbum(AlbumList, SongList: TAdrOfList; CheckID: Integer);
+Procedure DeleteSong(SongList: TAdrOfList; CheckID: Integer);
+
 implementation
 
-{ Work with ArtistList }
+{ \\\\\\\\\\ Work with ArtistList ////////// }
 Procedure WatchArtistList(ArtistList: TAdrOfList);
 begin
   Writeln('|-----------------|-------------------|--------------------|-------------------------|');
@@ -51,7 +55,49 @@ begin
   ReadLn(ArtistList^.Artist.Direction);
 end;
 
-{ Work with AlbumList }
+Procedure DeleteArtist(ArtistList, AlbumList, SongList: TAdrOfList);
+var
+  IDForDelete: Integer;
+  Tmp, TmpAlbumList: TAdrOfList;
+  Flag: Boolean;
+begin
+  Write('Введите код исполнителя для удаления: ');
+  ReadLn(IDForDelete);
+  Flag := false;
+
+  While Not(Flag) and (ArtistList^.next <> nil) do
+  begin
+    if ArtistList^.next^.Artist.ID = IDForDelete then
+    begin
+      Flag := True;
+
+      Tmp := ArtistList^.next;
+      ArtistList^.next := ArtistList^.next^.next;
+      Dispose(Tmp);
+    end;
+    ArtistList := ArtistList^.next;
+  end;
+
+  if Not(Flag) then
+    Writeln('Исполнителя с таким кодом не существует.')
+  else
+  begin
+    New(TmpAlbumList);
+    TmpAlbumList^.next := AlbumList;
+    while AlbumList <> nil do
+    begin
+      if (AlbumList^.next <> nil) and
+        (AlbumList^.next^.Album.ID_Artist = IDForDelete) then
+      begin
+        DeleteAlbum(TmpAlbumList^.next, SongList, AlbumList^.next^.Album.ID);
+        AlbumList := TmpAlbumList;
+      end;
+      AlbumList := AlbumList^.next;
+    end;
+  end;
+end;
+
+{ \\\\\\\\\\ Work with AlbumList ////////// }
 Procedure WatchALbumList(AlbumList: TAdrOfList);
 begin
   Writeln('|-------------|-----------------|--------------------|------------|');
@@ -102,7 +148,6 @@ end;
 Procedure InsertAlbum(AlbumList, ArtistList: TAdrOfList);
 var
   MaxId: Integer;
-  Tmp: TAdrOfList;
 begin
   Inc(AlbumList^.Max_Id);
   MaxId := AlbumList^.Max_Id;
@@ -119,7 +164,53 @@ begin
   ReadLn(AlbumList^.Album.Year);
 end;
 
-{ Work with SongList }
+Procedure DeleteAlbum(AlbumList, SongList: TAdrOfList; CheckID: Integer);
+var
+  IDForDelete: Integer;
+  Tmp, TmpSongList: TAdrOfList;
+  Flag: Boolean;
+begin
+  IDForDelete := CheckID;
+  if CheckID = 0 then
+  begin
+    Write('Введите код альбома для удаления: ');
+    ReadLn(IDForDelete);
+  end;
+  Flag := false;
+
+  While Not(Flag) and (AlbumList^.next <> nil) do
+  begin
+    if AlbumList^.next^.Album.ID = IDForDelete then
+    begin
+      Flag := True;
+
+      Tmp := AlbumList^.next;
+      AlbumList^.next := AlbumList^.next^.next;
+      Dispose(Tmp);
+    end;
+    AlbumList := AlbumList^.next;
+  end;
+
+  if Not(Flag) then
+    Writeln('Альбома с таким кодом не существует.')
+  else
+  begin
+    New(TmpSongList);
+    TmpSongList^.next := SongList;
+    while SongList <> nil do
+    begin
+      if (SongList^.next <> nil) and
+        (SongList^.next^.Song.ID_Album = IDForDelete) then
+      begin
+        DeleteSong(TmpSongList^.next, SongList^.next^.Song.ID);
+        SongList := TmpSongList;
+      end;
+      SongList := SongList^.next;
+    end;
+  end;
+end;
+
+{ \\\\\\\\\\ Work with SongList ////////// }
 Procedure WatchSongList(SongList: TAdrOfList);
 begin
   Writeln('|-----------|----------------|-------------|--------------------|');
@@ -185,6 +276,37 @@ begin
   ReadLn(SongList^.Song.Name);
   Write('Введите длину песни в секундах: ');
   ReadLn(SongList^.Song.Length);
+end;
+
+Procedure DeleteSong(SongList: TAdrOfList; CheckID: Integer);
+var
+  IDForDelete: Integer;
+  Tmp: TAdrOfList;
+  Flag: Boolean;
+begin
+  IDForDelete := CheckID;
+  if CheckID = 0 then
+  begin
+    Write('Введите код песни для удаления: ');
+    ReadLn(IDForDelete);
+  end;
+  Flag := false;
+
+  While Not(Flag) and (SongList^.next <> nil) do
+  begin
+    if SongList^.next^.Song.ID = IDForDelete then
+    begin
+      Flag := True;
+
+      Tmp := SongList^.next;
+      SongList^.next := SongList^.next^.next;
+      Dispose(Tmp);
+    end;
+    SongList := SongList^.next;
+  end;
+
+  if Not(Flag) then
+    Writeln('Песни с таким кодом не существует.');
 end;
 
 end.

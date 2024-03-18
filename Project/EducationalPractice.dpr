@@ -67,7 +67,7 @@ begin
 
       6:
         begin
-
+          MenuItem6_Delete(ArtistList, AlbumList, SongList);
         end;
 
       7:
