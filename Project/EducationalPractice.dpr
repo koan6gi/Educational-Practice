@@ -24,7 +24,7 @@ begin
   New(SongList);
   SongList^.ListType := Song;
   SongList^.Max_Id := 0;
-  WriteLn('Программа для работы со списками, связанным с музыкой');
+  WriteLn('Программа для работы со списками, связанными с музыкой');
   Repeat
     WriteLn('Меню приложения:');
     WriteLn('1. Прочитать данные из файла.');
@@ -72,7 +72,7 @@ begin
 
       7:
         begin
-
+          MenuItem7_Edit(ArtistList, AlbumList, SongList);
         end;
 
       8:

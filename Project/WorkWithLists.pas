@@ -20,10 +20,15 @@ Procedure SearchArtist(ArtistList: TAdrOfList);
 Procedure SearchALbum(AlbumList: TAdrOfList);
 Procedure SearchSong(SongList: TAdrOfList);
 
+Procedure EditArtist(ArtistList: TAdrOfList);
+Procedure EditAlbum(AlbumList: TAdrOfList);
+Procedure EditSong(SongList: TAdrOfList);
+
 implementation
 
 { \\\\\\\\\\ Work with ArtistList ////////// }
 
+// Просмотреть список исполнителей.
 Procedure WatchArtistList(ArtistList: TAdrOfList);
 begin
   Writeln('|-----------------|-------------------|--------------------|-------------------------|');
@@ -40,6 +45,7 @@ begin
   Writeln;
 end;
 
+// Вставить исполнителя в список.
 Procedure InsertArtist(ArtistList: TAdrOfList);
 var
   MaxId: Integer;
@@ -62,12 +68,14 @@ begin
   Writeln;
 end;
 
+// Удалить исполнителя из списка.
 Procedure DeleteArtist(ArtistList, AlbumList, SongList: TAdrOfList);
 var
   IDForDelete: Integer;
   Tmp, TmpAlbumList: TAdrOfList;
   Flag: Boolean;
 begin
+  WatchArtistList(ArtistList);
   Write('Введите код исполнителя для удаления: ');
   ReadLn(IDForDelete);
   Flag := false;
@@ -105,6 +113,7 @@ begin
   Writeln;
 end;
 
+// Найти исполнителя в списке.
 Procedure SearchArtist(ArtistList: TAdrOfList);
 var
   Flag: Boolean;
@@ -133,8 +142,40 @@ begin
   Writeln;
 end;
 
+// Редактировать информацию о исполнителе.
+Procedure EditArtist(ArtistList: TAdrOfList);
+var
+  Flag: Boolean;
+  ID: Integer;
+begin
+  WatchArtistList(ArtistList);
+  Write('Введите код исполнителя для редакирования: ');
+  ReadLn(ID);
+  Flag := false;
+  while (ArtistList^.next <> nil) and not(Flag) do
+  begin
+    ArtistList := ArtistList^.next;
+    if ArtistList^.Artist.ID = ID then
+    begin
+      Flag := True;
+      Writeln('Начало редактирования:');
+      Write('Введите имя исполнителя: ');
+      ReadLn(ArtistList^.Artist.Name);
+      Write('Введите страну исполнителя: ');
+      ReadLn(ArtistList^.Artist.Country);
+      Write('Введите направление исполнителя: ');
+      ReadLn(ArtistList^.Artist.Direction);
+    end;
+  end;
+
+  if not(Flag) then
+    Writeln('Исполнителя с таким кодом не существует.');
+  Writeln;
+end;
+
 { \\\\\\\\\\ Work with AlbumList ////////// }
 
+// Просмотреть список альбомов.
 Procedure WatchALbumList(AlbumList: TAdrOfList);
 begin
   Writeln('|-------------|-----------------|----------------------|------------|');
@@ -150,6 +191,7 @@ begin
   Writeln;
 end;
 
+// Прочитать код артиста, предусмотрев его отсутствие.
 Procedure ReadID_Artist(var ID: Integer; ArtistList: TAdrOfList);
 var
   Flag: Boolean;
@@ -184,6 +226,7 @@ begin
   Writeln;
 end;
 
+// Вставить альбом в список.
 Procedure InsertAlbum(AlbumList, ArtistList: TAdrOfList);
 var
   MaxId: Integer;
@@ -204,6 +247,7 @@ begin
   Writeln;
 end;
 
+// Удалить альбом из списка.
 Procedure DeleteAlbum(AlbumList, SongList: TAdrOfList; CheckID: Integer);
 var
   IDForDelete: Integer;
@@ -213,6 +257,7 @@ begin
   IDForDelete := CheckID;
   if CheckID = 0 then
   begin
+    WatchALbumList(AlbumList);
     Write('Введите код альбома для удаления: ');
     ReadLn(IDForDelete);
   end;
@@ -252,6 +297,7 @@ begin
   Writeln;
 end;
 
+// Найти альбом по коду.
 Procedure SearchALbum(AlbumList: TAdrOfList);
 var
   Flag: Boolean;
@@ -279,8 +325,45 @@ begin
   Writeln;
 end;
 
+// Редактировать информацию о альбоме.
+Procedure EditAlbum(AlbumList: TAdrOfList);
+var
+  Flag: Boolean;
+  ID: Integer;
+begin
+  WatchALbumList(AlbumList);
+  Write('Введите код исполнителя для редакирования: ');
+  ReadLn(ID);
+  Flag := false;
+  while (AlbumList^.next <> nil) and not(Flag) do
+  begin
+    AlbumList := AlbumList^.next;
+    if AlbumList^.Artist.ID = ID then
+    begin
+      Flag := True;
+      Writeln('|-------------|-----------------|----------------------|------------|');
+      Writeln('| Код альбома | Код исполнителя |   Название альбома   | Год записи |');
+      Writeln('|-------------|-----------------|----------------------|------------|');
+      Writeln('|', AlbumList^.Album.ID:12, ' |', AlbumList^.Album.ID_Artist:16,
+        ' |', AlbumList^.Album.Name:21, ' |', AlbumList^.Album.Year:11, ' |');
+      Writeln('|-------------|-----------------|----------------------|------------|');
+
+      Writeln('Начало редактирования:');
+      Write('Введите название альбома: ');
+      ReadLn(AlbumList^.Artist.Country);
+      Write('Введите год записи: ');
+      ReadLn(AlbumList^.Artist.Direction);
+    end;
+  end;
+
+  if not(Flag) then
+    Writeln('Альбома с таким кодом не существует.');
+  Writeln;
+end;
+
 { \\\\\\\\\\ Work with SongList ////////// }
 
+// Просмотреть список песен.
 Procedure WatchSongList(SongList: TAdrOfList);
 begin
   Writeln('|-----------|----------------------|-------------|--------------------|');
@@ -296,6 +379,7 @@ begin
   Writeln;
 end;
 
+// Прочитать код альбома, предусмотрев его отсутствие.
 Procedure ReadID_Album(var ID: Integer; AlbumList, ArtistList: TAdrOfList);
 var
   Flag: Boolean;
@@ -330,6 +414,7 @@ begin
   Writeln;
 end;
 
+// Вставить альбом в список.
 Procedure InsertSong(SongList, AlbumList, ArtistList: TAdrOfList);
 var
   MaxId: Integer;
@@ -351,6 +436,7 @@ begin
   Writeln;
 end;
 
+// Удалить песню из списка.
 Procedure DeleteSong(SongList: TAdrOfList; CheckID: Integer);
 var
   IDForDelete: Integer;
@@ -360,6 +446,7 @@ begin
   IDForDelete := CheckID;
   if CheckID = 0 then
   begin
+    WatchSongList(SongList);
     Write('Введите код песни для удаления: ');
     ReadLn(IDForDelete);
   end;
@@ -383,6 +470,7 @@ begin
   Writeln;
 end;
 
+// Найти песню по коду.
 Procedure SearchSong(SongList: TAdrOfList);
 var
   Flag: Boolean;
@@ -407,6 +495,42 @@ begin
   end;
   if not(Flag) then
     Writeln('Песни с таким кодом нет в списке.');
+  Writeln;
+end;
+
+// Редактировать информацию о песне.
+Procedure EditSong(SongList: TAdrOfList);
+var
+  Flag: Boolean;
+  ID: Integer;
+begin
+  WatchSongList(SongList);
+  Write('Введите код песни для редакирования: ');
+  ReadLn(ID);
+  Flag := false;
+  while (SongList^.next <> nil) and not(Flag) do
+  begin
+    SongList := SongList^.next;
+    if SongList^.Artist.ID = ID then
+    begin
+      Flag := True;
+      Writeln('|-----------|----------------------|-------------|--------------------|');
+      Writeln('| Код песни |    Название песни    | Код альбома | Длительность песни |');
+      Writeln('|-----------|----------------------|-------------|--------------------|');
+      Writeln('|', SongList^.Song.ID:10, ' |', SongList^.Song.Name:21, ' |',
+        SongList^.Song.ID_Album:12, ' |', SongList^.Song.Length:19, ' |');
+      Writeln('|-----------|----------------------|-------------|--------------------|');
+
+      Writeln('Начало редактирования:');
+      Write('Введите название песни: ');
+      ReadLn(SongList^.Song.Name);
+      Write('Введите длительность: ');
+      ReadLn(SongList^.Song.Length);
+    end;
+  end;
+
+  if not(Flag) then
+    Writeln('Песни с таким кодом не существует.');
   Writeln;
 end;
 
