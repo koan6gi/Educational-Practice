@@ -4,8 +4,10 @@ interface
 
 uses AllTypesInProject, WorkWithLists;
 Procedure MenuItem2_WatchLists(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure MenuItem4_Search(ArtistList, AlbumList, SongList: TAdrOfList);
 Procedure MenuItem5_Insert(ArtistList, AlbumList, SongList: TAdrOfList);
 Procedure MenuItem6_Delete(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure MenuItem7_Edit(ArtistList, AlbumList, SongList: TAdrOfList);
 
 implementation
 
@@ -27,6 +29,28 @@ begin
         WatchAlbumList(AlbumList);
       3:
         WatchSongList(SongList);
+    end;
+  until Menu = 0;
+end;
+
+Procedure MenuItem4_Search(ArtistList, AlbumList, SongList: TAdrOfList);
+var
+  Menu: Integer;
+begin
+  repeat
+    WriteLn('Меню подпункта поиска по коду:');
+    WriteLn('1. Искать в списке исполнителей.');
+    WriteLn('2. Искать в списке альбомов.');
+    WriteLn('3. Искать в списке песен.');
+    WriteLn('0. Выйти из подпункта меню.');
+    readln(Menu);
+    case Menu of
+      1:
+        SearchArtist(ArtistList);
+      2:
+        SearchAlbum(AlbumList);
+      3:
+        SearchSong(SongList);
     end;
   until Menu = 0;
 end;
@@ -71,6 +95,28 @@ begin
         DeleteAlbum(AlbumList, SongList, 0);
       3:
         DeleteSong(SongList, 0);
+    end;
+  until Menu = 0;
+end;
+
+Procedure MenuItem7_Edit(ArtistList, AlbumList, SongList: TAdrOfList);
+var
+  Menu: Integer;
+begin
+  repeat
+    WriteLn('Меню подпункта редактирования элемента:');
+    WriteLn('1. Редактировать элемент из списка исполнителей.');
+    WriteLn('2. Редактировать элемент из списка альбомов.');
+    WriteLn('3. Редактировать элемент из списка песен.');
+    WriteLn('0. Выйти из подпункта меню.');
+    readln(Menu);
+    case Menu of
+      1:
+        EditArtist(ArtistList);
+      2:
+        EditAlbum(AlbumList);
+      3:
+        EditSong(SongList);
     end;
   until Menu = 0;
 end;

@@ -24,13 +24,13 @@ begin
   New(SongList);
   SongList^.ListType := Song;
   SongList^.Max_Id := 0;
-  WriteLn('Программа для работы со списками, связанным с музыкой');
+  WriteLn('Программа для работы со списками, связанными с музыкой');
   Repeat
     WriteLn('Меню приложения:');
     WriteLn('1. Прочитать данные из файла.');
     WriteLn('2. Просмотреть списки.');
     WriteLn('3. Сортировать данные.');
-    WriteLn('4. Найти данные по фильтрам.');
+    WriteLn('4. Найти данные по коду.');
     WriteLn('5. Добавить данные в списки.');
     WriteLn('6. Удалить данные из списков.');
     WriteLn('7. Редактировать списки.');
@@ -57,7 +57,7 @@ begin
 
       4:
         begin
-
+          MenuItem4_Search(ArtistList, AlbumList, SongList);
         end;
 
       5:
@@ -72,7 +72,7 @@ begin
 
       7:
         begin
-
+          MenuItem7_Edit(ArtistList, AlbumList, SongList);
         end;
 
       8:

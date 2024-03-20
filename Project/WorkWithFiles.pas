@@ -28,16 +28,19 @@ begin
   Reset(ArtistFile);
   MaxID := @ArtistList^.Max_Id;
 
-  New(ArtistList^.next);
-  ArtistList := ArtistList^.next;
-  Read(ArtistFile, ArtistList^.Artist);
-
-  MaxID^ := ArtistList^.Artist.ID;
-  while Not(Eof(ArtistFile)) do
+  if Not(Eof(ArtistFile)) then
   begin
     New(ArtistList^.next);
     ArtistList := ArtistList^.next;
     Read(ArtistFile, ArtistList^.Artist);
+
+    MaxID^ := ArtistList^.Artist.ID;
+    while Not(Eof(ArtistFile)) do
+    begin
+      New(ArtistList^.next);
+      ArtistList := ArtistList^.next;
+      Read(ArtistFile, ArtistList^.Artist);
+    end;
   end;
 
   Close(ArtistFile);
@@ -101,6 +104,7 @@ begin
 end;
 
 { \\\\\\\\\\ Work with SongFile ////////// }
+
 // Read SongList from file
 Procedure ReadSongListFromFile(SongList: TAdrOfList; var SongFile: TSongFile);
 var
@@ -110,16 +114,19 @@ begin
   Reset(SongFile);
   MaxID := @SongList^.Max_Id;
 
-  New(SongList^.next);
-  SongList := SongList^.next;
-  Read(SongFile, SongList^.Song);
-
-  MaxID^ := SongList^.Song.ID;
-  while Not(Eof(SongFile)) do
+  if Not(Eof(SongFile)) then
   begin
     New(SongList^.next);
     SongList := SongList^.next;
     Read(SongFile, SongList^.Song);
+
+    MaxID^ := SongList^.Song.ID;
+    while Not(Eof(SongFile)) do
+    begin
+      New(SongList^.next);
+      SongList := SongList^.next;
+      Read(SongFile, SongList^.Song);
+    end;
   end;
 
   Close(SongFile);
