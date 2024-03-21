@@ -2,25 +2,47 @@ unit MenuItems;
 
 interface
 
-uses AllTypesInProject, WorkWithLists;
+uses AllTypesInProject, WorkWithLists, WorkWithFiles;
+
+Procedure MenuItem1_ReadLists(ArtistList, AlbumList, SongList: TAdrOfList;
+  var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
+  var SongFile: TSongFile; var Flag: Integer);
 Procedure MenuItem2_WatchLists(ArtistList, AlbumList, SongList: TAdrOfList);
 Procedure MenuItem4_Search(ArtistList, AlbumList, SongList: TAdrOfList);
 Procedure MenuItem5_Insert(ArtistList, AlbumList, SongList: TAdrOfList);
 Procedure MenuItem6_Delete(ArtistList, AlbumList, SongList: TAdrOfList);
 Procedure MenuItem7_Edit(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure DeleteAllLists(var ArtistList, AlbumList, SongList: TAdrOfList);
 
 implementation
+
+Procedure MenuItem1_ReadLists(ArtistList, AlbumList, SongList: TAdrOfList;
+  var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
+  var SongFile: TSongFile; var Flag: Integer);
+begin
+  if Flag = 0 then
+  begin
+    ReadAllListsFromFiles(ArtistList, AlbumList, SongList, ArtistFile,
+      AlbumFile, SongFile);
+    Writeln('Данные успешно прочитаны.');
+    Flag := 1;
+  end
+  else if Flag = 1 then
+    Writeln('Данные уже были прочитаны.')
+  else
+    Writeln('Были внесены изменения, для прочтения данных перезапустите программу.');
+end;
 
 Procedure MenuItem2_WatchLists(ArtistList, AlbumList, SongList: TAdrOfList);
 var
   Menu: Integer;
 begin
   repeat
-    WriteLn('Меню подпункта просмотра списков:');
-    WriteLn('1. Просмотреть список исполнителей.');
-    WriteLn('2. Просмотреть список альбомов.');
-    WriteLn('3. Просмотреть список песен.');
-    WriteLn('0. Выйти из подпункта меню.');
+    Writeln('Меню подпункта просмотра списков:');
+    Writeln('1. Просмотреть список исполнителей.');
+    Writeln('2. Просмотреть список альбомов.');
+    Writeln('3. Просмотреть список песен.');
+    Writeln('0. Выйти из подпункта меню.');
     readln(Menu);
     case Menu of
       1:
@@ -38,11 +60,11 @@ var
   Menu: Integer;
 begin
   repeat
-    WriteLn('Меню подпункта поиска по коду:');
-    WriteLn('1. Искать в списке исполнителей.');
-    WriteLn('2. Искать в списке альбомов.');
-    WriteLn('3. Искать в списке песен.');
-    WriteLn('0. Выйти из подпункта меню.');
+    Writeln('Меню подпункта поиска по коду:');
+    Writeln('1. Искать в списке исполнителей.');
+    Writeln('2. Искать в списке альбомов.');
+    Writeln('3. Искать в списке песен.');
+    Writeln('0. Выйти из подпункта меню.');
     readln(Menu);
     case Menu of
       1:
@@ -60,11 +82,11 @@ var
   Menu: Integer;
 begin
   repeat
-    WriteLn('Меню подпункта вставки элемента:');
-    WriteLn('1. Вставить элемента в список исполнителей.');
-    WriteLn('2. Вставить элемента в список альбомов.');
-    WriteLn('3. Вставить элемента в список песен.');
-    WriteLn('0. Выйти из подпункта меню.');
+    Writeln('Меню подпункта вставки элемента:');
+    Writeln('1. Вставить элемента в список исполнителей.');
+    Writeln('2. Вставить элемента в список альбомов.');
+    Writeln('3. Вставить элемента в список песен.');
+    Writeln('0. Выйти из подпункта меню.');
     readln(Menu);
     case Menu of
       1:
@@ -82,11 +104,11 @@ var
   Menu: Integer;
 begin
   repeat
-    WriteLn('Меню подпункта удаления элемента:');
-    WriteLn('1. Удалить элемент из списка исполнителей.');
-    WriteLn('2. Удалить элемент из списка альбомов.');
-    WriteLn('3. Удалить элемент из списка песен.');
-    WriteLn('0. Выйти из подпункта меню.');
+    Writeln('Меню подпункта удаления элемента:');
+    Writeln('1. Удалить элемент из списка исполнителей.');
+    Writeln('2. Удалить элемент из списка альбомов.');
+    Writeln('3. Удалить элемент из списка песен.');
+    Writeln('0. Выйти из подпункта меню.');
     readln(Menu);
     case Menu of
       1:
@@ -104,11 +126,11 @@ var
   Menu: Integer;
 begin
   repeat
-    WriteLn('Меню подпункта редактирования элемента:');
-    WriteLn('1. Редактировать элемент из списка исполнителей.');
-    WriteLn('2. Редактировать элемент из списка альбомов.');
-    WriteLn('3. Редактировать элемент из списка песен.');
-    WriteLn('0. Выйти из подпункта меню.');
+    Writeln('Меню подпункта редактирования элемента:');
+    Writeln('1. Редактировать элемент из списка исполнителей.');
+    Writeln('2. Редактировать элемент из списка альбомов.');
+    Writeln('3. Редактировать элемент из списка песен.');
+    Writeln('0. Выйти из подпункта меню.');
     readln(Menu);
     case Menu of
       1:
@@ -119,6 +141,33 @@ begin
         EditSong(SongList);
     end;
   until Menu = 0;
+end;
+
+Procedure DeleteAllLists(var ArtistList, AlbumList, SongList: TAdrOfList);
+var
+  Tmp: TAdrOfList;
+begin
+  while ArtistList <> nil do
+  begin
+    Tmp := ArtistList;
+    ArtistList := ArtistList^.next;
+    Dispose(Tmp);
+  end;
+
+  while AlbumList <> nil do
+  begin
+    Tmp := AlbumList;
+    AlbumList := AlbumList^.next;
+    Dispose(Tmp);
+  end;
+
+  while SongList <> nil do
+  begin
+    Tmp := SongList;
+    SongList := SongList^.next;
+    Dispose(Tmp);
+  end;
+
 end;
 
 end.

@@ -223,7 +223,6 @@ begin
       end;
     end;
   until Flag;
-  Writeln;
 end;
 
 // Вставить альбом в список.
@@ -238,6 +237,7 @@ begin
   New(AlbumList^.next);
   AlbumList := AlbumList^.next;
   AlbumList^.Album.ID := MaxId;
+  AlbumList^.next := nil;
 
   ReadID_Artist(AlbumList^.Album.ID_Artist, ArtistList);
   Write('Введите название альбома: ');
@@ -274,7 +274,6 @@ begin
       Dispose(Tmp);
     end;
     AlbumList := AlbumList^.next;
-    Writeln;
   end;
 
   if Not(Flag) then
@@ -294,7 +293,6 @@ begin
       SongList := SongList^.next;
     end;
   end;
-  Writeln;
 end;
 
 // Найти альбом по коду.
@@ -411,7 +409,6 @@ begin
       end;
     end;
   until Flag;
-  Writeln;
 end;
 
 // Вставить альбом в список.
@@ -467,7 +464,6 @@ begin
 
   if Not(Flag) then
     Writeln('Песни с таким кодом нет в списке.');
-  Writeln;
 end;
 
 // Найти песню по коду.
