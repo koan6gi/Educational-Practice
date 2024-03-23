@@ -74,7 +74,6 @@ begin
   Reset(AlbumFile);
   MaxID := @AlbumList^.Max_Id;
 
-  MaxID^ := AlbumList^.Album.ID;
   while Not(Eof(AlbumFile)) do
   begin
     New(AlbumList^.next);
