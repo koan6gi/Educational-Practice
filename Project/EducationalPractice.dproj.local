@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.974,=D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.026,=D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.974,=D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.682,D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas=D:\Университет\ОАиП\Учебная практика\Project\MenuItems.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.243,D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas=D:\Университет\ОАиП\Учебная практика\Project\TypeOfList.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.672,D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas=D:\Университет\ОАиП\Учебная практика\Project\WorkWithLists.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.663,=D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.978,=D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.977,D:\Университет\ОАиП\Учебная практика\Project\TypeOfList.pas=D:\Университет\ОАиП\Учебная практика\Project\ListTypeInProject.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.132,D:\Университет\ОАиП\Учебная практика\Project\ListTypeInProject.pas=D:\Университет\ОАиП\Учебная практика\Project\AllTypesInProject.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.888,D:\Университет\ОАиП\Учебная практика\Project\EducationalPractice.dproj=D:\OneDrive\Документы\Embarcadero\Studio\Projects\Project2.dproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.497,D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas=D:\Университет\ОАиП\Учебная практика\Project\WorkWithFiles.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.978,=D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.663,=D:\Университет\ОАиП\Учебная практика\Project\Unit1.pas</Transaction>
   </Transactions>
 </BorlandProject>

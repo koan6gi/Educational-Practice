@@ -3,9 +3,9 @@ unit AllTypesInProject;
 interface
 
 Type
-  TypeOfList = (Artist, Album, Song);
-
-  TAdrOfList = ^TList;
+  TAdrOfArtistList = ^TArtistList;
+  TAdrOfAlbumList = ^TAlbumList;
+  TAdrOfSongList = ^TSongList;
 
   NameString = String[20];
   DirectionString = String[15];
@@ -37,16 +37,22 @@ Type
 
   TSongFile = File of TSong;
 
-  TList = record
-    next: TAdrOfList;
+  TArtistList = record
+    next: TAdrOfArtistList;
     Max_Id: Integer;
-    case ListType: TypeOfList of
-      Artist:
-        (Artist: TArtist);
-      Album:
-        (Album: TAlbum);
-      Song:
-        (Song: TSong);
+    Artist: TArtist;
+  end;
+
+  TAlbumList = record
+    next: TAdrOfAlbumList;
+    Max_Id: Integer;
+    ALbum: TAlbum;
+  end;
+
+  TSongList = record
+    next: TAdrOfSongList;
+    Max_Id: Integer;
+    Song: TSong;
   end;
 
 implementation

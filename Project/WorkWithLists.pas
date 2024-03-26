@@ -4,32 +4,33 @@ interface
 
 uses
   AllTypesInProject;
-Procedure WatchArtistList(ArtistList: TAdrOfList);
-Procedure WatchALbumList(AlbumList: TAdrOfList);
-Procedure WatchSongList(SongList: TAdrOfList);
+Procedure WatchArtistList(ArtistList: TAdrOfArtistList);
+Procedure InsertArtist(ArtistList: TAdrOfArtistList);
+Procedure DeleteArtist(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList);
+Procedure SearchArtist(ArtistList: TAdrOfArtistList);
+Procedure EditArtist(ArtistList: TAdrOfArtistList);
 
-Procedure InsertArtist(ArtistList: TAdrOfList);
-Procedure InsertAlbum(AlbumList, ArtistList: TAdrOfList);
-Procedure InsertSong(SongList, AlbumList, ArtistList: TAdrOfList);
+Procedure WatchALbumList(AlbumList: TAdrOfAlbumList);
+Procedure InsertAlbum(AlbumList: TAdrOfAlbumList; ArtistList: TAdrOfArtistList);
+Procedure DeleteAlbum(AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
+  CheckID: Integer);
+Procedure SearchALbum(AlbumList: TAdrOfAlbumList);
+Procedure EditAlbum(AlbumList: TAdrOfAlbumList);
 
-Procedure DeleteArtist(ArtistList, AlbumList, SongList: TAdrOfList);
-Procedure DeleteAlbum(AlbumList, SongList: TAdrOfList; CheckID: Integer);
-Procedure DeleteSong(SongList: TAdrOfList; CheckID: Integer);
-
-Procedure SearchArtist(ArtistList: TAdrOfList);
-Procedure SearchALbum(AlbumList: TAdrOfList);
-Procedure SearchSong(SongList: TAdrOfList);
-
-Procedure EditArtist(ArtistList: TAdrOfList);
-Procedure EditAlbum(AlbumList: TAdrOfList);
-Procedure EditSong(SongList: TAdrOfList);
+Procedure WatchSongList(SongList: TAdrOfSongList);
+Procedure InsertSong(SongList: TAdrOfSongList; AlbumList: TAdrOfAlbumList;
+  ArtistList: TAdrOfArtistList);
+Procedure DeleteSong(SongList: TAdrOfSongList; CheckID: Integer);
+Procedure SearchSong(SongList: TAdrOfSongList);
+Procedure EditSong(SongList: TAdrOfSongList);
 
 implementation
 
 { \\\\\\\\\\ Work with ArtistList ////////// }
 
 // Просмотреть список исполнителей.
-Procedure WatchArtistList(ArtistList: TAdrOfList);
+Procedure WatchArtistList(ArtistList: TAdrOfArtistList);
 begin
   Writeln('|-----------------|-------------------|--------------------|-------------------------|');
   Writeln('| Код исполнителя |  Имя исполнителя  | Страна исполнителя | Направление исполнителя |');
@@ -46,10 +47,10 @@ begin
 end;
 
 // Вставить исполнителя в список.
-Procedure InsertArtist(ArtistList: TAdrOfList);
+Procedure InsertArtist(ArtistList: TAdrOfArtistList);
 var
   MaxId: Integer;
-  Tmp: TAdrOfList;
+  Tmp: TAdrOfArtistList;
 begin
   Inc(ArtistList^.Max_Id);
   MaxId := ArtistList^.Max_Id;
@@ -69,10 +70,12 @@ begin
 end;
 
 // Удалить исполнителя из списка.
-Procedure DeleteArtist(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure DeleteArtist(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList);
 var
   IDForDelete: Integer;
-  Tmp, TmpAlbumList: TAdrOfList;
+  Tmp: TAdrOfArtistList;
+  TmpAlbumList: TAdrOfAlbumList;
   Flag: Boolean;
 begin
   WatchArtistList(ArtistList);
@@ -114,7 +117,7 @@ begin
 end;
 
 // Найти исполнителя в списке.
-Procedure SearchArtist(ArtistList: TAdrOfList);
+Procedure SearchArtist(ArtistList: TAdrOfArtistList);
 var
   Flag: Boolean;
   SearchID: Integer;
@@ -143,7 +146,7 @@ begin
 end;
 
 // Редактировать информацию о исполнителе.
-Procedure EditArtist(ArtistList: TAdrOfList);
+Procedure EditArtist(ArtistList: TAdrOfArtistList);
 var
   Flag: Boolean;
   ID: Integer;
@@ -176,7 +179,7 @@ end;
 { \\\\\\\\\\ Work with AlbumList ////////// }
 
 // Просмотреть список альбомов.
-Procedure WatchALbumList(AlbumList: TAdrOfList);
+Procedure WatchALbumList(AlbumList: TAdrOfAlbumList);
 begin
   Writeln('|-------------|-----------------|----------------------|------------|');
   Writeln('| Код альбома | Код исполнителя |   Название альбома   | Год записи |');
@@ -192,10 +195,10 @@ begin
 end;
 
 // Прочитать код артиста, предусмотрев его отсутствие.
-Procedure ReadID_Artist(var ID: Integer; ArtistList: TAdrOfList);
+Procedure ReadID_Artist(var ID: Integer; ArtistList: TAdrOfArtistList);
 var
   Flag: Boolean;
-  ArtL: TAdrOfList;
+  ArtL: TAdrOfArtistList;
   Menu: Integer;
 begin
   repeat
@@ -226,7 +229,7 @@ begin
 end;
 
 // Вставить альбом в список.
-Procedure InsertAlbum(AlbumList, ArtistList: TAdrOfList);
+Procedure InsertAlbum(AlbumList: TAdrOfAlbumList; ArtistList: TAdrOfArtistList);
 var
   MaxId: Integer;
 begin
@@ -248,10 +251,12 @@ begin
 end;
 
 // Удалить альбом из списка.
-Procedure DeleteAlbum(AlbumList, SongList: TAdrOfList; CheckID: Integer);
+Procedure DeleteAlbum(AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
+  CheckID: Integer);
 var
   IDForDelete: Integer;
-  Tmp, TmpSongList: TAdrOfList;
+  Tmp: TAdrOfAlbumList;
+  TmpSongList: TAdrOfSongList;
   Flag: Boolean;
 begin
   IDForDelete := CheckID;
@@ -296,7 +301,7 @@ begin
 end;
 
 // Найти альбом по коду.
-Procedure SearchALbum(AlbumList: TAdrOfList);
+Procedure SearchALbum(AlbumList: TAdrOfAlbumList);
 var
   Flag: Boolean;
   SearchID: Integer;
@@ -324,19 +329,19 @@ begin
 end;
 
 // Редактировать информацию о альбоме.
-Procedure EditAlbum(AlbumList: TAdrOfList);
+Procedure EditAlbum(AlbumList: TAdrOfAlbumList);
 var
   Flag: Boolean;
   ID: Integer;
 begin
   WatchALbumList(AlbumList);
-  Write('Введите код исполнителя для редакирования: ');
+  Write('Введите код альбомаы для редакирования: ');
   ReadLn(ID);
   Flag := false;
   while (AlbumList^.next <> nil) and not(Flag) do
   begin
     AlbumList := AlbumList^.next;
-    if AlbumList^.Artist.ID = ID then
+    if AlbumList^.Album.ID = ID then
     begin
       Flag := True;
       Writeln('|-------------|-----------------|----------------------|------------|');
@@ -348,9 +353,9 @@ begin
 
       Writeln('Начало редактирования:');
       Write('Введите название альбома: ');
-      ReadLn(AlbumList^.Artist.Country);
+      ReadLn(AlbumList^.Album.Name);
       Write('Введите год записи: ');
-      ReadLn(AlbumList^.Artist.Direction);
+      ReadLn(AlbumList^.Album.Year);
     end;
   end;
 
@@ -362,7 +367,7 @@ end;
 { \\\\\\\\\\ Work with SongList ////////// }
 
 // Просмотреть список песен.
-Procedure WatchSongList(SongList: TAdrOfList);
+Procedure WatchSongList(SongList: TAdrOfSongList);
 begin
   Writeln('|-----------|----------------------|-------------|--------------------|');
   Writeln('| Код песни |    Название песни    | Код альбома | Длительность песни |');
@@ -378,10 +383,11 @@ begin
 end;
 
 // Прочитать код альбома, предусмотрев его отсутствие.
-Procedure ReadID_Album(var ID: Integer; AlbumList, ArtistList: TAdrOfList);
+Procedure ReadID_Album(var ID: Integer; AlbumList: TAdrOfAlbumList;
+  ArtistList: TAdrOfArtistList);
 var
   Flag: Boolean;
-  AlbL: TAdrOfList;
+  AlbL: TAdrOfAlbumList;
   Menu: Integer;
 begin
   repeat
@@ -391,7 +397,7 @@ begin
     AlbL := AlbumList^.next;
     while (AlbL <> nil) and not(Flag) do
     begin
-      if AlbL^.Artist.ID = ID then
+      if AlbL^.Album.ID = ID then
         Flag := True;
       AlbL := AlbL^.next;
     end;
@@ -412,10 +418,11 @@ begin
 end;
 
 // Вставить альбом в список.
-Procedure InsertSong(SongList, AlbumList, ArtistList: TAdrOfList);
+Procedure InsertSong(SongList: TAdrOfSongList; AlbumList: TAdrOfAlbumList;
+  ArtistList: TAdrOfArtistList);
 var
   MaxId: Integer;
-  Tmp: TAdrOfList;
+  Tmp: TAdrOfSongList;
 begin
   Inc(SongList^.Max_Id);
   MaxId := SongList^.Max_Id;
@@ -434,10 +441,10 @@ begin
 end;
 
 // Удалить песню из списка.
-Procedure DeleteSong(SongList: TAdrOfList; CheckID: Integer);
+Procedure DeleteSong(SongList: TAdrOfSongList; CheckID: Integer);
 var
   IDForDelete: Integer;
-  Tmp: TAdrOfList;
+  Tmp: TAdrOfSongList;
   Flag: Boolean;
 begin
   IDForDelete := CheckID;
@@ -467,7 +474,7 @@ begin
 end;
 
 // Найти песню по коду.
-Procedure SearchSong(SongList: TAdrOfList);
+Procedure SearchSong(SongList: TAdrOfSongList);
 var
   Flag: Boolean;
   SearchID: Integer;
@@ -495,7 +502,7 @@ begin
 end;
 
 // Редактировать информацию о песне.
-Procedure EditSong(SongList: TAdrOfList);
+Procedure EditSong(SongList: TAdrOfSongList);
 var
   Flag: Boolean;
   ID: Integer;
@@ -507,7 +514,7 @@ begin
   while (SongList^.next <> nil) and not(Flag) do
   begin
     SongList := SongList^.next;
-    if SongList^.Artist.ID = ID then
+    if SongList^.Song.ID = ID then
     begin
       Flag := True;
       Writeln('|-----------|----------------------|-------------|--------------------|');

@@ -6,7 +6,9 @@ uses
   MenuItems in 'MenuItems.pas';
 
 var
-  ArtistList, AlbumList, SongList: TAdrOfList;
+  ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList;
   ArtistFile: TArtistFile;
   AlbumFile: TAlbumFile;
   SongFile: TSongFile;
@@ -17,16 +19,14 @@ begin
   Flag_IsFileAlreadyOpen := 0;
 
   New(ArtistList);
-  ArtistList^.ListType := Artist;
   ArtistList^.Max_Id := 0;
 
   New(AlbumList);
-  AlbumList^.ListType := Album;
   AlbumList^.Max_Id := 0;
 
   New(SongList);
-  SongList^.ListType := Song;
   SongList^.Max_Id := 0;
+
   WriteLn('Программа для работы со списками, связанными с музыкой');
   Repeat
     WriteLn('Меню приложения:');

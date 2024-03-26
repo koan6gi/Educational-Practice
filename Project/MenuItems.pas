@@ -4,19 +4,33 @@ interface
 
 uses AllTypesInProject, WorkWithLists, WorkWithFiles;
 
-Procedure MenuItem1_ReadLists(ArtistList, AlbumList, SongList: TAdrOfList;
+Procedure MenuItem1_ReadLists(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
   var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
   var SongFile: TSongFile; var Flag: Integer);
-Procedure MenuItem2_WatchLists(ArtistList, AlbumList, SongList: TAdrOfList);
-Procedure MenuItem4_Search(ArtistList, AlbumList, SongList: TAdrOfList);
-Procedure MenuItem5_Insert(ArtistList, AlbumList, SongList: TAdrOfList);
-Procedure MenuItem6_Delete(ArtistList, AlbumList, SongList: TAdrOfList);
-Procedure MenuItem7_Edit(ArtistList, AlbumList, SongList: TAdrOfList);
-Procedure DeleteAllLists(var ArtistList, AlbumList, SongList: TAdrOfList);
+
+Procedure MenuItem2_WatchLists(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+
+Procedure MenuItem4_Search(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+
+Procedure MenuItem5_Insert(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+
+Procedure MenuItem6_Delete(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+
+Procedure MenuItem7_Edit(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+
+Procedure DeleteAllLists(var ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 
 implementation
 
-Procedure MenuItem1_ReadLists(ArtistList, AlbumList, SongList: TAdrOfList;
+Procedure MenuItem1_ReadLists(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
   var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
   var SongFile: TSongFile; var Flag: Integer);
 begin
@@ -33,7 +47,8 @@ begin
     Writeln('Были внесены изменения, для прочтения данных перезапустите программу.');
 end;
 
-Procedure MenuItem2_WatchLists(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure MenuItem2_WatchLists(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 var
   Menu: Integer;
 begin
@@ -55,7 +70,8 @@ begin
   until Menu = 0;
 end;
 
-Procedure MenuItem4_Search(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure MenuItem4_Search(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 var
   Menu: Integer;
 begin
@@ -77,7 +93,8 @@ begin
   until Menu = 0;
 end;
 
-Procedure MenuItem5_Insert(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure MenuItem5_Insert(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 var
   Menu: Integer;
 begin
@@ -99,7 +116,8 @@ begin
   until Menu = 0;
 end;
 
-Procedure MenuItem6_Delete(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure MenuItem6_Delete(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 var
   Menu: Integer;
 begin
@@ -121,7 +139,8 @@ begin
   until Menu = 0;
 end;
 
-Procedure MenuItem7_Edit(ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure MenuItem7_Edit(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 var
   Menu: Integer;
 begin
@@ -143,29 +162,32 @@ begin
   until Menu = 0;
 end;
 
-Procedure DeleteAllLists(var ArtistList, AlbumList, SongList: TAdrOfList);
+Procedure DeleteAllLists(var ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 var
-  Tmp: TAdrOfList;
+  TmpArt: TAdrOfArtistList;
+  TmpAlb: TAdrOfAlbumList;
+  TmpSng: TAdrOfSongList;
 begin
   while ArtistList <> nil do
   begin
-    Tmp := ArtistList;
+    TmpArt := ArtistList;
     ArtistList := ArtistList^.next;
-    Dispose(Tmp);
+    Dispose(TmpArt);
   end;
 
   while AlbumList <> nil do
   begin
-    Tmp := AlbumList;
+    TmpAlb := AlbumList;
     AlbumList := AlbumList^.next;
-    Dispose(Tmp);
+    Dispose(TmpAlb);
   end;
 
   while SongList <> nil do
   begin
-    Tmp := SongList;
+    TmpSng := SongList;
     SongList := SongList^.next;
-    Dispose(Tmp);
+    Dispose(TmpSng);
   end;
 
 end;
