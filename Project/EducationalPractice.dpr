@@ -38,8 +38,8 @@ begin
     WriteLn('6. Удалить данные из списков.');
     WriteLn('7. Редактировать списки.');
     WriteLn('8. Создать PlayList.');
-    WriteLn('9. Выйти из программы с сохранением.');
-    WriteLn('0. Выйти из программы без сохранения.');
+    WriteLn('9. Выйти из программы без сохранением.');
+    WriteLn('10. Выйти из программы с сохранения.');
     ReadLn(Menu);
     case Menu of
       1:
@@ -84,13 +84,13 @@ begin
 
         end;
 
-      9:
+      10:
         begin
           ReWriteAllListsInFiles(ArtistList, AlbumList, SongList, ArtistFile,
             AlbumFile, SongFile);
         end;
     end;
-  Until (Menu = 0) or (Menu = 9);
+  Until (Menu = 10) or (Menu = 9);
 
   DeleteAllLists(ArtistList, AlbumList, SongList);
 

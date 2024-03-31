@@ -159,6 +159,40 @@ begin
   Writeln;
 end;
 
+// Выбор поля для редактирования исполнителя
+Procedure EditArtistMenu(ArtistList: TAdrOfArtistList);
+var
+  Menu: Integer;
+begin
+  repeat
+    Writeln('Меню редактирования:');
+    Writeln('1. Редактировать имя исполнителя.');
+    Writeln('2. Редактировать страну исполнителя.');
+    Writeln('3. Редактировать направление исполнителя.');
+    Writeln('0. Выход из подменю редактирования исполнителя.');
+    ReadNum(Menu);
+    case Menu of
+      1:
+        begin
+          Write('Введите новое имя исполнителя: ');
+          readln(ArtistList^.Artist.Name);
+        end;
+
+      2:
+        begin
+          Write('Введите страну исполнителя: ');
+          readln(ArtistList^.Artist.Country);
+        end;
+
+      3:
+        begin
+          Write('Введите направление исполнителя: ');
+          readln(ArtistList^.Artist.Direction);
+        end;
+    end;
+  until Menu = 0;
+end;
+
 // Редактировать информацию о исполнителе.
 Procedure EditArtist(ArtistList: TAdrOfArtistList);
 var
@@ -175,13 +209,7 @@ begin
     if ArtistList^.Artist.ID = ID then
     begin
       Flag := True;
-      Writeln('Начало редактирования:');
-      Write('Введите имя исполнителя: ');
-      readln(ArtistList^.Artist.Name);
-      Write('Введите страну исполнителя: ');
-      readln(ArtistList^.Artist.Country);
-      Write('Введите направление исполнителя: ');
-      readln(ArtistList^.Artist.Direction);
+      EditArtistMenu(ArtistList);
     end;
   end;
 
@@ -342,6 +370,33 @@ begin
   Writeln;
 end;
 
+// Выбор поля для редактирования альбома
+Procedure EditAlbumMenu(AlbumList: TAdrOfAlbumList);
+var
+  Menu: Integer;
+begin
+  repeat
+    Writeln('Меню редактирования:');
+    Writeln('1. Редактировать название альбома.');
+    Writeln('2. Редактировать год издания альбома.');
+    Writeln('0. Выход из подменю редактирования исполнителя.');
+    ReadNum(Menu);
+    case Menu of
+      1:
+        begin
+          Write('Введите новое название альбома: ');
+          readln(AlbumList^.Album.Name);
+        end;
+
+      2:
+        begin
+          Write('Введите год записи: ');
+          ReadNum(AlbumList^.Album.Year);
+        end;
+    end;
+  until Menu = 0;
+end;
+
 // Редактировать информацию о альбоме.
 Procedure EditAlbum(AlbumList: TAdrOfAlbumList);
 var
@@ -349,7 +404,7 @@ var
   ID: Integer;
 begin
   WatchALbumList(AlbumList);
-  Write('Введите код альбомаы для редакирования: ');
+  Write('Введите код альбома для редакирования: ');
   readln(ID);
   Flag := false;
   while (AlbumList^.next <> nil) and not(Flag) do
@@ -358,18 +413,7 @@ begin
     if AlbumList^.Album.ID = ID then
     begin
       Flag := True;
-      Writeln('|-------------|-----------------|----------------------|------------|');
-      Writeln('| Код альбома | Код исполнителя |   Название альбома   | Год записи |');
-      Writeln('|-------------|-----------------|----------------------|------------|');
-      Writeln('|', AlbumList^.Album.ID:12, ' |', AlbumList^.Album.ID_Artist:16,
-        ' |', AlbumList^.Album.Name:21, ' |', AlbumList^.Album.Year:11, ' |');
-      Writeln('|-------------|-----------------|----------------------|------------|');
-
-      Writeln('Начало редактирования:');
-      Write('Введите название альбома: ');
-      readln(AlbumList^.Album.Name);
-      Write('Введите год записи: ');
-      readln(AlbumList^.Album.Year);
+      EditAlbumMenu(AlbumList);
     end;
   end;
 
@@ -515,6 +559,33 @@ begin
   Writeln;
 end;
 
+// Выбор поля для редактирования песни
+Procedure EditSongMenu(SongList: TAdrOfSongList);
+var
+  Menu: Integer;
+begin
+  repeat
+    Writeln('Меню редактирования:');
+    Writeln('1. Редактировать название песни.');
+    Writeln('2. Редактировать длительность песни.');
+    Writeln('0. Выход из подменю редактирования исполнителя.');
+    ReadNum(Menu);
+    case Menu of
+      1:
+        begin
+          Write('Введите название песни: ');
+          readln(SongList^.Song.Name);
+        end;
+
+      2:
+        begin
+          Write('Введите длительность: ');
+          ReadNum(SongList^.Song.Length);
+        end;
+    end;
+  until Menu = 0;
+end;
+
 // Редактировать информацию о песне.
 Procedure EditSong(SongList: TAdrOfSongList);
 var
@@ -531,18 +602,7 @@ begin
     if SongList^.Song.ID = ID then
     begin
       Flag := True;
-      Writeln('|-----------|----------------------|-------------|--------------------|');
-      Writeln('| Код песни |    Название песни    | Код альбома | Длительность песни |');
-      Writeln('|-----------|----------------------|-------------|--------------------|');
-      Writeln('|', SongList^.Song.ID:10, ' |', SongList^.Song.Name:21, ' |',
-        SongList^.Song.ID_Album:12, ' |', SongList^.Song.Length:19, ' |');
-      Writeln('|-----------|----------------------|-------------|--------------------|');
-
-      Writeln('Начало редактирования:');
-      Write('Введите название песни: ');
-      readln(SongList^.Song.Name);
-      Write('Введите длительность: ');
-      readln(SongList^.Song.Length);
+      EditSongMenu(SongList);
     end;
   end;
 
