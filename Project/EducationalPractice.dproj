@@ -90,6 +90,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="WorkWithFiles.pas"/>
+        <DCCReference Include="WorkWithLists.pas"/>
         <DCCReference Include="AllTypesInProject.pas"/>
         <DCCReference Include="MenuItems.pas"/>
         <BuildConfiguration Include="Base">

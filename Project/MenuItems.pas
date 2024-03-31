@@ -58,7 +58,7 @@ begin
     Writeln('2. Просмотреть список альбомов.');
     Writeln('3. Просмотреть список песен.');
     Writeln('0. Выйти из подпункта меню.');
-    readln(Menu);
+    readNum(Menu);
     case Menu of
       1:
         WatchArtistList(ArtistList);
@@ -81,7 +81,7 @@ begin
     Writeln('2. Искать в списке альбомов.');
     Writeln('3. Искать в списке песен.');
     Writeln('0. Выйти из подпункта меню.');
-    readln(Menu);
+    readNum(Menu);
     case Menu of
       1:
         SearchArtist(ArtistList);
@@ -104,7 +104,7 @@ begin
     Writeln('2. Вставить элемента в список альбомов.');
     Writeln('3. Вставить элемента в список песен.');
     Writeln('0. Выйти из подпункта меню.');
-    readln(Menu);
+    readNum(Menu);
     case Menu of
       1:
         InsertArtist(ArtistList);
@@ -127,7 +127,7 @@ begin
     Writeln('2. Удалить элемент из списка альбомов.');
     Writeln('3. Удалить элемент из списка песен.');
     Writeln('0. Выйти из подпункта меню.');
-    readln(Menu);
+    readNum(Menu);
     case Menu of
       1:
         DeleteArtist(ArtistList, AlbumList, SongList);
@@ -150,7 +150,7 @@ begin
     Writeln('2. Редактировать элемент из списка альбомов.');
     Writeln('3. Редактировать элемент из списка песен.');
     Writeln('0. Выйти из подпункта меню.');
-    readln(Menu);
+    readNum(Menu);
     case Menu of
       1:
         EditArtist(ArtistList);

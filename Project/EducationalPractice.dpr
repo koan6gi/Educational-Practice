@@ -2,6 +2,7 @@ program EducationalPractice;
 
 uses
   WorkWithFiles in 'WorkWithFiles.pas',
+  WorkWithLists in 'WorkWithLists.pas',
   AllTypesInProject in 'AllTypesInProject.pas',
   MenuItems in 'MenuItems.pas';
 
@@ -40,7 +41,7 @@ begin
     WriteLn('8. Создать PlayList.');
     WriteLn('9. Выйти из программы без сохранением.');
     WriteLn('10. Выйти из программы с сохранения.');
-    ReadLn(Menu);
+    ReadNum(Menu);
     case Menu of
       1:
         begin
