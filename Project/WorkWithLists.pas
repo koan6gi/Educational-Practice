@@ -4,6 +4,8 @@ interface
 
 uses
   AllTypesInProject;
+Procedure ReadNum(var n: Integer);
+
 Procedure WatchArtistList(ArtistList: TAdrOfArtistList);
 Procedure InsertArtist(ArtistList: TAdrOfArtistList);
 Procedure DeleteArtist(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
@@ -94,7 +96,7 @@ var
 begin
   WatchArtistList(ArtistList);
   Write('Введите код исполнителя для удаления: ');
-  readln(IDForDelete);
+  ReadNum(IDForDelete);
   Flag := false;
 
   While Not(Flag) and (ArtistList^.next <> nil) do
@@ -137,7 +139,7 @@ var
   SearchID: Integer;
 begin
   Write('Введите код исполнителя: ');
-  readln(SearchID);
+  ReadNum(SearchID);
   Flag := false;
   while (ArtistList^.next <> nil) and not(Flag) do
   begin
@@ -245,7 +247,7 @@ var
 begin
   repeat
     Write('Введите код исполнителя: ');
-    readln(ID);
+    ReadNum(ID);
     Flag := false;
     ArtL := ArtistList^.next;
     while (ArtL <> nil) and not(Flag) do
@@ -260,7 +262,7 @@ begin
       Writeln('Исполнителя с таким кодом не существует.');
       Writeln('Желаете создать нового исполнителя?');
       Writeln('1. Да. / 0. Нет (Ввести код заново).');
-      readln(Menu);
+      ReadNum(Menu);
       if Menu = 1 then
       begin
         ID := ArtistList^.Max_Id + 1;
@@ -288,7 +290,7 @@ begin
   Write('Введите название альбома: ');
   readln(AlbumList^.Album.Name);
   Write('Введите год выпуска альбома: ');
-  readln(AlbumList^.Album.Year);
+  ReadNum(AlbumList^.Album.Year);
   Writeln;
 end;
 
@@ -306,7 +308,7 @@ begin
   begin
     WatchALbumList(AlbumList);
     Write('Введите код альбома для удаления: ');
-    readln(IDForDelete);
+    ReadNum(IDForDelete);
   end;
   Flag := false;
 
@@ -349,7 +351,7 @@ var
   SearchID: Integer;
 begin
   Write('Введите код альбома: ');
-  readln(SearchID);
+  ReadNum(SearchID);
   Flag := false;
   while (AlbumList^.next <> nil) and not(Flag) do
   begin
@@ -405,7 +407,7 @@ var
 begin
   WatchALbumList(AlbumList);
   Write('Введите код альбома для редакирования: ');
-  readln(ID);
+  ReadNum(ID);
   Flag := false;
   while (AlbumList^.next <> nil) and not(Flag) do
   begin
@@ -450,7 +452,7 @@ var
 begin
   repeat
     Write('Введите код альбома: ');
-    readln(ID);
+    ReadNum(ID);
     Flag := false;
     AlbL := AlbumList^.next;
     while (AlbL <> nil) and not(Flag) do
@@ -465,7 +467,7 @@ begin
       Writeln('Альбома с таким кодом не существует.');
       Writeln('Желаете создать новый альбом?');
       Writeln('1. Да. / 0. Нет (Ввести код заново).');
-      readln(Menu);
+      ReadNum(Menu);
       if Menu = 1 then
       begin
         ID := AlbumList^.Max_Id + 1;
@@ -494,7 +496,7 @@ begin
   Write('Введите название песни: ');
   readln(SongList^.Song.Name);
   Write('Введите длину песни в секундах: ');
-  readln(SongList^.Song.Length);
+  ReadNum(SongList^.Song.Length);
   Writeln;
 end;
 
@@ -510,7 +512,7 @@ begin
   begin
     WatchSongList(SongList);
     Write('Введите код песни для удаления: ');
-    readln(IDForDelete);
+    ReadNum(IDForDelete);
   end;
   Flag := false;
 
@@ -538,7 +540,7 @@ var
   SearchID: Integer;
 begin
   Write('Введите код песни: ');
-  readln(SearchID);
+  ReadNum(SearchID);
   Flag := false;
   while (SongList^.next <> nil) and not(Flag) do
   begin
@@ -594,7 +596,7 @@ var
 begin
   WatchSongList(SongList);
   Write('Введите код песни для редакирования: ');
-  readln(ID);
+  ReadNum(ID);
   Flag := false;
   while (SongList^.next <> nil) and not(Flag) do
   begin
