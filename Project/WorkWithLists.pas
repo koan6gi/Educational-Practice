@@ -38,9 +38,9 @@ begin
   repeat
     readln(S);
     Val(S, n, Err);
-    if Err <> 0 then
+    if (Err <> 0) or (n < 0) then
       Write('Некорректный ввод. Введите снова: ');
-  until Err = 0;
+  until (Err = 0) and (n >= 0);
 end;
 
 { \\\\\\\\\\ Work with ArtistList ////////// }
@@ -295,7 +295,7 @@ begin
   until Flag;
 end;
 
-// Проверка на существование исполнителя.
+// Проверка на существование альбома.
 Function IsAlbumAlreadyExist(AlbumList: TAdrOfAlbumList;
   TmpAlbum: TAlbum): Boolean;
 begin
@@ -314,21 +314,29 @@ end;
 Procedure InsertAlbum(AlbumList: TAdrOfAlbumList; ArtistList: TAdrOfArtistList);
 var
   MaxId: Integer;
+  TmpAlbum: TAlbum;
 begin
-  Inc(AlbumList^.Max_Id);
-  MaxId := AlbumList^.Max_Id;
-  while AlbumList^.next <> nil do
-    AlbumList := AlbumList^.next;
-  New(AlbumList^.next);
-  AlbumList := AlbumList^.next;
-  AlbumList^.Album.ID := MaxId;
-  AlbumList^.next := nil;
-
-  ReadID_Artist(AlbumList^.Album.ID_Artist, ArtistList);
+  ReadID_Artist(TmpAlbum.ID_Artist, ArtistList);
   Write('Введите название альбома: ');
-  readln(AlbumList^.Album.Name);
+  readln(TmpAlbum.Name);
   Write('Введите год выпуска альбома: ');
-  ReadNum(AlbumList^.Album.Year);
+  ReadNum(TmpAlbum.Year);
+
+  if not(IsAlbumAlreadyExist(AlbumList, TmpAlbum)) then
+  begin
+    Inc(AlbumList^.Max_Id);
+    MaxId := AlbumList^.Max_Id;
+    while AlbumList^.next <> nil do
+      AlbumList := AlbumList^.next;
+    New(AlbumList^.next);
+    AlbumList := AlbumList^.next;
+    TmpAlbum.ID := MaxId;
+    AlbumList^.Album := TmpAlbum;
+    AlbumList^.next := nil;
+  end
+  else
+    Writeln('Такой альбом уже существует.');
+
   Writeln;
 end;
 
@@ -517,26 +525,47 @@ begin
   until Flag;
 end;
 
-// Вставить альбом в список.
+// Проверка на существование песни.
+Function IsSongAlreadyExist(SongList: TAdrOfSongList; TmpSong: TSong): Boolean;
+begin
+  Result := False;
+  while SongList^.next <> nil do
+  begin
+    SongList := SongList^.next;
+    if (SongList^.Song.Name = TmpSong.Name) and
+      (SongList^.Song.ID_Album = TmpSong.ID_Album) and
+      (SongList^.Song.Length = TmpSong.Length) then
+      Result := True;
+  end;
+end;
+
+// Вставить песню в список.
 Procedure InsertSong(SongList: TAdrOfSongList; AlbumList: TAdrOfAlbumList;
   ArtistList: TAdrOfArtistList);
 var
   MaxId: Integer;
   Tmp: TAdrOfSongList;
+  TmpSong: TSong;
 begin
-  Inc(SongList^.Max_Id);
-  MaxId := SongList^.Max_Id;
-  Tmp := SongList^.next;
-  New(SongList^.next);
-  SongList := SongList^.next;
-  SongList^.Song.ID := MaxId;
-  SongList^.next := Tmp;
-
-  ReadID_Album(SongList^.Song.ID_Album, AlbumList, ArtistList);
+  ReadID_Album(TmpSong.ID_Album, AlbumList, ArtistList);
   Write('Введите название песни: ');
-  readln(SongList^.Song.Name);
+  readln(TmpSong.Name);
   Write('Введите длину песни в секундах: ');
-  ReadNum(SongList^.Song.Length);
+  ReadNum(TmpSong.Length);
+
+  if not(IsSongAlreadyExist(SongList, TmpSong)) then
+  begin
+    Inc(SongList^.Max_Id);
+    MaxId := SongList^.Max_Id;
+    Tmp := SongList^.next;
+    New(SongList^.next);
+    SongList := SongList^.next;
+    TmpSong.ID := MaxId;
+    SongList^.Song := TmpSong;
+    SongList^.next := Tmp;
+  end
+  else
+    Writeln('Такая песня уже существует.');
   Writeln;
 end;
 
