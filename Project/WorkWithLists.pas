@@ -62,7 +62,7 @@ begin
   Writeln;
 end;
 
-// Проверка на существование исполнителя для вставки.
+// Проверка на существование исполнителя.
 Function IsArtistAlreadyExist(ArtistList: TAdrOfArtistList;
   TmpArtist: TArtist): Boolean;
 begin
@@ -75,7 +75,6 @@ begin
       (ArtistList^.Artist.Direction = TmpArtist.Direction) then
       Result := True;
   end;
-
 end;
 
 // Вставить исполнителя в список.
@@ -290,9 +289,25 @@ begin
       begin
         ID := ArtistList^.Max_Id + 1;
         InsertArtist(ArtistList);
+        Flag := True;
       end;
     end;
   until Flag;
+end;
+
+// Проверка на существование исполнителя.
+Function IsAlbumAlreadyExist(AlbumList: TAdrOfAlbumList;
+  TmpAlbum: TAlbum): Boolean;
+begin
+  Result := False;
+  while AlbumList^.next <> nil do
+  begin
+    AlbumList := AlbumList^.next;
+    if (AlbumList^.Album.Name = TmpAlbum.Name) and
+      (AlbumList^.Album.ID_Artist = TmpAlbum.ID_Artist) and
+      (AlbumList^.Album.Year = TmpAlbum.Year) then
+      Result := True;
+  end;
 end;
 
 // Вставить альбом в список.
@@ -473,6 +488,7 @@ var
   AlbL: TAdrOfAlbumList;
   Menu: Integer;
 begin
+  Menu := 0;
   repeat
     Write('Введите код альбома: ');
     ReadNum(ID);
@@ -495,6 +511,7 @@ begin
       begin
         ID := AlbumList^.Max_Id + 1;
         InsertAlbum(AlbumList, ArtistList);
+        Flag := True;
       end;
     end;
   until Flag;
