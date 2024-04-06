@@ -56,7 +56,7 @@ begin
 
       3:
         begin
-
+          MenuItem3_Sort(ArtistList, AlbumList, SongList);
         end;
 
       4:

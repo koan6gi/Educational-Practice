@@ -12,6 +12,9 @@ Procedure MenuItem1_ReadLists(ArtistList: TAdrOfArtistList;
 Procedure MenuItem2_WatchLists(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 
+Procedure MenuItem3_Sort(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+
 Procedure MenuItem4_Search(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 
@@ -68,6 +71,12 @@ begin
         WatchSongList(SongList);
     end;
   until Menu = 0;
+end;
+
+Procedure MenuItem3_Sort(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+begin
+
 end;
 
 Procedure MenuItem4_Search(ArtistList: TAdrOfArtistList;

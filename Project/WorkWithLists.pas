@@ -10,21 +10,21 @@ Procedure WatchArtistList(ArtistList: TAdrOfArtistList);
 Procedure InsertArtist(ArtistList: TAdrOfArtistList);
 Procedure DeleteArtist(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList);
-Procedure SearchArtist(ArtistList: TAdrOfArtistList);
+Procedure SearchArtist(ArtistList: TAdrOfArtistList; Input: PInput_Search; Cond: FCondEq_Search);
 Procedure EditArtist(ArtistList: TAdrOfArtistList);
 
 Procedure WatchALbumList(AlbumList: TAdrOfAlbumList);
 Procedure InsertAlbum(AlbumList: TAdrOfAlbumList; ArtistList: TAdrOfArtistList);
 Procedure DeleteAlbum(AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
   CheckID: Integer);
-Procedure SearchALbum(AlbumList: TAdrOfAlbumList);
+Procedure SearchALbum(AlbumList: TAdrOfAlbumList; Input: PInput_Search; Cond: FCondEq_Search);
 Procedure EditAlbum(AlbumList: TAdrOfAlbumList);
 
 Procedure WatchSongList(SongList: TAdrOfSongList);
 Procedure InsertSong(SongList: TAdrOfSongList; AlbumList: TAdrOfAlbumList;
   ArtistList: TAdrOfArtistList);
 Procedure DeleteSong(SongList: TAdrOfSongList; CheckID: Integer);
-Procedure SearchSong(SongList: TAdrOfSongList);
+Procedure SearchSong(SongList: TAdrOfSongList; Input: PInput_Search; Cond: FCondEq_Search);
 Procedure EditSong(SongList: TAdrOfSongList);
 
 implementation
@@ -154,32 +154,71 @@ begin
   Writeln;
 end;
 
-// Найти исполнителя в списке.
-Procedure SearchArtist(ArtistList: TAdrOfArtistList);
-var
-  Flag: Boolean;
-  SearchID: Integer;
+Procedure InputArtistID(var ID: Integer; var S: TDataString);
 begin
   Write('Введите код исполнителя: ');
-  ReadNum(SearchID);
-  Flag := False;
-  while (ArtistList^.next <> nil) and not(Flag) do
+  ReadNum(ID);
+end;
+
+Function ConditionArtistID(var Element; ID: Integer; var S: TDataString): Boolean;
+begin
+  Result :=  TArtist(Element).ID = ID;
+end;
+
+Procedure InputArtistName(var ID: Integer; var S: TDataString);
+begin
+  Write('Введите имя исполнителя: ');
+  Readln(S);
+end;
+
+Function ConditionArtistName(var Element; ID: Integer; var S: TDataString): Boolean;
+begin
+  Result :=  TArtist(Element).Name = S;
+end;
+
+Procedure InputArtistCountry(var ID: Integer; var S: TDataString);
+begin
+  Write('Введите страну исполнителя: ');
+  Readln(S);
+end;
+
+Function ConditionArtistCountry(var Element; ID: Integer; var S: TDataString): Boolean;
+begin
+  Result :=  TArtist(Element).Country = S;
+end;
+
+Procedure InputArtistDirection(var ID: Integer; var S: TDataString);
+begin
+  Write('Введите страну исполнителя: ');
+  Readln(S);
+end;
+
+Function ConditionArtistDirection(var Element; ID: Integer; var S: TDataString): Boolean;
+begin
+  Result :=  TArtist(Element).Direction = S;
+end;
+
+// Найти исполнителя в списке.
+Procedure SearchArtist(ArtistList: TAdrOfArtistList; Input: PInput_Search; Cond: FCondEq_Search);
+var
+  SearchID: Integer;
+  SearchString: TDataString;
+begin
+  Input(SearchID, SearchString);
+  Writeln('|-----------------|-------------------|--------------------|-------------------------|');
+  Writeln('| Код исполнителя |  Имя исполнителя  | Страна исполнителя | Направление исполнителя |');
+  Writeln('|-----------------|-------------------|--------------------|-------------------------|');
+  while (ArtistList^.next <> nil) do
   begin
     ArtistList := ArtistList^.next;
-    if ArtistList^.Artist.ID = SearchID then
+    if Cond(ArtistList^.Artist, SearchID, SearchString) then
     begin
-      Flag := True;
-      Writeln('|-----------------|-------------------|--------------------|-------------------------|');
-      Writeln('| Код исполнителя |  Имя исполнителя  | Страна исполнителя | Направление исполнителя |');
-      Writeln('|-----------------|-------------------|--------------------|-------------------------|');
       Writeln('|', ArtistList^.Artist.ID:16, ' |', ArtistList^.Artist.Name:18,
         ' |', ArtistList^.Artist.Country:19, ' |', ArtistList^.Artist.Direction
         :24, ' |');
-      Writeln('|-----------------|-------------------|--------------------|-------------------------|');
     end;
   end;
-  if not(Flag) then
-    Writeln('Исполнителя с таким кодом нет в списке.');
+  Writeln('|-----------------|-------------------|--------------------|-------------------------|');
   Writeln;
 end;
 
@@ -390,31 +429,59 @@ begin
   end;
 end;
 
-// Найти альбом по коду.
-Procedure SearchALbum(AlbumList: TAdrOfAlbumList);
-var
-  Flag: Boolean;
-  SearchID: Integer;
+Procedure InputALbumID(var ID: Integer; var S: TDataString);
 begin
   Write('Введите код альбома: ');
-  ReadNum(SearchID);
-  Flag := False;
-  while (AlbumList^.next <> nil) and not(Flag) do
+  ReadNum(ID);
+end;
+
+Function ConditionAlbumID(var Element; ID: Integer; var S: TDataString): Boolean;
+begin
+  Result :=  TAlbum(Element).ID = ID;
+end;
+
+Procedure InputALbumID_Artist(var ID: Integer; var S: TDataString);
+begin
+  Write('Введите код исполнителя: ');
+  ReadNum(ID);
+end;
+
+Function ConditionAlbumID_Artist(var Element; ID: Integer; var S: TDataString): Boolean;
+begin
+  Result :=  TAlbum(Element).ID_Artist = ID;
+end;
+
+Procedure InputALbumName(var ID: Integer; var S: TDataString);
+begin
+  Write('Введите название альбома: ');
+  Readln(S);
+end;
+
+Function ConditionAlbumName(var Element; ID: Integer; var S: TDataString): Boolean;
+begin
+  Result :=  TAlbum(Element).Name = s;
+end;
+
+// Найти альбом в списке.
+Procedure SearchALbum(AlbumList: TAdrOfAlbumList; Input: PInput_Search; Cond: FCondEq_Search);
+var
+  SearchID: Integer;
+  SearchString: TDataString;
+begin
+  Input(SearchID, SearchString);
+  Writeln('|-------------|-----------------|----------------------|------------|');
+  Writeln('| Код альбома | Код исполнителя |   Название альбома   | Год записи |');
+  Writeln('|-------------|-----------------|----------------------|------------|');
+  while (AlbumList^.next <> nil) do
   begin
     AlbumList := AlbumList^.next;
-    if AlbumList^.Album.ID = SearchID then
+    if Cond(AlbumList^.ALbum, SearchID, SearchString) then
     begin
-      Flag := True;
-      Writeln('|-------------|-----------------|----------------------|------------|');
-      Writeln('| Код альбома | Код исполнителя |   Название альбома   | Год записи |');
-      Writeln('|-------------|-----------------|----------------------|------------|');
       Writeln('|', AlbumList^.Album.ID:12, ' |', AlbumList^.Album.ID_Artist:16,
         ' |', AlbumList^.Album.Name:21, ' |', AlbumList^.Album.Year:11, ' |');
-      Writeln('|-------------|-----------------|----------------------|------------|');
     end;
   end;
-  if not(Flag) then
-    Writeln('Альбома с таким кодом нет в списке.');
+  Writeln('|-------------|-----------------|----------------------|------------|');
   Writeln;
 end;
 

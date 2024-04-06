@@ -7,14 +7,13 @@ Type
   TAdrOfAlbumList = ^TAlbumList;
   TAdrOfSongList = ^TSongList;
 
-  NameString = String[20];
-  DirectionString = String[15];
+  TDataString = String[20];
 
   TArtist = record
     ID: Integer;
-    Name: NameString;
-    Country: NameString;
-    Direction: DirectionString;
+    Name: TDataString;
+    Country: TDataString;
+    Direction: TDataString;
   end;
 
   TArtistFile = File of TArtist;
@@ -22,7 +21,7 @@ Type
   TAlbum = record
     ID: Integer;
     ID_Artist: Integer;
-    Name: NameString;
+    Name: TDataString;
     Year: Integer;
   end;
 
@@ -30,7 +29,7 @@ Type
 
   TSong = record
     ID: Integer;
-    Name: NameString;
+    Name: TDataString;
     ID_Album: Integer;
     Length: Integer;
   end;
@@ -54,6 +53,9 @@ Type
     Max_Id: Integer;
     Song: TSong;
   end;
+
+  PInput_Search = Procedure(var ID: Integer; var S: TDataString);
+  FCondEq_Search = Function(var Element; var ID: Integer; var S: TDataString): Boolean;
 
 implementation
 
