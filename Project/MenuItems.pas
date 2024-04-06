@@ -85,7 +85,7 @@ var
   Menu: Integer;
 begin
   repeat
-    Writeln('Меню подпункта поиска по коду:');
+    Writeln('Меню подпункта поиска:');
     Writeln('1. Искать в списке исполнителей.');
     Writeln('2. Искать в списке альбомов.');
     Writeln('3. Искать в списке песен.');
@@ -93,11 +93,11 @@ begin
     readNum(Menu);
     case Menu of
       1:
-        SearchArtist(ArtistList);
+        MenuSearchArtist(ArtistList);
       2:
-        SearchAlbum(AlbumList);
+        MenuSearchAlbum(AlbumList);
       3:
-        SearchSong(SongList);
+        MenuSearchSong(SongList);
     end;
   until Menu = 0;
 end;
