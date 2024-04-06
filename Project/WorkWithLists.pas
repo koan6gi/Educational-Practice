@@ -62,26 +62,49 @@ begin
   Writeln;
 end;
 
+// Проверка на существование исполнителя для вставки.
+Function IsArtistAlreadyExist(ArtistList: TAdrOfArtistList;
+  TmpArtist: TArtist): Boolean;
+begin
+  Result := False;
+  while ArtistList^.next <> nil do
+  begin
+    ArtistList := ArtistList^.next;
+    if (ArtistList^.Artist.Name = TmpArtist.Name) and
+      (ArtistList^.Artist.Country = TmpArtist.Country) and
+      (ArtistList^.Artist.Direction = TmpArtist.Direction) then
+      Result := True;
+  end;
+
+end;
+
 // Вставить исполнителя в список.
 Procedure InsertArtist(ArtistList: TAdrOfArtistList);
 var
   MaxId: Integer;
   Tmp: TAdrOfArtistList;
+  TmpArtist: TArtist;
 begin
-  Inc(ArtistList^.Max_Id);
-  MaxId := ArtistList^.Max_Id;
-  Tmp := ArtistList^.next;
-  New(ArtistList^.next);
-  ArtistList := ArtistList^.next;
-  ArtistList^.Artist.ID := MaxId;
-  ArtistList^.next := Tmp;
-
   Write('Введите имя исполнителя: ');
-  readln(ArtistList^.Artist.Name);
+  readln(TmpArtist.Name);
   Write('Введите страну исполнителя: ');
-  readln(ArtistList^.Artist.Country);
+  readln(TmpArtist.Country);
   Write('Введите направление песен исполнителя: ');
-  readln(ArtistList^.Artist.Direction);
+  readln(TmpArtist.Direction);
+
+  if not(IsArtistAlreadyExist(ArtistList, TmpArtist)) then
+  begin
+    Inc(ArtistList^.Max_Id);
+    MaxId := ArtistList^.Max_Id;
+    Tmp := ArtistList^.next;
+    New(ArtistList^.next);
+    ArtistList := ArtistList^.next;
+    TmpArtist.ID := MaxId;
+    ArtistList^.Artist := TmpArtist;
+    ArtistList^.next := Tmp;
+  end
+  else
+    Writeln('Такой исполнитель уже существует.');
   Writeln;
 end;
 
@@ -97,7 +120,7 @@ begin
   WatchArtistList(ArtistList);
   Write('Введите код исполнителя для удаления: ');
   ReadNum(IDForDelete);
-  Flag := false;
+  Flag := False;
 
   While Not(Flag) and (ArtistList^.next <> nil) do
   begin
@@ -140,7 +163,7 @@ var
 begin
   Write('Введите код исполнителя: ');
   ReadNum(SearchID);
-  Flag := false;
+  Flag := False;
   while (ArtistList^.next <> nil) and not(Flag) do
   begin
     ArtistList := ArtistList^.next;
@@ -204,7 +227,7 @@ begin
   WatchArtistList(ArtistList);
   Write('Введите код исполнителя для редакирования: ');
   readln(ID);
-  Flag := false;
+  Flag := False;
   while (ArtistList^.next <> nil) and not(Flag) do
   begin
     ArtistList := ArtistList^.next;
@@ -248,7 +271,7 @@ begin
   repeat
     Write('Введите код исполнителя: ');
     ReadNum(ID);
-    Flag := false;
+    Flag := False;
     ArtL := ArtistList^.next;
     while (ArtL <> nil) and not(Flag) do
     begin
@@ -257,7 +280,7 @@ begin
       ArtL := ArtL^.next;
     end;
 
-    if Flag = false then
+    if Flag = False then
     begin
       Writeln('Исполнителя с таким кодом не существует.');
       Writeln('Желаете создать нового исполнителя?');
@@ -310,7 +333,7 @@ begin
     Write('Введите код альбома для удаления: ');
     ReadNum(IDForDelete);
   end;
-  Flag := false;
+  Flag := False;
 
   While Not(Flag) and (AlbumList^.next <> nil) do
   begin
@@ -352,7 +375,7 @@ var
 begin
   Write('Введите код альбома: ');
   ReadNum(SearchID);
-  Flag := false;
+  Flag := False;
   while (AlbumList^.next <> nil) and not(Flag) do
   begin
     AlbumList := AlbumList^.next;
@@ -408,7 +431,7 @@ begin
   WatchALbumList(AlbumList);
   Write('Введите код альбома для редакирования: ');
   ReadNum(ID);
-  Flag := false;
+  Flag := False;
   while (AlbumList^.next <> nil) and not(Flag) do
   begin
     AlbumList := AlbumList^.next;
@@ -453,7 +476,7 @@ begin
   repeat
     Write('Введите код альбома: ');
     ReadNum(ID);
-    Flag := false;
+    Flag := False;
     AlbL := AlbumList^.next;
     while (AlbL <> nil) and not(Flag) do
     begin
@@ -462,7 +485,7 @@ begin
       AlbL := AlbL^.next;
     end;
 
-    if Flag = false then
+    if Flag = False then
     begin
       Writeln('Альбома с таким кодом не существует.');
       Writeln('Желаете создать новый альбом?');
@@ -514,7 +537,7 @@ begin
     Write('Введите код песни для удаления: ');
     ReadNum(IDForDelete);
   end;
-  Flag := false;
+  Flag := False;
 
   While Not(Flag) and (SongList^.next <> nil) do
   begin
@@ -541,7 +564,7 @@ var
 begin
   Write('Введите код песни: ');
   ReadNum(SearchID);
-  Flag := false;
+  Flag := False;
   while (SongList^.next <> nil) and not(Flag) do
   begin
     SongList := SongList^.next;
@@ -597,7 +620,7 @@ begin
   WatchSongList(SongList);
   Write('Введите код песни для редакирования: ');
   ReadNum(ID);
-  Flag := false;
+  Flag := False;
   while (SongList^.next <> nil) and not(Flag) do
   begin
     SongList := SongList^.next;
