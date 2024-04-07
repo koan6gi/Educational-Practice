@@ -97,7 +97,7 @@ begin
       2:
         MenuSearchAlbum(AlbumList);
       3:
-        MenuSearchSong(SongList);
+        MenuSearchSong(ArtistList, AlbumList, SongList);
     end;
   until Menu = 0;
 end;

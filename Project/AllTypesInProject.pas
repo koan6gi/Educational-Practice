@@ -7,6 +7,8 @@ Type
   TAdrOfAlbumList = ^TAlbumList;
   TAdrOfSongList = ^TSongList;
 
+  TArrayOfIndexes = array of Integer;
+
   TDataString = String[20];
   TDirString = String[15];
 
