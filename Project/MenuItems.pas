@@ -76,7 +76,7 @@ end;
 Procedure MenuItem3_Sort(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 begin
-  SelectionSort(ArtistList, [], ArtistCompareTo);
+  RunTest(ArtistList, AlbumList, SongList);
 end;
 
 Procedure MenuItem4_Search(ArtistList: TAdrOfArtistList;

@@ -48,7 +48,7 @@ Type
   TAlbumList = record
     next: TAdrOfAlbumList;
     Max_Id: Integer;
-    ALbum: TAlbum;
+    Album: TAlbum;
   end;
 
   TSongList = record
@@ -58,7 +58,7 @@ Type
   end;
 
   TAdrOfList = ^TList;
-  TTypeList = (Artist, ALbum, Song);
+  TTypeList = (Artist, Album, Song);
 
   TList = record
     next: TAdrOfList;
@@ -66,8 +66,8 @@ Type
     case TTypeList of
       Artist:
         (Artist: TArtist);
-      ALbum:
-        (ALbum: TAlbum);
+      Album:
+        (Album: TAlbum);
       Song:
         (Song: TSong);
   end;
@@ -76,12 +76,15 @@ Type
   FCondEq_Search = Function(var Element; var ID: Integer;
     var S: TDataString): Boolean;
 
-  FCompareTo = Function (Self, o: TAdrOfList; const ArrIn: TArrayOfIndexes): Boolean;
+  FCompareTo = Function(Self, o: TAdrOfList;
+    const ArrIn: TArrayOfIndexes): Boolean;
 
-  Procedure Add10(var Arr: TArrayOfIndexes);
-  Procedure ReadNum(var n: Integer);
+Procedure Add10(var Arr: TArrayOfIndexes);
+Procedure ReadNum(var n: Integer);
+
 implementation
-  Procedure Add10(var Arr: TArrayOfIndexes);
+
+Procedure Add10(var Arr: TArrayOfIndexes);
 var
   OldLast, I: Integer;
 begin
@@ -104,4 +107,5 @@ begin
       Write('Íåêîğğåêòíûé ââîä. Ââåäèòå ñíîâà: ');
   until (Err = 0) and (n >= 0);
 end;
+
 end.
