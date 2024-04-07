@@ -26,11 +26,8 @@ Procedure EditSong(SongList: TAdrOfSongList);
 
 Procedure MenuSearchArtist(ArtistList: TAdrOfArtistList);
 Procedure MenuSearchAlbum(AlbumList: TAdrOfAlbumList);
-Procedure MenuSearchSong(SongList: TAdrOfSongList);
-
-Procedure InputArtistName(var ID: Integer; var S: TDataString);
-Function ConditionArtistName(var Element; var ID: Integer;
-  var S: TDataString): Boolean;
+Procedure MenuSearchSong(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 
 implementation
 
@@ -230,6 +227,38 @@ begin
   end;
   Writeln('|-----------------|-------------------|--------------------|-------------------------|');
   Writeln;
+end;
+
+Procedure Add10(Arr: TArrayOfIndexes);
+var
+  OldLast, I: Integer;
+begin
+  OldLast := Length(Arr);
+  SetLength(Arr, Length(Arr) + 10);
+  for I := OldLast to High(Arr) do
+    Arr[I] := 0;
+end;
+
+// Найти всех исполнителей по имени в списке.
+Procedure SearchArtistByName(ArtistList: TAdrOfArtistList;
+  ArtistIndexes: TArrayOfIndexes);
+var
+  SearchID, Index: Integer;
+  SearchString: TDataString;
+begin
+  Index := 0;
+  InputArtistName(SearchID, SearchString);
+  while (ArtistList^.next <> nil) do
+  begin
+    ArtistList := ArtistList^.next;
+    if ConditionArtistName(ArtistList^.Artist, SearchID, SearchString) then
+    begin
+      if High(ArtistIndexes) < Index then
+        Add10(ArtistIndexes);
+      ArtistIndexes[Index] := ArtistList^.Artist.ID;
+      Inc(Index);
+    end;
+  end;
 end;
 
 // Меню поиска в списке исполнителей.
@@ -520,6 +549,33 @@ begin
   Writeln;
 end;
 
+// Найти все альбомы по коду исполнителя в списке.
+Procedure SearchAlbumByID_Artist(AlbumList: TAdrOfAlbumList;
+  ArtistIndexes, AlbumIndexes: TArrayOfIndexes);
+var
+  IndexArtist, IndexAlbum: Integer;
+  SearchString: TDataString;
+begin
+  IndexAlbum := 0;
+  IndexArtist := 0;
+  while (Length(ArtistIndexes) <> 0) and (ArtistIndexes[IndexArtist] <> 0) do
+  begin
+    while (AlbumList^.next <> nil) do
+    begin
+      AlbumList := AlbumList^.next;
+      if ConditionAlbumID_Artist(AlbumList^.Album, ArtistIndexes[IndexArtist],
+        SearchString) then
+      begin
+        if High(AlbumIndexes) < IndexAlbum then
+          Add10(AlbumIndexes);
+        AlbumIndexes[IndexAlbum] := AlbumList^.Album.ID;
+        Inc(IndexAlbum);
+      end;
+    end;
+    Inc(IndexArtist);
+  end;
+end;
+
 // Меню поиска в списке альбомов.
 Procedure MenuSearchAlbum(AlbumList: TAdrOfAlbumList);
 var
@@ -773,18 +829,49 @@ begin
     SongList := SongList^.next;
     if (Cond(SongList^.Song, SearchID, SearchString)) then
     begin
-
       Writeln('|', SongList^.Song.ID:10, ' |', SongList^.Song.Name:21, ' |',
         SongList^.Song.ID_Album:12, ' |', SongList^.Song.Length:19, ' |');
-
     end;
   end;
   Writeln('|-----------|----------------------|-------------|--------------------|');
   Writeln;
 end;
 
+// Найти песню в списке(Специальная функция 2).
+Procedure SearchSongByArtist(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+var
+  IndexAlbum: Integer;
+  SearchString: TDataString;
+  ArtistIndexes, AlbumIndexes: TArrayOfIndexes;
+begin
+  SearchArtistByName(ArtistList, ArtistIndexes);
+  SearchAlbumByID_Artist(AlbumList, ArtistIndexes, AlbumIndexes);
+  IndexAlbum := 0;
+  Writeln('|-----------|----------------------|-------------|--------------------|');
+  Writeln('| Код песни |    Название песни    | Код альбома | Длительность песни |');
+  Writeln('|-----------|----------------------|-------------|--------------------|');
+  while (Length(AlbumIndexes) <> 0) and (AlbumIndexes[IndexAlbum] <> 0) do
+  begin
+    while (SongList^.next <> nil) do
+    begin
+      SongList := SongList^.next;
+      if (ConditionSongID_Album(SongList^.Song, AlbumIndexes[IndexAlbum],
+        SearchString)) then
+      begin
+        Writeln('|', SongList^.Song.ID:10, ' |', SongList^.Song.Name:21, ' |',
+          SongList^.Song.ID_Album:12, ' |', SongList^.Song.Length:19, ' |');
+      end;
+    end;
+    Inc(IndexAlbum);
+  end;
+  Writeln('|-----------|----------------------|-------------|--------------------|');
+  Writeln;
+end;
+
 // Меню поиска в списке альбомов.
-Procedure MenuSearchSong(SongList: TAdrOfSongList);
+Procedure MenuSearchSong(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 var
   Menu: Integer;
 begin
@@ -793,6 +880,7 @@ begin
     Writeln('1. Поиск по коду песни.');
     Writeln('2. Поиск по коду альбома песни.');
     Writeln('3. Поиск по названию песни.');
+    Writeln('4. Поиск по имени испонителя (Специальная функция 2).');
     Writeln('0. Выйти из подпункта меню.');
     ReadNum(Menu);
     case Menu of
@@ -802,6 +890,8 @@ begin
         SearchSong(SongList, InputALbumID, ConditionSongID_Album);
       3:
         SearchSong(SongList, InputSongName, ConditionSongName);
+      4:
+        SearchSongByArtist(ArtistList, AlbumList, SongList);
     end;
   until Menu = 0;
 end;
