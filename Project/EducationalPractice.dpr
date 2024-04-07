@@ -4,7 +4,8 @@ uses
   AllTypesInProject in 'AllTypesInProject.pas',
   WorkWithFiles in 'WorkWithFiles.pas',
   WorkWithLists in 'WorkWithLists.pas',
-  MenuItems in 'MenuItems.pas';
+  MenuItems in 'MenuItems.pas',
+  Playlist in 'Playlist.pas';
 
 var
   ArtistList: TAdrOfArtistList;

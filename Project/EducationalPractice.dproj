@@ -93,6 +93,7 @@
         <DCCReference Include="WorkWithFiles.pas"/>
         <DCCReference Include="WorkWithLists.pas"/>
         <DCCReference Include="MenuItems.pas"/>
+        <DCCReference Include="Playlist.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

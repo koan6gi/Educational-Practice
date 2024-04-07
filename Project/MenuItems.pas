@@ -2,7 +2,7 @@ unit MenuItems;
 
 interface
 
-uses AllTypesInProject, WorkWithLists, WorkWithFiles;
+uses AllTypesInProject, WorkWithLists, WorkWithFiles, PlayList;
 
 Procedure MenuItem1_ReadLists(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
@@ -76,7 +76,7 @@ end;
 Procedure MenuItem3_Sort(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 begin
-
+  SelectionSort(ArtistList, [], ArtistCompareTo);
 end;
 
 Procedure MenuItem4_Search(ArtistList: TAdrOfArtistList;

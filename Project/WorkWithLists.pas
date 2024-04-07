@@ -4,7 +4,6 @@ interface
 
 uses
   AllTypesInProject;
-Procedure ReadNum(var n: Integer);
 
 Procedure WatchArtistList(ArtistList: TAdrOfArtistList);
 Procedure InsertArtist(ArtistList: TAdrOfArtistList);
@@ -31,19 +30,7 @@ Procedure MenuSearchSong(ArtistList: TAdrOfArtistList;
 
 implementation
 
-Procedure ReadNum(var n: Integer);
-var
-  S: String;
-  Err: Integer;
-begin
-  Err := 0;
-  repeat
-    readln(S);
-    Val(S, n, Err);
-    if (Err <> 0) or (n < 0) then
-      Write('Некорректный ввод. Введите снова: ');
-  until (Err = 0) and (n >= 0);
-end;
+
 
 { \\\\\\\\\\ Work with ArtistList ////////// }
 
@@ -229,15 +216,7 @@ begin
   Writeln;
 end;
 
-Procedure Add10(var Arr: TArrayOfIndexes);
-var
-  OldLast, I: Integer;
-begin
-  OldLast := Length(Arr);
-  SetLength(Arr, Length(Arr) + 10);
-  for I := OldLast to High(Arr) do
-    Arr[I] := 0;
-end;
+
 
 // Найти всех исполнителей по имени в списке.
 Procedure SearchArtistByName(ArtistList: TAdrOfArtistList;

@@ -57,10 +57,51 @@ Type
     Song: TSong;
   end;
 
+  TAdrOfList = ^TList;
+  TTypeList = (Artist, ALbum, Song);
+
+  TList = record
+    next: TAdrOfList;
+    Max_Id: Integer;
+    case TTypeList of
+      Artist:
+        (Artist: TArtist);
+      ALbum:
+        (ALbum: TAlbum);
+      Song:
+        (Song: TSong);
+  end;
+
   PInput_Search = Procedure(var ID: Integer; var S: TDataString);
   FCondEq_Search = Function(var Element; var ID: Integer;
     var S: TDataString): Boolean;
 
-implementation
+  FCompareTo = Function (Self, o: TAdrOfList; const ArrIn: TArrayOfIndexes): Boolean;
 
+  Procedure Add10(var Arr: TArrayOfIndexes);
+  Procedure ReadNum(var n: Integer);
+implementation
+  Procedure Add10(var Arr: TArrayOfIndexes);
+var
+  OldLast, I: Integer;
+begin
+  OldLast := Length(Arr);
+  SetLength(Arr, Length(Arr) + 10);
+  for I := OldLast to High(Arr) do
+    Arr[I] := 0;
+end;
+
+Procedure ReadNum(var n: Integer);
+var
+  S: String;
+  Err: Integer;
+begin
+  Err := 0;
+  repeat
+    readln(S);
+    Val(S, n, Err);
+    if (Err <> 0) or (n < 0) then
+      Write('Некорректный ввод. Введите снова: ');
+  until (Err = 0) and (n >= 0);
+end;
 end.
