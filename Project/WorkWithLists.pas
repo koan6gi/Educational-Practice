@@ -24,7 +24,6 @@ Procedure InsertSong(SongList: TAdrOfSongList; AlbumList: TAdrOfAlbumList;
 Procedure DeleteSong(SongList: TAdrOfSongList; CheckID: Integer);
 Procedure EditSong(SongList: TAdrOfSongList);
 
-
 Procedure MenuSearchArtist(ArtistList: TAdrOfArtistList);
 Procedure MenuSearchAlbum(AlbumList: TAdrOfAlbumList);
 Procedure MenuSearchSong(SongList: TAdrOfSongList);
@@ -162,46 +161,51 @@ begin
   ReadNum(ID);
 end;
 
-Function ConditionArtistID(var Element; var ID: Integer; var S: TDataString): Boolean;
+Function ConditionArtistID(var Element; var ID: Integer;
+  var S: TDataString): Boolean;
 begin
-  Result :=  TArtist(Element).ID = ID;
+  Result := TArtist(Element).ID = ID;
 end;
 
 Procedure InputArtistName(var ID: Integer; var S: TDataString);
 begin
   Write('Введите имя исполнителя: ');
-  Readln(S);
+  readln(S);
 end;
 
-Function ConditionArtistName(var Element; var ID: Integer; var S: TDataString): Boolean;
+Function ConditionArtistName(var Element; var ID: Integer;
+  var S: TDataString): Boolean;
 begin
-  Result :=  TArtist(Element).Name = S;
+  Result := TArtist(Element).Name = S;
 end;
 
 Procedure InputArtistCountry(var ID: Integer; var S: TDataString);
 begin
   Write('Введите страну исполнителя: ');
-  Readln(S);
+  readln(S);
 end;
 
-Function ConditionArtistCountry(var Element; var ID: Integer; var S: TDataString): Boolean;
+Function ConditionArtistCountry(var Element; var ID: Integer;
+  var S: TDataString): Boolean;
 begin
-  Result :=  TArtist(Element).Country = S;
+  Result := TArtist(Element).Country = S;
 end;
 
 Procedure InputArtistDirection(var ID: Integer; var S: TDataString);
 begin
-  Write('Введите страну исполнителя: ');
-  Readln(S);
+  Write('Введите направление исполнителя: ');
+  readln(S);
 end;
 
-Function ConditionArtistDirection(var Element; var ID: Integer; var S: TDataString): Boolean;
+Function ConditionArtistDirection(var Element; var ID: Integer;
+  var S: TDataString): Boolean;
 begin
-  Result :=  TArtist(Element).Direction = S;
+  Result := TArtist(Element).Direction = S;
 end;
 
 // Найти исполнителя в списке.
-Procedure SearchArtist(ArtistList: TAdrOfArtistList; Input: PInput_Search; Cond: FCondEq_Search);
+Procedure SearchArtist(ArtistList: TAdrOfArtistList; Input: PInput_Search;
+  Cond: FCondEq_Search);
 var
   SearchID: Integer;
   SearchString: TDataString;
@@ -227,25 +231,26 @@ end;
 // Меню поиска в списке исполнителей.
 Procedure MenuSearchArtist(ArtistList: TAdrOfArtistList);
 var
-Menu:Integer;
+  Menu: Integer;
 begin
-repeat
-  Writeln('Меню подпункта поиска в списке исполнителей:');
-  Writeln('1. Поиск по коду испонителя.');
-  Writeln('2. Поиск по имени исполнителя.');
-  Writeln('3. Поиск по стране исполнителя.');
-  Writeln('4. Поиск по направлению исполнителя.');
-  Writeln('0. Выйти из подпункта меню.');
-    readNum(Menu);
+  repeat
+    Writeln('Меню подпункта поиска в списке исполнителей:');
+    Writeln('1. Поиск по коду испонителя.');
+    Writeln('2. Поиск по имени исполнителя.');
+    Writeln('3. Поиск по стране исполнителя.');
+    Writeln('4. Поиск по направлению исполнителя.');
+    Writeln('0. Выйти из подпункта меню.');
+    ReadNum(Menu);
     case Menu of
       1:
-      SearchArtist(ArtistList, InputArtistID, ConditionArtistID);
+        SearchArtist(ArtistList, InputArtistID, ConditionArtistID);
       2:
-      SearchArtist(ArtistList, InputArtistName, ConditionArtistName);
+        SearchArtist(ArtistList, InputArtistName, ConditionArtistName);
       3:
-      SearchArtist(ArtistList, InputArtistCountry, ConditionArtistCountry);
+        SearchArtist(ArtistList, InputArtistCountry, ConditionArtistCountry);
       4:
-      SearchArtist(ArtistList, InputArtistDirection, ConditionArtistDirection);
+        SearchArtist(ArtistList, InputArtistDirection,
+          ConditionArtistDirection);
     end;
   until Menu = 0;
 end;
@@ -463,29 +468,33 @@ begin
   ReadNum(ID);
 end;
 
-Function ConditionAlbumID(var Element; var ID: Integer; var S: TDataString): Boolean;
+Function ConditionAlbumID(var Element; var ID: Integer;
+  var S: TDataString): Boolean;
 begin
-  Result :=  TAlbum(Element).ID = ID;
+  Result := TAlbum(Element).ID = ID;
 end;
 
-Function ConditionAlbumID_Artist(var Element; var ID: Integer; var S: TDataString): Boolean;
+Function ConditionAlbumID_Artist(var Element; var ID: Integer;
+  var S: TDataString): Boolean;
 begin
-  Result :=  TAlbum(Element).ID_Artist = ID;
+  Result := TAlbum(Element).ID_Artist = ID;
 end;
 
 Procedure InputALbumName(var ID: Integer; var S: TDataString);
 begin
   Write('Введите название альбома: ');
-  Readln(S);
+  readln(S);
 end;
 
-Function ConditionAlbumName(var Element; var ID: Integer; var S: TDataString): Boolean;
+Function ConditionAlbumName(var Element; var ID: Integer;
+  var S: TDataString): Boolean;
 begin
-  Result :=  TAlbum(Element).Name = s;
+  Result := TAlbum(Element).Name = S;
 end;
 
 // Найти альбом в списке.
-Procedure SearchAlbum(AlbumList: TAdrOfAlbumList; Input: PInput_Search; Cond: FCondEq_Search);
+Procedure SearchAlbum(AlbumList: TAdrOfAlbumList; Input: PInput_Search;
+  Cond: FCondEq_Search);
 var
   SearchID: Integer;
   SearchString: TDataString;
@@ -497,7 +506,7 @@ begin
   while (AlbumList^.next <> nil) do
   begin
     AlbumList := AlbumList^.next;
-    if Cond(AlbumList^.ALbum, SearchID, SearchString) then
+    if Cond(AlbumList^.Album, SearchID, SearchString) then
     begin
       Writeln('|', AlbumList^.Album.ID:12, ' |', AlbumList^.Album.ID_Artist:16,
         ' |', AlbumList^.Album.Name:21, ' |', AlbumList^.Album.Year:11, ' |');
@@ -510,22 +519,22 @@ end;
 // Меню поиска в списке альбомов.
 Procedure MenuSearchAlbum(AlbumList: TAdrOfAlbumList);
 var
-Menu:Integer;
+  Menu: Integer;
 begin
-repeat
-  Writeln('Меню подпункта поиска в списке альбомов:');
-  Writeln('1. Поиск по коду альбома.');
-  Writeln('2. Поиск по коду исполнителя альбома.');
-  Writeln('3. Поиск по названию альбома.');
-  Writeln('0. Выйти из подпункта меню.');
-    readNum(Menu);
+  repeat
+    Writeln('Меню подпункта поиска в списке альбомов:');
+    Writeln('1. Поиск по коду альбома.');
+    Writeln('2. Поиск по коду исполнителя альбома.');
+    Writeln('3. Поиск по названию альбома.');
+    Writeln('0. Выйти из подпункта меню.');
+    ReadNum(Menu);
     case Menu of
       1:
-      SearchAlbum(AlbumList, InputALbumID, ConditionALbumID);
+        SearchAlbum(AlbumList, InputALbumID, ConditionAlbumID);
       2:
-      SearchAlbum(AlbumList, InputArtistID, ConditionAlbumID_Artist);
+        SearchAlbum(AlbumList, InputArtistID, ConditionAlbumID_Artist);
       3:
-      SearchAlbum(AlbumList, InputALbumName, ConditionAlbumName);
+        SearchAlbum(AlbumList, InputALbumName, ConditionAlbumName);
     end;
   until Menu = 0;
 end;
@@ -720,69 +729,75 @@ begin
   ReadNum(ID);
 end;
 
-Function ConditionSongID(var Element; var ID: Integer; var S: TDataString): Boolean;
+Function ConditionSongID(var Element; var ID: Integer;
+  var S: TDataString): Boolean;
 begin
-  Result :=  TSong(Element).ID = ID;
+  Result := TSong(Element).ID = ID;
 end;
 
-Function ConditionSongID_Album(var Element; var ID: Integer; var S: TDataString): Boolean;
+Function ConditionSongID_Album(var Element; var ID: Integer;
+  var S: TDataString): Boolean;
 begin
-  Result :=  TSong(Element).ID_Album = ID;
+  Result := TSong(Element).ID_Album = ID;
 end;
 
 Procedure InputSongName(var ID: Integer; var S: TDataString);
 begin
   Write('Введите название песни: ');
-  Readln(S);
+  readln(S);
 end;
 
-Function ConditionSongName(var Element; var ID: Integer; var S: TDataString): Boolean;
+Function ConditionSongName(var Element; var ID: Integer;
+  var S: TDataString): Boolean;
 begin
-  Result :=  TSong(Element).Name = S;
+  Result := TSong(Element).Name = S;
 end;
 
 // Найти песню в списке.
-Procedure SearchSong(SongList: TAdrOfSongList; Input: PInput_Search; Cond: FCondEq_Search);
+Procedure SearchSong(SongList: TAdrOfSongList; Input: PInput_Search;
+  Cond: FCondEq_Search);
 var
   SearchID: Integer;
   SearchString: TDataString;
 begin
   Input(SearchID, SearchString);
+  Writeln('|-----------|----------------------|-------------|--------------------|');
+  Writeln('| Код песни |    Название песни    | Код альбома | Длительность песни |');
+  Writeln('|-----------|----------------------|-------------|--------------------|');
   while (SongList^.next <> nil) do
   begin
     SongList := SongList^.next;
     if (Cond(SongList^.Song, SearchID, SearchString)) then
     begin
-      Writeln('|-----------|----------------------|-------------|--------------------|');
-      Writeln('| Код песни |    Название песни    | Код альбома | Длительность песни |');
-      Writeln('|-----------|----------------------|-------------|--------------------|');
+
       Writeln('|', SongList^.Song.ID:10, ' |', SongList^.Song.Name:21, ' |',
         SongList^.Song.ID_Album:12, ' |', SongList^.Song.Length:19, ' |');
-      Writeln('|-----------|----------------------|-------------|--------------------|');
+
     end;
   end;
+  Writeln('|-----------|----------------------|-------------|--------------------|');
   Writeln;
 end;
 
 // Меню поиска в списке альбомов.
 Procedure MenuSearchSong(SongList: TAdrOfSongList);
 var
-Menu:Integer;
+  Menu: Integer;
 begin
-repeat
-  Writeln('Меню подпункта поиска в списке песен:');
-  Writeln('1. Поиск по коду песни.');
-  Writeln('2. Поиск по коду альбома песни.');
-  Writeln('3. Поиск по названию песни.');
-  Writeln('0. Выйти из подпункта меню.');
-    readNum(Menu);
+  repeat
+    Writeln('Меню подпункта поиска в списке песен:');
+    Writeln('1. Поиск по коду песни.');
+    Writeln('2. Поиск по коду альбома песни.');
+    Writeln('3. Поиск по названию песни.');
+    Writeln('0. Выйти из подпункта меню.');
+    ReadNum(Menu);
     case Menu of
       1:
-      SearchSong(SongList, InputSongID, ConditionSongID);
+        SearchSong(SongList, InputSongID, ConditionSongID);
       2:
-      SearchSong(SongList, InputAlbumID, ConditionSongID_Album);
+        SearchSong(SongList, InputALbumID, ConditionSongID_Album);
       3:
-      SearchSong(SongList, InputSongName, ConditionSongName);
+        SearchSong(SongList, InputSongName, ConditionSongName);
     end;
   until Menu = 0;
 end;

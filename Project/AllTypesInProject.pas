@@ -8,12 +8,13 @@ Type
   TAdrOfSongList = ^TSongList;
 
   TDataString = String[20];
+  TDirString = String[15];
 
   TArtist = record
     ID: Integer;
     Name: TDataString;
     Country: TDataString;
-    Direction: TDataString;
+    Direction: TDirString;
   end;
 
   TArtistFile = File of TArtist;
@@ -55,7 +56,8 @@ Type
   end;
 
   PInput_Search = Procedure(var ID: Integer; var S: TDataString);
-  FCondEq_Search = Function(var Element; var ID: Integer; var S: TDataString): Boolean;
+  FCondEq_Search = Function(var Element; var ID: Integer;
+    var S: TDataString): Boolean;
 
 implementation
 
