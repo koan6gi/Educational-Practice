@@ -1,9 +1,9 @@
 program EducationalPractice;
 
 uses
+  AllTypesInProject in 'AllTypesInProject.pas',
   WorkWithFiles in 'WorkWithFiles.pas',
   WorkWithLists in 'WorkWithLists.pas',
-  AllTypesInProject in 'AllTypesInProject.pas',
   MenuItems in 'MenuItems.pas';
 
 var

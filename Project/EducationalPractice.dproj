@@ -89,9 +89,9 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="AllTypesInProject.pas"/>
         <DCCReference Include="WorkWithFiles.pas"/>
         <DCCReference Include="WorkWithLists.pas"/>
-        <DCCReference Include="AllTypesInProject.pas"/>
         <DCCReference Include="MenuItems.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
