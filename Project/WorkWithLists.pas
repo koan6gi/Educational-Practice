@@ -229,7 +229,7 @@ begin
   Writeln;
 end;
 
-Procedure Add10(Arr: TArrayOfIndexes);
+Procedure Add10(var Arr: TArrayOfIndexes);
 var
   OldLast, I: Integer;
 begin
@@ -241,7 +241,7 @@ end;
 
 // Найти всех исполнителей по имени в списке.
 Procedure SearchArtistByName(ArtistList: TAdrOfArtistList;
-  ArtistIndexes: TArrayOfIndexes);
+  var ArtistIndexes: TArrayOfIndexes);
 var
   SearchID, Index: Integer;
   SearchString: TDataString;
@@ -551,15 +551,18 @@ end;
 
 // Найти все альбомы по коду исполнителя в списке.
 Procedure SearchAlbumByID_Artist(AlbumList: TAdrOfAlbumList;
-  ArtistIndexes, AlbumIndexes: TArrayOfIndexes);
+ var ArtistIndexes, AlbumIndexes: TArrayOfIndexes);
 var
   IndexArtist, IndexAlbum: Integer;
   SearchString: TDataString;
+  Tmp: TAdrOfAlbumList;
 begin
   IndexAlbum := 0;
   IndexArtist := 0;
+  Tmp := AlbumList;
   while (Length(ArtistIndexes) <> 0) and (ArtistIndexes[IndexArtist] <> 0) do
   begin
+    AlbumList := Tmp;
     while (AlbumList^.next <> nil) do
     begin
       AlbumList := AlbumList^.next;
@@ -844,6 +847,7 @@ var
   IndexAlbum: Integer;
   SearchString: TDataString;
   ArtistIndexes, AlbumIndexes: TArrayOfIndexes;
+  Tmp: TAdrOfSongList;
 begin
   SearchArtistByName(ArtistList, ArtistIndexes);
   SearchAlbumByID_Artist(AlbumList, ArtistIndexes, AlbumIndexes);
@@ -851,8 +855,10 @@ begin
   Writeln('|-----------|----------------------|-------------|--------------------|');
   Writeln('| Код песни |    Название песни    | Код альбома | Длительность песни |');
   Writeln('|-----------|----------------------|-------------|--------------------|');
+  Tmp := SongList;
   while (Length(AlbumIndexes) <> 0) and (AlbumIndexes[IndexAlbum] <> 0) do
   begin
+    SongList := Tmp;
     while (SongList^.next <> nil) do
     begin
       SongList := SongList^.next;
