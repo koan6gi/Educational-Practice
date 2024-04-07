@@ -4,7 +4,7 @@ interface
 
 uses
   AllTypesInProject;
-Procedure RunTest(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+Procedure SortAllLists(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList);
 
 implementation
@@ -86,6 +86,21 @@ begin
   end;
 end;
 
+Function SongCompareTo(Self, o: TAdrOfList;
+  const ArrIn: TArrayOfIndexes): Boolean;
+var
+  P: Boolean;
+begin
+  if o = nil then
+    result := false
+  else
+  begin
+    P := Search(ArrIn, Self^.Song.ID_Album) > Search(ArrIn, o^.Song.ID_Album);
+    result := (P) or ((Self^.Song.ID_Album = o^.Song.ID_Album) and
+      (Self^.Song.Length > o^.Song.Length));
+  end;
+end;
+
 Procedure SelectionSort(var L; const ArrIn: TArrayOfIndexes;
   CompareTo: FCompareTo);
 var
@@ -108,14 +123,17 @@ begin
   end;
 end;
 
-Procedure RunTest(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+Procedure SortAllLists(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList);
 var
-  ArrInArtist: TArrayOfIndexes;
+  ArrInArtist, ArrInAlbum: TArrayOfIndexes;
 begin
   SelectionSort(ArtistList, [], ArtistCompareTo);
   FillArrOfIndexes(ArtistList, ArrInArtist);
   SelectionSort(AlbumList, ArrInArtist, AlbumCompareTo);
+  FillArrOfIndexes(AlbumList, ArrInAlbum);
+  SelectionSort(SongList, ArrInAlbum, SongCompareTo);
+  Writeln('Данные успешно отсортированы.')
 end;
 
 end.
