@@ -5,10 +5,10 @@ interface
 uses AllTypesInProject;
 
 // Read All Lists from files
-Procedure ReadAllListsFromFiles(var State : Integer; ArtistList: TAdrOfArtistList;
-  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
-  var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
-  var SongFile: TSongFile);
+Procedure ReadAllListsFromFiles(var State: Integer;
+  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile);
 
 // ReWrite All Lists in files
 Procedure ReWriteAllListsInFiles(ArtistList: TAdrOfArtistList;
@@ -150,8 +150,8 @@ begin
   Close(SongFile);
 end;
 
-Procedure CheckAllFiles(var State; var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
-  var SongFile: TSongFile);
+Procedure CheckAllFiles(var State: Integer; var ArtistFile: TArtistFile;
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile);
 var
   Art: TArtist;
   Alb: TAlbum;
@@ -167,8 +167,9 @@ begin
     Read(ArtistFile, Art);
     Read(AlbumFile, Alb);
     Read(SongFile, Song);
+    State := 1;
   except
-
+    State := 3;
   end;
   Close(ArtistFile);
   Close(AlbumFile);
@@ -176,14 +177,18 @@ begin
 end;
 
 // Read All Lists from files
-Procedure ReadAllListsFromFiles(var State : Integer; ArtistList: TAdrOfArtistList;
-  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
-  var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
-  var SongFile: TSongFile);
+Procedure ReadAllListsFromFiles(var State: Integer;
+  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile);
 begin
-  ReadArtistListFromFile(ArtistList, ArtistFile);
-  ReadAlbumListFromFile(AlbumList, AlbumFile);
-  ReadSongListFromFile(SongList, SongFile);
+  CheckAllFiles(State, ArtistFile, AlbumFile, SongFile);
+  if State = 1 then
+  begin
+    ReadArtistListFromFile(ArtistList, ArtistFile);
+    ReadAlbumListFromFile(AlbumList, AlbumFile);
+    ReadSongListFromFile(SongList, SongFile);
+  end;
 end;
 
 // ReWrite All Lists in files
