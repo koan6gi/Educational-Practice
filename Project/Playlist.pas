@@ -7,9 +7,13 @@ uses
 Procedure SortAllLists(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList);
 
+Procedure MakePlayList(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList; var Arr: TArrOfLists);
+
 implementation
 
-Function Search(const ArrIn: TArrayOfIndexes; const item: Integer): Integer;
+Function SearchInArr(const ArrIn: TArrayOfIndexes; const item: Integer)
+  : Integer;
 var
   Flag: Boolean;
   i: Integer;
@@ -79,8 +83,8 @@ begin
     result := false
   else
   begin
-    P := Search(ArrIn, Self^.Album.ID_Artist) >
-      Search(ArrIn, o^.Album.ID_Artist);
+    P := SearchInArr(ArrIn, Self^.Album.ID_Artist) >
+      SearchInArr(ArrIn, o^.Album.ID_Artist);
     result := (P) or ((Self^.Album.ID_Artist = o^.Album.ID_Artist) and
       (Self^.Album.Year > o^.Album.Year));
   end;
@@ -95,7 +99,8 @@ begin
     result := false
   else
   begin
-    P := Search(ArrIn, Self^.Song.ID_Album) > Search(ArrIn, o^.Song.ID_Album);
+    P := SearchInArr(ArrIn, Self^.Song.ID_Album) >
+      SearchInArr(ArrIn, o^.Song.ID_Album);
     result := (P) or ((Self^.Song.ID_Album = o^.Song.ID_Album) and
       (Self^.Song.Length > o^.Song.Length));
   end;
@@ -133,7 +138,87 @@ begin
   SelectionSort(AlbumList, ArrInArtist, AlbumCompareTo);
   FillArrOfIndexes(AlbumList, ArrInAlbum);
   SelectionSort(SongList, ArrInAlbum, SongCompareTo);
-  Writeln('Данные успешно отсортированы.')
+end;
+
+Procedure ReadTime(var Time: Integer);
+var
+  Ind, ErrH, ErrM, ErrS, Hours, Minutes, Seconds: Integer;
+  TimeStr, SHours, SMinutes, SSeconds: TDataString;
+  Flag, Err, Format: Boolean;
+begin
+  repeat
+    ErrH := 0;
+    ErrM := 0;
+    ErrS := 0;
+
+    Flag := false;
+    Readln(TimeStr);
+
+    Ind := Pos(':', String(TimeStr));
+    SHours := TDataString(Copy(TimeStr, 0, Ind - 1));
+    Delete(TimeStr, 1, Ind);
+
+    Ind := Pos(':', String(TimeStr));
+    SMinutes := TDataString(Copy(TimeStr, 0, Ind - 1));
+    Delete(TimeStr, 1, Ind);
+
+    SSeconds := TimeStr;
+
+    Val(String(SHours), Hours, ErrH);
+    Val(String(SMinutes), Minutes, ErrM);
+    Val(String(SSeconds), Seconds, ErrS);
+
+    Time := Hours * 3600 + Minutes * 60 + Seconds;
+
+    Err := (ErrH = 0) and (ErrM = 0) and (ErrM = 0);
+    Format := (Minutes < 60) and (Minutes >= 0) and (Seconds < 60) and
+      (Seconds >= 0);
+    if Err and Format then
+      Flag := true
+    else
+      Writeln('Неверный формат ввода, введите снова: ');
+
+  until Flag = true;
+
+end;
+
+Procedure FillArrOfArtistInd(ArtistList: TAdrOfArtistList; Dir: TDataString;
+  ArrIn: TArrayOfIndexes);
+var
+  i: Integer;
+begin
+  i := 0;
+  while ArtistList^.next <> nil do
+  begin
+    ArtistList := ArtistList^.next;
+    if ArtistList^.Artist.Direction = Dir then
+      if i > High(ArrIn) then
+      begin
+        Add10(ArrIn);
+        ArrIn[i] := ArtistList^.Artist.ID;
+      end;
+    Inc(i);
+  end;
+end;
+
+Procedure MakePlayList(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList; var Arr: TArrOfLists);
+var
+  ArrIndArtist, ArrIndAlbum: TArrayOfIndexes;
+  Dir: TDirString;
+  Time, Year: Integer;
+
+begin
+  Write('Введите направление исполнителя: ');
+  Readln(Dir);
+  Writeln('Введите длину Playlist-а в формате: чч:мм:сс.');
+  Writeln('(Если часы и/или минуты равны 0-ю, 0-и необходимо записать, пример:');
+  Writeln('00:00:45 / 00:45:00).');
+  Write('Длина: ');
+  ReadTime(Time);
+  Writeln('Введите год, с которого выбирать песни: ');
+  ReadNum(Year);
+
 end;
 
 end.
