@@ -18,6 +18,8 @@ Procedure ReWriteAllListsInFiles(ArtistList: TAdrOfArtistList;
 
 implementation
 
+uses SysUtils;
+
 { \\\\\\\\\\ Work with ArtistFile ////////// }
 
 // Read ArtistList from file
@@ -150,30 +152,14 @@ begin
   Close(SongFile);
 end;
 
-Procedure CheckAllFiles(var State: Integer; var ArtistFile: TArtistFile;
-  var AlbumFile: TAlbumFile; var SongFile: TSongFile);
-var
-  Art: TArtist;
-  Alb: TAlbum;
-  Song: Tsong;
+Procedure CheckAllFiles(var State: Integer);
 begin
-  Assign(ArtistFile, 'ArtistFile');
-  Reset(ArtistFile);
-  Assign(AlbumFile, 'AlbumFile');
-  Reset(AlbumFile);
-  Assign(SongFile, 'SongFile');
-  Reset(SongFile);
-  try
-    Read(ArtistFile, Art);
-    Read(AlbumFile, Alb);
-    Read(SongFile, Song);
-    State := 1;
-  except
+  if FileExists('ArtistFile') and FileExists('AlbumFile') and
+    FileExists('SongFile') then
+    State := 1
+  Else
     State := 3;
-  end;
-  Close(ArtistFile);
-  Close(AlbumFile);
-  Close(SongFile);
+
 end;
 
 // Read All Lists from files
@@ -182,7 +168,7 @@ Procedure ReadAllListsFromFiles(var State: Integer;
   SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
   var AlbumFile: TAlbumFile; var SongFile: TSongFile);
 begin
-  CheckAllFiles(State, ArtistFile, AlbumFile, SongFile);
+  CheckAllFiles(State);
   if State = 1 then
   begin
     ReadArtistListFromFile(ArtistList, ArtistFile);

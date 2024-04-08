@@ -22,12 +22,15 @@ begin
 
   New(ArtistList);
   ArtistList^.Max_Id := 0;
+  ArtistList^.next := nil;
 
   New(AlbumList);
   AlbumList^.Max_Id := 0;
+  AlbumList^.next := nil;
 
   New(SongList);
   SongList^.Max_Id := 0;
+  SongList^.next := nil;
 
   WriteLn('Программа для работы со списками, связанными с музыкой');
   Repeat

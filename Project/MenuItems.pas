@@ -42,9 +42,9 @@ begin
     ReadAllListsFromFiles(State, ArtistList, AlbumList, SongList, ArtistFile,
       AlbumFile, SongFile);
     if State = 1 then
-    Writeln('Данные успешно прочитаны.')
+      Writeln('Данные успешно прочитаны.')
     else
-    Writeln('Файлы не найдены. Были созданы новые. Возможность сохранения доступна.');
+      Writeln('Файлы не найдены. Были созданы новые. Возможность сохранения доступна.');
     State := 1;
   end
   else if State = 1 then
