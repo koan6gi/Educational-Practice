@@ -15,10 +15,10 @@ var
   AlbumFile: TAlbumFile;
   SongFile: TSongFile;
   Menu: Integer;
-  Flag_IsFileAlreadyOpen: Integer;
+  StateOfFiles: Integer;
 
 begin
-  Flag_IsFileAlreadyOpen := 0;
+  StateOfFiles := 0;
 
   New(ArtistList);
   ArtistList^.Max_Id := 0;
@@ -47,7 +47,7 @@ begin
       1:
         begin
           MenuItem1_ReadLists(ArtistList, AlbumList, SongList, ArtistFile,
-            AlbumFile, SongFile, Flag_IsFileAlreadyOpen);
+            AlbumFile, SongFile, StateOfFiles);
         end;
 
       2:
@@ -67,7 +67,7 @@ begin
 
       5:
         begin
-          Flag_IsFileAlreadyOpen := 2;
+          StateOfFiles := 2;
           MenuItem5_Insert(ArtistList, AlbumList, SongList);
         end;
 

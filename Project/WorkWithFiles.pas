@@ -5,7 +5,7 @@ interface
 uses AllTypesInProject;
 
 // Read All Lists from files
-Procedure ReadAllListsFromFiles(ArtistList: TAdrOfArtistList;
+Procedure ReadAllListsFromFiles(var State : Integer; ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
   var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
   var SongFile: TSongFile);
@@ -150,8 +150,33 @@ begin
   Close(SongFile);
 end;
 
+Procedure CheckAllFiles(var State; var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
+  var SongFile: TSongFile);
+var
+  Art: TArtist;
+  Alb: TAlbum;
+  Song: Tsong;
+begin
+  Assign(ArtistFile, 'ArtistFile');
+  Reset(ArtistFile);
+  Assign(AlbumFile, 'AlbumFile');
+  Reset(AlbumFile);
+  Assign(SongFile, 'SongFile');
+  Reset(SongFile);
+  try
+    Read(ArtistFile, Art);
+    Read(AlbumFile, Alb);
+    Read(SongFile, Song);
+  except
+
+  end;
+  Close(ArtistFile);
+  Close(AlbumFile);
+  Close(SongFile);
+end;
+
 // Read All Lists from files
-Procedure ReadAllListsFromFiles(ArtistList: TAdrOfArtistList;
+Procedure ReadAllListsFromFiles(var State : Integer; ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
   var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
   var SongFile: TSongFile);

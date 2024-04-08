@@ -7,7 +7,7 @@ uses AllTypesInProject, WorkWithLists, WorkWithFiles, PlayList;
 Procedure MenuItem1_ReadLists(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
   var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
-  var SongFile: TSongFile; var Flag: Integer);
+  var SongFile: TSongFile; var State: Integer);
 
 Procedure MenuItem2_WatchLists(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
@@ -35,17 +35,20 @@ implementation
 Procedure MenuItem1_ReadLists(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
   var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
-  var SongFile: TSongFile; var Flag: Integer);
+  var SongFile: TSongFile; var State: Integer);
 begin
-  if Flag = 0 then
+  if State = 0 then
   begin
-    ReadAllListsFromFiles(ArtistList, AlbumList, SongList, ArtistFile,
+    ReadAllListsFromFiles(State, ArtistList, AlbumList, SongList, ArtistFile,
       AlbumFile, SongFile);
-    Writeln('Данные успешно прочитаны.');
-    Flag := 1;
+    if State = 1 then
+    Writeln('Данные успешно прочитаны.')
+    else
+    Writeln('Файлы не найдены. Были созданы новые. Возможность сохранения доступна.');
+    State := 1;
   end
-  else if Flag = 1 then
-    Writeln('Данные уже были прочитаны.')
+  else if State = 1 then
+    Writeln('Данные уже были прочитаны или недоступны.')
   else
     Writeln('Были внесены изменения, для прочтения данных перезапустите программу.');
 end;
