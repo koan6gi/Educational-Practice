@@ -208,6 +208,34 @@ begin
   end;
 end;
 
+Procedure FillArrOfAlbumInd(AlbumList: TAdrOfAlbumList; Year: Integer;
+  var ArrIndArt, ArrIndAlb: TArrayOfIndexes);
+var
+  i: Integer;
+begin
+  i := 0;
+  if Length(ArrIndArt) <> 0 then
+  begin
+    while (AlbumList^.next <> nil) and
+      (AlbumList^.next.Album.ID_Artist <> ArrIndArt[Low(ArrIndArt)]) do
+    begin
+      AlbumList := AlbumList^.next;
+    end;
+    while (AlbumList^.next <> nil) and
+      (SearchInArr(ArrIndArt, AlbumList^.next.Album.ID_Artist) <> -1) do
+    begin
+      AlbumList := AlbumList^.next;
+      if AlbumList^.Album.Year >= Year then
+        if i > High(ArrIndAlb) then
+        begin
+          Add10(ArrIndAlb);
+          ArrIndAlb[i] := AlbumList^.Album.ID;
+        end;
+      Inc(i);
+    end;
+  end;
+end;
+
 Procedure MakePlayList(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList; var Arr: TArrOfLists);
 var
