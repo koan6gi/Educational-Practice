@@ -400,6 +400,7 @@ var
   MaxId: Integer;
   TmpAlbum: TAlbum;
 begin
+  WatchArtistList(ArtistList);
   ReadID_Artist(TmpAlbum.ID_Artist, ArtistList);
   Write('¬ведите название альбома: ');
   readln(TmpAlbum.Name);
@@ -710,6 +711,7 @@ var
   Tmp: TAdrOfSongList;
   TmpSong: TSong;
 begin
+  WatchALbumList(AlbumList);
   ReadID_Album(TmpSong.ID_Album, AlbumList, ArtistList);
   Write('¬ведите название песни: ');
   readln(TmpSong.Name);

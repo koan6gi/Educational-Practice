@@ -3,7 +3,7 @@ unit Playlist;
 interface
 
 uses
-  AllTypesInProject;
+  WorkWithLists, AllTypesInProject;
 Procedure SortAllLists(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList);
 
@@ -176,14 +176,14 @@ begin
     if Err and Format then
       Flag := true
     else
-      Writeln('Неверный формат ввода, введите снова: ');
+      Write('Неверный формат ввода, введите снова: ');
 
   until Flag = true;
 
 end;
 
 Procedure FillArrOfArtistInd(ArtistList: TAdrOfArtistList; Dir: TDataString;
-  ArrIn: TArrayOfIndexes);
+  var ArrIn: TArrayOfIndexes);
 var
   i: Integer;
 begin
@@ -198,12 +198,11 @@ begin
     (ArtistList^.next.Artist.Direction = Dir) do
   begin
     ArtistList := ArtistList^.next;
-    if ArtistList^.Artist.Direction = Dir then
-      if i > High(ArrIn) then
-      begin
-        Add10(ArrIn);
-        ArrIn[i] := ArtistList^.Artist.ID;
-      end;
+    if i > High(ArrIn) then
+    begin
+      Add10(ArrIn);
+    end;
+    ArrIn[i] := ArtistList^.Artist.ID;
     Inc(i);
   end;
 end;
@@ -229,33 +228,31 @@ begin
         if i > High(ArrIndAlb) then
         begin
           Add10(ArrIndAlb);
-          ArrIndAlb[i] := AlbumList^.Album.ID;
         end;
+      ArrIndAlb[i] := AlbumList^.Album.ID;
       Inc(i);
     end;
   end;
 end;
 
-Procedure MakeListOfAllSong(SongList, ListOfAllSong: TAdrOfSongList; ArrIndAlb: TArrayOfIndexes);
+Procedure MakeListOfAllSong(SongList, ListOfAllSong: TAdrOfSongList;
+  var ArrIndAlb: TArrayOfIndexes);
 var
-  i: Integer;
   MaxID: ^Integer;
 begin
-  i := 0;
   MaxID := @ListOfAllSong^.Max_Id;
   if Length(ArrIndAlb) <> 0 then
   begin
 
     while (SongList^.next <> nil) and
-      (SongList^.next.Song.ID_Album <> ArrIndALb[Low(ArrIndAlb)]) do
+      (SongList^.next.Song.ID_Album <> ArrIndAlb[Low(ArrIndAlb)]) do
     begin
       SongList := SongList^.next;
     end;
     while (SongList^.next <> nil) do
     begin
       SongList := SongList^.next;
-      if (SearchInArr(ArrIndAlb,SongList^.next.Song.ID_Album) <> -1) then
-        if i > High(ArrIndAlb) then
+      if (SearchInArr(ArrIndAlb, SongList^.Song.ID_Album) <> -1) then
         begin
           Inc(MaxID^);
           New(ListOfAllSong^.next);
@@ -263,7 +260,6 @@ begin
           ListOfAllSong^.Song := SongList^.Song;
           ListOfAllSong^.next := nil;
         end;
-      Inc(i);
     end;
   end;
 end;
@@ -277,6 +273,7 @@ var
   ListOfAllSong: TAdrOfSongList;
 
 begin
+  SortAllLists(ArtistList, AlbumList, SongList);
   Write('Введите направление исполнителя: ');
   Readln(Dir);
   Writeln('Введите длину Playlist-а в формате: чч:мм:сс.');
@@ -284,7 +281,7 @@ begin
   Writeln('00:00:45 / 00:45:00).');
   Write('Длина: ');
   ReadTime(Time);
-  Writeln('Введите год, с которого выбирать песни: ');
+  Write('Введите год, с которого выбирать песни: ');
   ReadNum(Year);
   FillArrOfArtistInd(ArtistList, Dir, ArrIndArtist);
   FillArrOfAlbumInd(AlbumList, Year, ArrIndArtist, ArrIndAlbum);
@@ -292,7 +289,7 @@ begin
   ListOfAllSong^.next := nil;
   ListOfAllSong^.Max_Id := 0;
   MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
-
+  WatchSongList(ListOfAllSong);
 end;
 
 end.
