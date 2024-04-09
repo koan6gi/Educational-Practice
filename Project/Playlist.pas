@@ -236,12 +236,45 @@ begin
   end;
 end;
 
+Procedure MakeListOfAllSong(SongList, ListOfAllSong: TAdrOfSongList; ArrIndAlb: TArrayOfIndexes);
+var
+  i: Integer;
+  MaxID: ^Integer;
+begin
+  i := 0;
+  MaxID := @ListOfAllSong^.Max_Id;
+  if Length(ArrIndAlb) <> 0 then
+  begin
+
+    while (SongList^.next <> nil) and
+      (SongList^.next.Song.ID_Album <> ArrIndALb[Low(ArrIndAlb)]) do
+    begin
+      SongList := SongList^.next;
+    end;
+    while (SongList^.next <> nil) do
+    begin
+      SongList := SongList^.next;
+      if (SearchInArr(ArrIndAlb,SongList^.next.Song.ID_Album) <> -1) then
+        if i > High(ArrIndAlb) then
+        begin
+          Inc(MaxID^);
+          New(ListOfAllSong^.next);
+          ListOfAllSong := ListOfAllSong^.next;
+          ListOfAllSong^.Song := SongList^.Song;
+          ListOfAllSong^.next := nil;
+        end;
+      Inc(i);
+    end;
+  end;
+end;
+
 Procedure MakePlayList(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList; var Arr: TArrOfLists);
 var
   ArrIndArtist, ArrIndAlbum: TArrayOfIndexes;
   Dir: TDirString;
   Time, Year: Integer;
+  ListOfAllSong: TAdrOfSongList;
 
 begin
   Write('¬ведите направление исполнител€: ');
@@ -253,6 +286,12 @@ begin
   ReadTime(Time);
   Writeln('¬ведите год, с которого выбирать песни: ');
   ReadNum(Year);
+  FillArrOfArtistInd(ArtistList, Dir, ArrIndArtist);
+  FillArrOfAlbumInd(AlbumList, Year, ArrIndArtist, ArrIndAlbum);
+  New(ListOfAllSong);
+  ListOfAllSong^.next := nil;
+  ListOfAllSong^.Max_Id := 0;
+  MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
 
 end;
 
