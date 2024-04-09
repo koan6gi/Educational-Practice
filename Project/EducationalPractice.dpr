@@ -86,7 +86,7 @@ begin
 
       8:
         begin
-
+          MenuItem8_Playlist(ArtistList, AlbumList, SongList);
         end;
 
       10:

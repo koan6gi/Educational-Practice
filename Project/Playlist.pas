@@ -188,7 +188,14 @@ var
   i: Integer;
 begin
   i := 0;
-  while ArtistList^.next <> nil do
+
+  while (ArtistList^.next <> nil) and
+    (ArtistList^.next.Artist.Direction <> Dir) do
+  begin
+    ArtistList := ArtistList^.next;
+  end;
+  while (ArtistList^.next <> nil) and
+    (ArtistList^.next.Artist.Direction = Dir) do
   begin
     ArtistList := ArtistList^.next;
     if ArtistList^.Artist.Direction = Dir then

@@ -27,6 +27,9 @@ Procedure MenuItem6_Delete(ArtistList: TAdrOfArtistList;
 Procedure MenuItem7_Edit(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 
+Procedure MenuItem8_Playlist(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+
 Procedure DeleteAllLists(var ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 
@@ -80,6 +83,7 @@ Procedure MenuItem3_Sort(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 begin
   SortAllLists(ArtistList, AlbumList, SongList);
+  Writeln('Данные успешно отсортированы.');
 end;
 
 Procedure MenuItem4_Search(ArtistList: TAdrOfArtistList;
@@ -173,6 +177,13 @@ begin
     end;
   until Menu = 0;
 end;
+
+Procedure MenuItem8_Playlist(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+  var Arr: TArrOfLists;
+  begin
+    MakePlayList(ArtistList, AlbumList, SongList, Arr);
+  end;
 
 Procedure DeleteAllLists(var ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
