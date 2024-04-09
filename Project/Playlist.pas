@@ -225,12 +225,14 @@ begin
     begin
       AlbumList := AlbumList^.next;
       if AlbumList^.Album.Year >= Year then
+      begin
         if i > High(ArrIndAlb) then
         begin
           Add10(ArrIndAlb);
         end;
-      ArrIndAlb[i] := AlbumList^.Album.ID;
-      Inc(i);
+        ArrIndAlb[i] := AlbumList^.Album.ID;
+        Inc(i);
+      end;
     end;
   end;
 end;
@@ -253,13 +255,13 @@ begin
     begin
       SongList := SongList^.next;
       if (SearchInArr(ArrIndAlb, SongList^.Song.ID_Album) <> -1) then
-        begin
-          Inc(MaxID^);
-          New(ListOfAllSong^.next);
-          ListOfAllSong := ListOfAllSong^.next;
-          ListOfAllSong^.Song := SongList^.Song;
-          ListOfAllSong^.next := nil;
-        end;
+      begin
+        Inc(MaxID^);
+        New(ListOfAllSong^.next);
+        ListOfAllSong := ListOfAllSong^.next;
+        ListOfAllSong^.Song := SongList^.Song;
+        ListOfAllSong^.next := nil;
+      end;
     end;
   end;
 end;
