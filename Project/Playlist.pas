@@ -348,6 +348,7 @@ begin
   for i := Low(ArrOfPlayLists) to High(ArrOfPlayLists) do
   begin
     New(ArrOfPlayLists[i]);
+    ArrOfPlayLists[i]^.Max_Id := 0;
     ArrOfPlayLists[i]^.next := nil;
 
     J := 0;
@@ -401,7 +402,7 @@ begin
           Add10(ArrOfArrAlbumIndexes[i]);
 
         ArrOfArrAlbumIndexes[i, J] := Tmp^.Song.ID_Album;
-        Inc(j);
+        Inc(J);
       end;
     end;
   end;
@@ -419,6 +420,24 @@ begin
       Flag := false;
   end;
   result := AlbumList^.Album.ID_Artist;
+
+end;
+
+Procedure WriteCountOfArtist(ArrOfPlayLists: TArrOfPlaylists;
+  ArrOfArrArtistIndexes: TArrOfArrOfIndexes);
+var
+  I: Integer;
+  j: Integer;
+begin
+  for I := Low(ArrOfPlayLists) to High(ArrOfPlayLists) do
+  begin
+    j := 0;
+    while ArrOfArrArtistIndexes[i, j] <> 0 do
+    begin
+      Inc(ArrOfPlayLists[i]^.Max_Id);
+      Inc(j);
+    end;
+  end;
 
 end;
 
@@ -450,6 +469,7 @@ begin
       Inc(J);
     end;
   end;
+  WriteCountOfArtist(ArrOfPlaylists, ArrOfArrArtistIndexes);
 
 end;
 
@@ -489,6 +509,9 @@ begin
   MakePlaylist(ListOfAllSong, PLength, PlaylistsArr);
   MakeArrOfPlaylists(ListOfAllSong, ArrOfPlayLists, PlaylistsArr);
   CalcCountOfArtist(ArrOfPlayLists, AlbumList);
+
+  Writeln('Количество playlist-ов: ', Length(ArrOfPlayLists));
+
 end;
 
 end.
