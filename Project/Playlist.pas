@@ -289,7 +289,7 @@ var
   begin
     while LSong^.next <> nil do
     begin
-      Flag := False;
+      Flag := false;
       LSong := LSong^.next;
       Sum := Sum + LSong^.Song.Length;
       if Sum > PLength then
@@ -302,7 +302,7 @@ var
           Add10(ArrInd);
         ArrInd[i] := LSong^.Song.ID;
         Inc(i);
-        Flag := True;
+        Flag := true;
         MPlaylist(LSong, i);
       end
       else
@@ -312,17 +312,14 @@ var
         ArrInd[i] := LSong^.Song.ID;
         SetLength(Arr, Length(Arr) + 1);
         Arr[High(Arr)] := Copy(ArrInd);
-        Flag := True;
-        //MPlaylist(LSong, i);
+        Flag := true;
       end;
-      //MPlaylist(LSong, i);
 
-      if flag then
+      if Flag then
       begin
         Sum := Sum - LSong^.Song.Length;
         Dec(i);
-        //for k := High(ArrInd) downto i do
-          ArrInd[i] := 0;
+        ArrInd[i] := 0;
       end;
     end;
 
@@ -349,18 +346,15 @@ var
 begin
   SortAllLists(ArtistList, AlbumList, SongList);
   Write('Введите направление исполнителя: ');
-  //Readln(Dir);
-  Dir := 'Rock';
+  Readln(Dir);
 
   Writeln('Введите длину Playlist-а в формате: чч:мм:сс.');
   Writeln('(Если часы и/или минуты равны 0-ю, 0-и необходимо записать, пример:');
   Writeln('00:00:45 / 00:45:00).');
   Write('Длина: ');
-  //ReadTime(PLength);
-  PLength := 500;
+  ReadTime(PLength);
   Write('Введите год, с которого выбирать песни: ');
-  //ReadNum(Year);
-  Year := 1;
+  ReadNum(Year);
 
   FillArrOfArtistInd(ArtistList, Dir, ArrIndArtist);
   FillArrOfAlbumInd(AlbumList, Year, ArrIndArtist, ArrIndAlbum);
@@ -374,7 +368,6 @@ begin
   SelectionSort(ListOfAllSong, [], SongCompareTo2);
   WatchSongList(ListOfAllSong);
   MakePlaylist(ListOfAllSong, PLength, ArrOfPlaylists);
-  readln;
 end;
 
 end.

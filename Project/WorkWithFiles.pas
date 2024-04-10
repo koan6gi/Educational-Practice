@@ -25,20 +25,20 @@ uses SysUtils;
 // Read ArtistList from file
 Procedure ReadArtistListFromFile(ArtistList: TAdrOfArtistList;
   var ArtistFile: TArtistFile);
-var
-  MaxID: ^Integer;
+
 begin
   Assign(ArtistFile, 'ArtistFile');
   Reset(ArtistFile);
-  MaxID := @ArtistList^.Max_Id;
 
   if Not(Eof(ArtistFile)) then
   begin
+    Read(ArtistFile, ArtistList^.Artist);
+    ArtistList^.Max_Id := ArtistList^.Artist.ID;
+
     New(ArtistList^.next);
     ArtistList := ArtistList^.next;
     Read(ArtistFile, ArtistList^.Artist);
 
-    MaxID^ := ArtistList^.Artist.ID;
     while Not(Eof(ArtistFile)) do
     begin
       New(ArtistList^.next);
@@ -57,10 +57,13 @@ begin
   Assign(ArtistFile, 'ArtistFile');
   ReWrite(ArtistFile);
 
-  while ArtistList^.next <> nil do
+  ArtistList^.Artist.ID := ArtistList^.Max_Id;
+
+  while ArtistList <> nil do
   begin
-    ArtistList := ArtistList^.next;
+
     Write(ArtistFile, ArtistList^.Artist);
+    ArtistList := ArtistList^.next;
   end;
 
   Close(ArtistFile);
@@ -71,21 +74,21 @@ end;
 // Read AlbumList from file
 Procedure ReadAlbumListFromFile(AlbumList: TAdrOfAlbumList;
   var AlbumFile: TAlbumFile);
-var
-  MaxID: ^Integer;
 begin
   Assign(AlbumFile, 'AlbumFile');
   Reset(AlbumFile);
-  MaxID := @AlbumList^.Max_Id;
-
-  while Not(Eof(AlbumFile)) do
+  if Not(Eof(AlbumFile)) then
   begin
-    New(AlbumList^.next);
-    AlbumList := AlbumList^.next;
     Read(AlbumFile, AlbumList^.Album);
-  end;
+    AlbumList^.Max_Id := AlbumList^.Album.ID;
 
-  MaxID^ := AlbumList^.Album.ID;
+    while Not(Eof(AlbumFile)) do
+    begin
+      New(AlbumList^.next);
+      AlbumList := AlbumList^.next;
+      Read(AlbumFile, AlbumList^.Album);
+    end;
+  end;
 
   Close(AlbumFile);
 end;
@@ -97,10 +100,13 @@ begin
   Assign(AlbumFile, 'AlbumFile');
   ReWrite(AlbumFile);
 
-  while AlbumList^.next <> nil do
+  AlbumList^.Album.ID := AlbumList^.Max_Id;
+
+  while AlbumList <> nil do
   begin
-    AlbumList := AlbumList^.next;
+
     Write(AlbumFile, AlbumList^.Album);
+    AlbumList := AlbumList^.next;
   end;
 
   Close(AlbumFile);
@@ -120,6 +126,9 @@ begin
 
   if Not(Eof(SongFile)) then
   begin
+    Read(SongFile, SongList^.Song);
+    SongList^.Max_Id := SongList^.Song.ID;
+
     New(SongList^.next);
     SongList := SongList^.next;
     Read(SongFile, SongList^.Song);
@@ -143,10 +152,13 @@ begin
   Assign(SongFile, 'SongFile');
   ReWrite(SongFile);
 
-  while SongList^.next <> nil do
+  SongList^.Song.ID := SongList^.Max_Id;
+
+  while SongList <> nil do
   begin
-    SongList := SongList^.next;
+
     Write(SongFile, SongList^.Song);
+    SongList := SongList^.next;
   end;
 
   Close(SongFile);
