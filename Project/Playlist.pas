@@ -312,8 +312,8 @@ var
         ArrInd[i] := LSong^.Song.ID;
         SetLength(Arr, Length(Arr) + 1);
         Arr[High(Arr)] := Copy(ArrInd);
-        ArrInd[i] := 0;
-        MPlaylist(LSong, i);
+        Flag := True;
+        //MPlaylist(LSong, i);
       end;
       //MPlaylist(LSong, i);
 
@@ -321,8 +321,8 @@ var
       begin
         Sum := Sum - LSong^.Song.Length;
         Dec(i);
-        for k := High(ArrInd) downto i do
-          ArrInd[k] := 0;
+        //for k := High(ArrInd) downto i do
+          ArrInd[i] := 0;
       end;
     end;
 
