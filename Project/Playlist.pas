@@ -354,7 +354,7 @@ begin
     J := 0;
 
     Tmp := ArrOfPlayLists[i];
-    while PlaylistsArr[i, J] <> 0 do
+    while (j < Length(PlaylistsArr[i]))and(PlaylistsArr[i, J] <> 0) do
     begin
       New(Tmp^.next);
       Tmp := Tmp^.next;
@@ -454,7 +454,7 @@ begin
   begin
     J := 0;
     Index := 0;
-    while ArrOfArrAlbumIndexes[i, J] <> 0 do
+    while (j<Length(ArrOfArrAlbumIndexes[i]))and(ArrOfArrAlbumIndexes[i, J] <> 0) do
     begin
       ID := FindArtistID(AlbumList, ArrOfArrAlbumIndexes[i, J]);
       if Not(IsArrHasID(ArrOfArrArtistIndexes[i], ID)) then
@@ -477,7 +477,7 @@ Procedure ShellSort(var A: TArrOfPlaylists);
 var
   gap, i, J, temp, Len: Integer;
 begin
-  Len := Length(A);
+  Len := High(A);
   gap := Len div 2;
   while gap > 0 do
   begin
@@ -494,6 +494,14 @@ begin
     end;
     gap := gap div 2;
   end;
+end;
+
+Procedure WatchAllPlaylists(ArrOfPlayLists: TArrOfPlaylists);
+var
+  I: Integer;
+begin
+  for I := Low(ArrOfPlayLists) to High(ArrOfPlayLists) do
+  WatchSongList(ArrOfPlayLists[i]);
 end;
 
 Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
@@ -535,6 +543,8 @@ begin
 
   Writeln('Количество playlist-ов: ', Length(ArrOfPlayLists));
   ShellSort(ArrOfPlayLists);
+
+  WatchAllPlaylists(ArrOfPlayLists);
 
 end;
 
