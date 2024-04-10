@@ -180,10 +180,11 @@ end;
 
 Procedure MenuItem8_Playlist(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
-  var Arr: TArrOfPlaylists;
-  begin
-    MakePlayListMenu(ArtistList, AlbumList, SongList, Arr);
-  end;
+var
+  Arr: TArrOfPlaylists;
+begin
+  MakePlayListMenu(ArtistList, AlbumList, SongList, Arr);
+end;
 
 Procedure DeleteAllLists(var ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);

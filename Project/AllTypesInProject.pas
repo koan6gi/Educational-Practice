@@ -79,7 +79,7 @@ Type
   FCompareTo = Function(Self, o: TAdrOfList;
     const ArrIn: TArrayOfIndexes): Boolean;
 
-    TArrOfArrOfIndexes = array of TArrayOfIndexes;
+  TArrOfArrOfIndexes = array of TArrayOfIndexes;
 
   TArrOfPlaylists = array of TAdrOfSongList;
 

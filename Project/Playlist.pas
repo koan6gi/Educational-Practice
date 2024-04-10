@@ -339,35 +339,28 @@ begin
 
 end;
 
-Procedure MakeArrOfPlaylists(ListOfAllSong: TAdrOfSongList; ArrOfPlaylists: TArrOfPlaylists;
-  PlaylistsArr: TArrOfArrOfIndexes);
-  Procedure FillArrOfPlaylists(ArrOfPlaylists: TArrOfPlaylists;
-    PArr: TArrOfArrOfIndexes);
-  var
-    i, j: Integer;
-  begin
-    for i := Low(ArrOfPlaylists) to High(ArrOfPlaylists) do
-    begin
-      J := 0;
-      while PArr[i, J] <> 0 do
-      begin
-        New(ArrOfPlaylists[i]^.next);
-        ArrOfPlaylists[i] := ArrOfPlaylists[i]^.next;
-        ArrOfPlaylists[i]^.Song := FindSong(ListOfAllSong, PArr[i, J]);
-        ArrOfPlaylists[i]^.next := nil;
-        Inc(J);
-      end;
-    end;
-  end;
-
+Procedure MakeArrOfPlaylists(ListOfAllSong: TAdrOfSongList;
+  var ArrOfPlaylists: TArrOfPlaylists; PlaylistsArr: TArrOfArrOfIndexes);
 var
-  i: Integer;
+  i, J: Integer;
+  Tmp: TAdrOfSongList;
 begin
   SetLength(ArrOfPlaylists, Length(PlaylistsArr));
   for i := Low(ArrOfPlaylists) to High(ArrOfPlaylists) do
   begin
     New(ArrOfPlaylists[i]);
     ArrOfPlaylists[i]^.next := nil;
+
+    J := 0;
+
+    while PlaylistsArr[i, J] <> 0 do
+    begin
+      New(ArrOfPlaylists[i]^.next);
+      ArrOfPlaylists[i] := ArrOfPlaylists[i]^.next;
+      ArrOfPlaylists[i]^.Song := FindSong(ListOfAllSong, PlaylistsArr[i, J]);
+      ArrOfPlaylists[i]^.next := nil;
+      Inc(J);
+    end;
   end;
 
   FillArrOfPlaylists(ArrOfPlaylists, PlaylistsArr);
@@ -405,8 +398,9 @@ begin
 
   MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
 
-  WatchSongList(ListOfAllSong);
+  // WatchSongList(ListOfAllSong);
   MakePlaylist(ListOfAllSong, PLength, PlaylistsArr);
+  MakeArrOfPlaylists(ListOfAllSong, Arr, PlaylistsArr);
 end;
 
 end.

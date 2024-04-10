@@ -30,8 +30,6 @@ Procedure MenuSearchSong(ArtistList: TAdrOfArtistList;
 
 implementation
 
-
-
 { \\\\\\\\\\ Work with ArtistList ////////// }
 
 // Просмотреть список исполнителей.
@@ -215,8 +213,6 @@ begin
   Writeln('|-----------------|-------------------|--------------------|-------------------------|');
   Writeln;
 end;
-
-
 
 // Найти всех исполнителей по имени в списке.
 Procedure SearchArtistByName(ArtistList: TAdrOfArtistList;
@@ -531,7 +527,7 @@ end;
 
 // Найти все альбомы по коду исполнителя в списке.
 Procedure SearchAlbumByID_Artist(AlbumList: TAdrOfAlbumList;
- var ArtistIndexes, AlbumIndexes: TArrayOfIndexes);
+  var ArtistIndexes, AlbumIndexes: TArrayOfIndexes);
 var
   IndexArtist, IndexAlbum: Integer;
   SearchString: TDataString;
