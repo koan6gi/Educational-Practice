@@ -354,7 +354,7 @@ begin
     J := 0;
 
     Tmp := ArrOfPlayLists[i];
-    while (j < Length(PlaylistsArr[i]))and(PlaylistsArr[i, J] <> 0) do
+    while (J < Length(PlaylistsArr[i])) and (PlaylistsArr[i, J] <> 0) do
     begin
       New(Tmp^.next);
       Tmp := Tmp^.next;
@@ -454,7 +454,8 @@ begin
   begin
     J := 0;
     Index := 0;
-    while (j<Length(ArrOfArrAlbumIndexes[i]))and(ArrOfArrAlbumIndexes[i, J] <> 0) do
+    while (J < Length(ArrOfArrAlbumIndexes[i])) and
+      (ArrOfArrAlbumIndexes[i, J] <> 0) do
     begin
       ID := FindArtistID(AlbumList, ArrOfArrAlbumIndexes[i, J]);
       if Not(IsArrHasID(ArrOfArrArtistIndexes[i], ID)) then
@@ -498,10 +499,23 @@ end;
 
 Procedure WatchAllPlaylists(ArrOfPlayLists: TArrOfPlaylists);
 var
-  I: Integer;
+  i: Integer;
 begin
-  for I := Low(ArrOfPlayLists) to High(ArrOfPlayLists) do
-  WatchSongList(ArrOfPlayLists[i]);
+  for i := Low(ArrOfPlayLists) to High(ArrOfPlayLists) do
+    WatchSongList(ArrOfPlayLists[i]);
+end;
+
+Function SongCompareTo2(Self, o: TAdrOfList;
+  const ArrIn: TArrayOfIndexes): Boolean;
+var
+  P: Boolean;
+begin
+  if o = nil then
+    result := false
+  else
+  begin
+    result := Self^.Song.Length > o^.Song.Length;
+  end;
 end;
 
 Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
@@ -516,6 +530,7 @@ var
 
 begin
   SortAllLists(ArtistList, AlbumList, SongList);
+  Writeln('Меню создания playlist-ов:');
   Write('Введите направление исполнителя: ');
   Readln(Dir);
 
@@ -535,8 +550,10 @@ begin
   ListOfAllSong^.Max_Id := 0;
 
   MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
-
-  // WatchSongList(ListOfAllSong);
+  { Для теста
+    SelectionSort(ListOfAllSong, [], SongCompareTo2);
+    WatchSongList(ListOfAllSong);
+  }
   MakePlaylist(ListOfAllSong, PLength, PlaylistsArr);
   MakeArrOfPlaylists(ListOfAllSong, ArrOfPlayLists, PlaylistsArr);
   CalcCountOfArtist(ArrOfPlayLists, AlbumList);
