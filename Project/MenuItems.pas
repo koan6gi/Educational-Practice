@@ -182,7 +182,7 @@ Procedure MenuItem8_Playlist(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
   var Arr: TArrOfLists;
   begin
-    MakePlayList(ArtistList, AlbumList, SongList, Arr);
+    MakePlayListMenu(ArtistList, AlbumList, SongList, Arr);
   end;
 
 Procedure DeleteAllLists(var ArtistList: TAdrOfArtistList;

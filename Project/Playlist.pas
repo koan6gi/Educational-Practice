@@ -7,8 +7,8 @@ uses
 Procedure SortAllLists(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList);
 
-Procedure MakePlayList(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
-  SongList: TAdrOfSongList; var Arr: TArrOfLists);
+Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList; var Arr: TArrOfLists);
 
 implementation
 
@@ -266,32 +266,115 @@ begin
   end;
 end;
 
-Procedure MakePlayList(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
-  SongList: TAdrOfSongList; var Arr: TArrOfLists);
+Function SongCompareTo2(Self, o: TAdrOfList;
+  const ArrIn: TArrayOfIndexes): Boolean;
+begin
+  if o = nil then
+    result := false
+  else
+  begin
+    result := Self^.Song.Length > o^.Song.Length;
+  end;
+end;
+
+Procedure MakePlaylist(ListOfAllSong: TAdrOfSongList; const PLength: Integer;
+  var Arr: TArrOfArrOfIndexes);
+var
+  ArrInd: TArrayOfIndexes;
+  i, Sum: Integer;
+  Procedure MPlaylist(LSong: TAdrOfSongList; i: Integer);
+  var
+    Flag: Boolean;
+    k: Integer;
+  begin
+    while LSong^.next <> nil do
+    begin
+      Flag := False;
+      LSong := LSong^.next;
+      Sum := Sum + LSong^.Song.Length;
+      if Sum > PLength then
+      begin
+        Sum := Sum - LSong^.Song.Length;
+      end
+      else if Sum < PLength then
+      begin
+        if i > High(ArrInd) then
+          Add10(ArrInd);
+        ArrInd[i] := LSong^.Song.ID;
+        Inc(i);
+        Flag := True;
+        MPlaylist(LSong, i);
+      end
+      else
+      begin
+        if i > High(ArrInd) then
+          Add10(ArrInd);
+        ArrInd[i] := LSong^.Song.ID;
+        SetLength(Arr, Length(Arr) + 1);
+        Arr[High(Arr)] := Copy(ArrInd);
+        ArrInd[i] := 0;
+        MPlaylist(LSong, i);
+      end;
+      //MPlaylist(LSong, i);
+
+      if flag then
+      begin
+        Sum := Sum - LSong^.Song.Length;
+        Dec(i);
+        for k := High(ArrInd) downto i do
+          ArrInd[k] := 0;
+      end;
+    end;
+
+  end;
+
+begin
+  SetLength(ArrInd, 0);
+  SetLength(Arr, 0);
+  i := 0;
+  Sum := 0;
+  MPlaylist(ListOfAllSong, i);
+
+end;
+
+Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList; var Arr: TArrOfLists);
 var
   ArrIndArtist, ArrIndAlbum: TArrayOfIndexes;
   Dir: TDirString;
-  Time, Year: Integer;
+  PLength, Year: Integer;
   ListOfAllSong: TAdrOfSongList;
+  ArrOfPlaylists: TArrOfArrOfIndexes;
 
 begin
   SortAllLists(ArtistList, AlbumList, SongList);
   Write('Введите направление исполнителя: ');
-  Readln(Dir);
+  //Readln(Dir);
+  Dir := 'Rock';
+
   Writeln('Введите длину Playlist-а в формате: чч:мм:сс.');
   Writeln('(Если часы и/или минуты равны 0-ю, 0-и необходимо записать, пример:');
   Writeln('00:00:45 / 00:45:00).');
   Write('Длина: ');
-  ReadTime(Time);
+  //ReadTime(PLength);
+  PLength := 500;
   Write('Введите год, с которого выбирать песни: ');
-  ReadNum(Year);
+  //ReadNum(Year);
+  Year := 1;
+
   FillArrOfArtistInd(ArtistList, Dir, ArrIndArtist);
   FillArrOfAlbumInd(AlbumList, Year, ArrIndArtist, ArrIndAlbum);
+
   New(ListOfAllSong);
   ListOfAllSong^.next := nil;
   ListOfAllSong^.Max_Id := 0;
+
   MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
+
+  SelectionSort(ListOfAllSong, [], SongCompareTo2);
   WatchSongList(ListOfAllSong);
+  MakePlaylist(ListOfAllSong, PLength, ArrOfPlaylists);
+  readln;
 end;
 
 end.
