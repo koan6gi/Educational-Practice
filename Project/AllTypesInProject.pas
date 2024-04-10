@@ -81,7 +81,7 @@ Type
 
     TArrOfArrOfIndexes = array of TArrayOfIndexes;
 
-  TArrOfLists = array of TAdrOfSongList;
+  TArrOfPlaylists = array of TAdrOfSongList;
 
 Procedure Add10(var Arr: TArrayOfIndexes);
 Procedure ReadNum(var n: Integer);

@@ -180,7 +180,7 @@ end;
 
 Procedure MenuItem8_Playlist(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
-  var Arr: TArrOfLists;
+  var Arr: TArrOfPlaylists;
   begin
     MakePlayListMenu(ArtistList, AlbumList, SongList, Arr);
   end;

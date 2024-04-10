@@ -1,4 +1,4 @@
-unit Playlist;
+п»їunit Playlist;
 
 interface
 
@@ -21,7 +21,7 @@ begin
   i := Low(ArrIn);
   Flag := true;
   result := -1;
-  while Flag and (i < High(ArrIn)) do
+  while Flag and (i <= High(ArrIn)) do
   begin
     if item = ArrIn[i] then
     begin
@@ -176,7 +176,7 @@ begin
     if Err and Format then
       Flag := true
     else
-      Write('Неверный формат ввода, введите снова: ');
+      Write('РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РІРІРѕРґР°, РІРІРµРґРёС‚Рµ СЃРЅРѕРІР°: ');
 
   until Flag = true;
 
@@ -266,17 +266,6 @@ begin
   end;
 end;
 
-Function SongCompareTo2(Self, o: TAdrOfList;
-  const ArrIn: TArrayOfIndexes): Boolean;
-begin
-  if o = nil then
-    result := false
-  else
-  begin
-    result := Self^.Song.Length > o^.Song.Length;
-  end;
-end;
-
 Procedure MakePlaylist(ListOfAllSong: TAdrOfSongList; const PLength: Integer;
   var Arr: TArrOfArrOfIndexes);
 var
@@ -312,6 +301,7 @@ var
         ArrInd[i] := LSong^.Song.ID;
         SetLength(Arr, Length(Arr) + 1);
         Arr[High(Arr)] := Copy(ArrInd);
+        Inc(i);
         Flag := true;
       end;
 
@@ -331,8 +321,9 @@ begin
   i := 0;
   Sum := 0;
   MPlaylist(ListOfAllSong, i);
-
 end;
+
+Procedure FillArrOfPlaylists(ArrOfPlaylists: T);
 
 Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList; var Arr: TArrOfLists);
@@ -345,15 +336,15 @@ var
 
 begin
   SortAllLists(ArtistList, AlbumList, SongList);
-  Write('Введите направление исполнителя: ');
+  Write('Р’РІРµРґРёС‚Рµ РЅР°РїСЂР°РІР»РµРЅРёРµ РёСЃРїРѕР»РЅРёС‚РµР»СЏ: ');
   Readln(Dir);
 
-  Writeln('Введите длину Playlist-а в формате: чч:мм:сс.');
-  Writeln('(Если часы и/или минуты равны 0-ю, 0-и необходимо записать, пример:');
+  Writeln('Р’РІРµРґРёС‚Рµ РґР»РёРЅСѓ Playlist-Р° РІ С„РѕСЂРјР°С‚Рµ: С‡С‡:РјРј:СЃСЃ.');
+  Writeln('(Р•СЃР»Рё С‡Р°СЃС‹ Рё/РёР»Рё РјРёРЅСѓС‚С‹ СЂР°РІРЅС‹ 0-СЋ, 0-Рё РЅРµРѕР±С…РѕРґРёРјРѕ Р·Р°РїРёСЃР°С‚СЊ, РїСЂРёРјРµСЂ:');
   Writeln('00:00:45 / 00:45:00).');
-  Write('Длина: ');
+  Write('Р”Р»РёРЅР°: ');
   ReadTime(PLength);
-  Write('Введите год, с которого выбирать песни: ');
+  Write('Р’РІРµРґРёС‚Рµ РіРѕРґ, СЃ РєРѕС‚РѕСЂРѕРіРѕ РІС‹Р±РёСЂР°С‚СЊ РїРµСЃРЅРё: ');
   ReadNum(Year);
 
   FillArrOfArtistInd(ArtistList, Dir, ArrIndArtist);
@@ -365,7 +356,6 @@ begin
 
   MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
 
-  SelectionSort(ListOfAllSong, [], SongCompareTo2);
   WatchSongList(ListOfAllSong);
   MakePlaylist(ListOfAllSong, PLength, ArrOfPlaylists);
 end;
