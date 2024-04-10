@@ -426,16 +426,16 @@ end;
 Procedure WriteCountOfArtist(ArrOfPlayLists: TArrOfPlaylists;
   ArrOfArrArtistIndexes: TArrOfArrOfIndexes);
 var
-  I: Integer;
-  j: Integer;
+  i: Integer;
+  J: Integer;
 begin
-  for I := Low(ArrOfPlayLists) to High(ArrOfPlayLists) do
+  for i := Low(ArrOfPlayLists) to High(ArrOfPlayLists) do
   begin
-    j := 0;
-    while ArrOfArrArtistIndexes[i, j] <> 0 do
+    J := 0;
+    while ArrOfArrArtistIndexes[i, J] <> 0 do
     begin
       Inc(ArrOfPlayLists[i]^.Max_Id);
-      Inc(j);
+      Inc(J);
     end;
   end;
 
@@ -469,8 +469,31 @@ begin
       Inc(J);
     end;
   end;
-  WriteCountOfArtist(ArrOfPlaylists, ArrOfArrArtistIndexes);
+  WriteCountOfArtist(ArrOfPlayLists, ArrOfArrArtistIndexes);
 
+end;
+
+Procedure ShellSort(var A: TArrOfPlaylists);
+var
+  gap, i, J, temp, Len: Integer;
+begin
+  Len := Length(A);
+  gap := Len div 2;
+  while gap > 0 do
+  begin
+    for i := gap + 1 to Len do
+    begin
+      temp := A[i]^.Max_Id;
+      J := i;
+      while (J > gap) and (A[J - gap]^.Max_Id > temp) do
+      begin
+        A[J]^.Max_Id := A[J - gap]^.Max_Id;
+        J := J - gap;
+      end;
+      A[J]^.Max_Id := temp;
+    end;
+    gap := gap div 2;
+  end;
 end;
 
 Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
@@ -511,6 +534,7 @@ begin
   CalcCountOfArtist(ArrOfPlayLists, AlbumList);
 
   Writeln('Количество playlist-ов: ', Length(ArrOfPlayLists));
+  ShellSort(ArrOfPlayLists);
 
 end;
 
