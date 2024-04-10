@@ -9,7 +9,7 @@ Procedure SortAllLists(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
 
 Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
-  var Arr: TArrOfPlaylists);
+  var ArrOfPlayLists: TArrOfPlaylists);
 
 implementation
 
@@ -275,7 +275,6 @@ var
   Procedure MPlaylist(LSong: TAdrOfSongList; i: Integer);
   var
     Flag: Boolean;
-    k: Integer;
   begin
     while LSong^.next <> nil do
     begin
@@ -340,35 +339,123 @@ begin
 end;
 
 Procedure MakeArrOfPlaylists(ListOfAllSong: TAdrOfSongList;
-  var ArrOfPlaylists: TArrOfPlaylists; PlaylistsArr: TArrOfArrOfIndexes);
+  var ArrOfPlayLists: TArrOfPlaylists; PlaylistsArr: TArrOfArrOfIndexes);
 var
   i, J: Integer;
   Tmp: TAdrOfSongList;
 begin
-  SetLength(ArrOfPlaylists, Length(PlaylistsArr));
-  for i := Low(ArrOfPlaylists) to High(ArrOfPlaylists) do
+  SetLength(ArrOfPlayLists, Length(PlaylistsArr));
+  for i := Low(ArrOfPlayLists) to High(ArrOfPlayLists) do
   begin
-    New(ArrOfPlaylists[i]);
-    ArrOfPlaylists[i]^.next := nil;
+    New(ArrOfPlayLists[i]);
+    ArrOfPlayLists[i]^.next := nil;
 
     J := 0;
 
+    Tmp := ArrOfPlayLists[i];
     while PlaylistsArr[i, J] <> 0 do
     begin
-      New(ArrOfPlaylists[i]^.next);
-      ArrOfPlaylists[i] := ArrOfPlaylists[i]^.next;
-      ArrOfPlaylists[i]^.Song := FindSong(ListOfAllSong, PlaylistsArr[i, J]);
-      ArrOfPlaylists[i]^.next := nil;
+      New(Tmp^.next);
+      Tmp := Tmp^.next;
+      Tmp.Song := FindSong(ListOfAllSong, PlaylistsArr[i, J]);
+      Tmp^.next := nil;
       Inc(J);
     end;
   end;
 
-  FillArrOfPlaylists(ArrOfPlaylists, PlaylistsArr);
+end;
+
+function IsArrHasID(Arr: TArrayOfIndexes; ID: Integer): Boolean;
+var
+  i: Integer;
+begin
+  i := 0;
+  result := false;
+  while Not(result) and (i <= High(Arr)) do
+  begin
+    if Arr[i] = ID then
+      result := true;
+    Inc(i);
+  end;
+
+end;
+
+Procedure CalcCountOfAlbum(ArrOfPlayLists: TArrOfPlaylists;
+  var ArrOfArrAlbumIndexes: TArrOfArrOfIndexes);
+var
+  i, J: Integer;
+  Tmp: TAdrOfSongList;
+begin
+  SetLength(ArrOfArrAlbumIndexes, Length(ArrOfPlayLists));
+
+  for i := Low(ArrOfPlayLists) to High(ArrOfPlayLists) do
+  begin
+    Tmp := ArrOfPlayLists[i];
+    J := 0;
+    while Tmp^.next <> nil do
+    begin
+      Tmp := Tmp^.next;
+      if Not(IsArrHasID(ArrOfArrAlbumIndexes[i], Tmp^.Song.ID_Album)) then
+      begin
+        if J > High(ArrOfArrAlbumIndexes[i]) then
+          Add10(ArrOfArrAlbumIndexes[i]);
+
+        ArrOfArrAlbumIndexes[i, J] := Tmp^.Song.ID_Album;
+        Inc(j);
+      end;
+    end;
+  end;
+end;
+
+Function FindArtistID(AlbumList: TAdrOfAlbumList; ID: Integer): Integer;
+var
+  Flag: Boolean;
+begin
+  Flag := true;
+  while (AlbumList^.next <> nil) and Flag do
+  begin
+    AlbumList := AlbumList^.next;
+    if AlbumList^.Album.ID = ID then
+      Flag := false;
+  end;
+  result := AlbumList^.Album.ID_Artist;
+
+end;
+
+Procedure CalcCountOfArtist(ArrOfPlayLists: TArrOfPlaylists;
+  AlbumList: TAdrOfAlbumList);
+var
+  ArrOfArrArtistIndexes, ArrOfArrAlbumIndexes: TArrOfArrOfIndexes;
+  i, J, ID, Index: Integer;
+begin
+  CalcCountOfAlbum(ArrOfPlayLists, ArrOfArrAlbumIndexes);
+  SetLength(ArrOfArrArtistIndexes, Length(ArrOfArrAlbumIndexes));
+
+  for i := Low(ArrOfArrArtistIndexes) to High(ArrOfArrArtistIndexes) do
+  begin
+    J := 0;
+    Index := 0;
+    while ArrOfArrAlbumIndexes[i, J] <> 0 do
+    begin
+      ID := FindArtistID(AlbumList, ArrOfArrAlbumIndexes[i, J]);
+      if Not(IsArrHasID(ArrOfArrArtistIndexes[i], ID)) then
+      begin
+        if index > High(ArrOfArrArtistIndexes[i]) then
+          Add10(ArrOfArrArtistIndexes[i]);
+
+        ArrOfArrArtistIndexes[i, index] := ID;
+        Inc(Index);
+      end;
+
+      Inc(J);
+    end;
+  end;
+
 end;
 
 Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
-  var Arr: TArrOfPlaylists);
+  var ArrOfPlayLists: TArrOfPlaylists);
 var
   ArrIndArtist, ArrIndAlbum: TArrayOfIndexes;
   Dir: TDirString;
@@ -400,7 +487,8 @@ begin
 
   // WatchSongList(ListOfAllSong);
   MakePlaylist(ListOfAllSong, PLength, PlaylistsArr);
-  MakeArrOfPlaylists(ListOfAllSong, Arr, PlaylistsArr);
+  MakeArrOfPlaylists(ListOfAllSong, ArrOfPlayLists, PlaylistsArr);
+  CalcCountOfArtist(ArrOfPlayLists, AlbumList);
 end;
 
 end.
