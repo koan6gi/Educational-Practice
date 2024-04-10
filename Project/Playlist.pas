@@ -1,4 +1,4 @@
-п»їunit Playlist;
+unit Playlist;
 
 interface
 
@@ -8,7 +8,8 @@ Procedure SortAllLists(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList);
 
 Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
-  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList; var Arr: TArrOfLists);
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
+  var Arr: TArrOfPlaylists);
 
 implementation
 
@@ -176,7 +177,7 @@ begin
     if Err and Format then
       Flag := true
     else
-      Write('РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РІРІРѕРґР°, РІРІРµРґРёС‚Рµ СЃРЅРѕРІР°: ');
+      Write('Неверный формат ввода, введите снова: ');
 
   until Flag = true;
 
@@ -323,28 +324,76 @@ begin
   MPlaylist(ListOfAllSong, i);
 end;
 
-Procedure FillArrOfPlaylists(ArrOfPlaylists: T);
+Function FindSong(SongList: TAdrOfSongList; ID: Integer): TSong;
+var
+  Flag: Boolean;
+begin
+  Flag := true;
+  while (SongList^.next <> nil) and Flag do
+  begin
+    SongList := SongList^.next;
+    if SongList^.Song.ID = ID then
+      Flag := false;
+  end;
+  result := SongList^.Song;
+
+end;
+
+Procedure MakeArrOfPlaylists(ListOfAllSong: TAdrOfSongList; ArrOfPlaylists: TArrOfPlaylists;
+  PlaylistsArr: TArrOfArrOfIndexes);
+  Procedure FillArrOfPlaylists(ArrOfPlaylists: TArrOfPlaylists;
+    PArr: TArrOfArrOfIndexes);
+  var
+    i, j: Integer;
+  begin
+    for i := Low(ArrOfPlaylists) to High(ArrOfPlaylists) do
+    begin
+      J := 0;
+      while PArr[i, J] <> 0 do
+      begin
+        New(ArrOfPlaylists[i]^.next);
+        ArrOfPlaylists[i] := ArrOfPlaylists[i]^.next;
+        ArrOfPlaylists[i]^.Song := FindSong(ListOfAllSong, PArr[i, J]);
+        ArrOfPlaylists[i]^.next := nil;
+        Inc(J);
+      end;
+    end;
+  end;
+
+var
+  i: Integer;
+begin
+  SetLength(ArrOfPlaylists, Length(PlaylistsArr));
+  for i := Low(ArrOfPlaylists) to High(ArrOfPlaylists) do
+  begin
+    New(ArrOfPlaylists[i]);
+    ArrOfPlaylists[i]^.next := nil;
+  end;
+
+  FillArrOfPlaylists(ArrOfPlaylists, PlaylistsArr);
+end;
 
 Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
-  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList; var Arr: TArrOfLists);
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
+  var Arr: TArrOfPlaylists);
 var
   ArrIndArtist, ArrIndAlbum: TArrayOfIndexes;
   Dir: TDirString;
   PLength, Year: Integer;
   ListOfAllSong: TAdrOfSongList;
-  ArrOfPlaylists: TArrOfArrOfIndexes;
+  PlaylistsArr: TArrOfArrOfIndexes;
 
 begin
   SortAllLists(ArtistList, AlbumList, SongList);
-  Write('Р’РІРµРґРёС‚Рµ РЅР°РїСЂР°РІР»РµРЅРёРµ РёСЃРїРѕР»РЅРёС‚РµР»СЏ: ');
+  Write('Введите направление исполнителя: ');
   Readln(Dir);
 
-  Writeln('Р’РІРµРґРёС‚Рµ РґР»РёРЅСѓ Playlist-Р° РІ С„РѕСЂРјР°С‚Рµ: С‡С‡:РјРј:СЃСЃ.');
-  Writeln('(Р•СЃР»Рё С‡Р°СЃС‹ Рё/РёР»Рё РјРёРЅСѓС‚С‹ СЂР°РІРЅС‹ 0-СЋ, 0-Рё РЅРµРѕР±С…РѕРґРёРјРѕ Р·Р°РїРёСЃР°С‚СЊ, РїСЂРёРјРµСЂ:');
+  Writeln('Введите длину Playlist-а в формате: чч:мм:сс.');
+  Writeln('(Если часы и/или минуты равны 0-ю, 0-и необходимо записать, пример:');
   Writeln('00:00:45 / 00:45:00).');
-  Write('Р”Р»РёРЅР°: ');
+  Write('Длина: ');
   ReadTime(PLength);
-  Write('Р’РІРµРґРёС‚Рµ РіРѕРґ, СЃ РєРѕС‚РѕСЂРѕРіРѕ РІС‹Р±РёСЂР°С‚СЊ РїРµСЃРЅРё: ');
+  Write('Введите год, с которого выбирать песни: ');
   ReadNum(Year);
 
   FillArrOfArtistInd(ArtistList, Dir, ArrIndArtist);
@@ -357,7 +406,7 @@ begin
   MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
 
   WatchSongList(ListOfAllSong);
-  MakePlaylist(ListOfAllSong, PLength, ArrOfPlaylists);
+  MakePlaylist(ListOfAllSong, PLength, PlaylistsArr);
 end;
 
 end.

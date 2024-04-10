@@ -117,12 +117,9 @@ end;
 // Read SongList from file
 Procedure ReadSongListFromFile(SongList: TAdrOfSongList;
   var SongFile: TSongFile);
-var
-  MaxID: ^Integer;
 begin
   Assign(SongFile, 'SongFile');
   Reset(SongFile);
-  MaxID := @SongList^.Max_Id;
 
   if Not(Eof(SongFile)) then
   begin
@@ -133,7 +130,6 @@ begin
     SongList := SongList^.next;
     Read(SongFile, SongList^.Song);
 
-    MaxID^ := SongList^.Song.ID;
     while Not(Eof(SongFile)) do
     begin
       New(SongList^.next);
