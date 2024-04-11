@@ -476,22 +476,23 @@ end;
 
 Procedure ShellSort(var A: TArrOfPlaylists);
 var
-  gap, i, J, temp, Len: Integer;
+  gap, i, J, Len: Integer;
+  Temp: TAdrOfSongList;
 begin
   Len := High(A);
   gap := Len div 2;
   while gap > 0 do
   begin
-    for i := gap + 1 to Len do
+    for i := gap to Len do
     begin
-      temp := A[i]^.Max_Id;
+      Temp := A[i];
       J := i;
-      while (J > gap) and (A[J - gap]^.Max_Id > temp) do
+      while (J >= gap) and (A[J - gap]^.Max_Id > Temp^.Max_Id) do
       begin
-        A[J]^.Max_Id := A[J - gap]^.Max_Id;
+        A[J] := A[J - gap];
         J := J - gap;
       end;
-      A[J]^.Max_Id := temp;
+      A[J] := Temp;
     end;
     gap := gap div 2;
   end;
@@ -507,8 +508,7 @@ end;
 
 Function SongCompareTo2(Self, o: TAdrOfList;
   const ArrIn: TArrayOfIndexes): Boolean;
-var
-  P: Boolean;
+
 begin
   if o = nil then
     result := false
@@ -550,10 +550,10 @@ begin
   ListOfAllSong^.Max_Id := 0;
 
   MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
-  { Для теста
-    SelectionSort(ListOfAllSong, [], SongCompareTo2);
-    WatchSongList(ListOfAllSong);
-  }
+  { Для теста }
+  SelectionSort(ListOfAllSong, [], SongCompareTo2);
+  WatchSongList(ListOfAllSong);
+
   MakePlaylist(ListOfAllSong, PLength, PlaylistsArr);
   MakeArrOfPlaylists(ListOfAllSong, ArrOfPlayLists, PlaylistsArr);
   CalcCountOfArtist(ArrOfPlayLists, AlbumList);
