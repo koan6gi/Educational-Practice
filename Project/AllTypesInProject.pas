@@ -3,6 +3,13 @@ unit AllTypesInProject;
 interface
 
 Type
+  TDir = record
+    ID: Integer;
+    Dir: String;
+  end;
+
+  TArrOfDir = array of TDir;
+
   TAdrOfArtistList = ^TArtistList;
   TAdrOfAlbumList = ^TAlbumList;
   TAdrOfSongList = ^TSongList;

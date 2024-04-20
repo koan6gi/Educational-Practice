@@ -4,21 +4,20 @@ interface
 
 uses AllTypesInProject;
 
-// Read All Lists from files
-Procedure ReadAllListsFromFiles(var State: Integer;
-  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
-  SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
-  var AlbumFile: TAlbumFile; var SongFile: TSongFile);
-
 // ReWrite All Lists in files
 Procedure ReWriteAllListsInFiles(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
   var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
   var SongFile: TSongFile);
 
+Procedure MenuReadFiles(var State: Integer; var CurrSession: String;
+  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile);
+
 implementation
 
-uses SysUtils;
+uses SysUtils, IOUtils;
 
 { \\\\\\\\\\ Work with ArtistFile ////////// }
 
@@ -186,6 +185,108 @@ begin
   ReWriteArtistListInFile(ArtistList, ArtistFile);
   ReWriteAlbumListInFile(AlbumList, AlbumFile);
   ReWriteSongListInFile(SongList, SongFile);
+end;
+
+//
+Procedure GetAllDirectories(var ArrOfDirectories: TArrOfDir);
+var
+  i: Integer;
+  S: String;
+begin
+  i := 0;
+  for S in TDirectory.GetDirectories('.\files') do
+  begin
+    Inc(i);
+    Setlength(ArrOfDirectories, i);
+    ArrOfDirectories[i - 1].ID := i;
+    ArrOfDirectories[i - 1].Dir := S;
+  end;
+
+end;
+
+Function SearchInArr(const Arr: TArrOfDir; const item: Integer): Integer;
+var
+  Flag: Boolean;
+  i: Integer;
+begin
+  i := Low(Arr);
+  Flag := true;
+  result := -1;
+  while Flag and (i <= High(Arr)) do
+  begin
+    if item = Arr[i].ID then
+    begin
+      result := i;
+      Flag := false;
+    end;
+    Inc(i);
+  end;
+
+end;
+
+Type
+  TReqForInput = Set of Char;
+
+Procedure CreateNewSession(var CurrSession: String);
+var
+  NameSession: String;
+  ReqForInput: TReqForInput;
+  Flag: Boolean;
+  i: Integer;
+begin
+  Flag := true;
+  ReqForInput := [' ', 'A' .. 'Z', 'a' .. 'z', 'А' .. 'Я', 'а' .. 'я',
+    '0' .. '9'];
+  Writeln('Введите имя новой сессии.');
+  Writeln('Правила для ввода имени.');
+  Writeln('Длина должна быть от 1 до 50 символов.');
+  Writeln('В состав названия могут входить буквы английского');
+  Writeln('и русского алфавитов, числа и пробелы.');
+  Write('Имя сессии: ');
+  repeat
+    if Not(Flag) then
+      Write('Неверный формат ввода. Введите снова: ');
+
+    Readln(NameSession);
+    if (Length(NameSession) = 0) or DirectoryExists('.\files\' + NameSession)
+    then
+    begin
+      Flag := false;
+    end
+    else
+      for i := Low(NameSession) to High(NameSession) do
+        if Not(NameSession[i] in ReqForInput) then
+        begin
+          Flag := false;
+          break;
+        end;
+
+  until Flag;
+
+end;
+
+//
+Procedure MenuReadFiles(var State: Integer; var CurrSession: String;
+  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile);
+var
+  i: Integer;
+  ArrOfDirectories: TArrOfDir;
+begin
+  GetAllDirectories(ArrOfDirectories);
+  Writeln('Меню чтения из файла.');
+  for i := Low(ArrOfDirectories) to High(ArrOfDirectories) do
+    Writeln(ArrOfDirectories[i].ID, ' ', ArrOfDirectories[i].Dir);
+
+  if Length(ArrOfDirectories) = 0 then
+  begin
+    CreateNewSession(CurrSession);
+  end
+  else
+  begin
+
+  end;
 end;
 
 end.

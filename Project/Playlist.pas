@@ -542,6 +542,25 @@ begin
   end;
 end;
 
+Procedure DeletePlaylists(var Arr: TArrOfPlaylists);
+var
+  i: Integer;
+  Tmp, TmpSongList: TAdrOfSongList;
+begin
+  for i := Low(Arr) to High(Arr) do
+  begin
+    TmpSongList := Arr[i];
+    Arr[i] := nil;
+    while TmpSongList <> nil do
+    begin
+      Tmp := TmpSongList;
+      TmpSongList := TmpSongList^.next;
+      Dispose(Tmp);
+    end;
+  end;
+  SetLength(Arr, 0);
+end;
+
 // Меню создания playlist-а
 Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
@@ -577,10 +596,17 @@ begin
   MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
 
   SelectionSort(ListOfAllSong, [], SongCompareTo2);
-  WatchSongList(ListOfAllSong);
+  { Для теста }
+  // WatchSongList(ListOfAllSong);
+
+  SetLength(ArrIndArtist, 0);
+  SetLength(ArrIndAlbum, 0);
 
   MakePlaylist(ListOfAllSong, PLength, PlaylistsArr);
   MakeArrOfPlaylists(ListOfAllSong, ArrOfPlayLists, PlaylistsArr);
+
+  SetLength(PlaylistsArr, 0);
+
   CalcCountOfArtist(ArrOfPlayLists, AlbumList);
 
   Writeln('Количество playlist-ов: ', Length(ArrOfPlayLists));

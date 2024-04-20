@@ -4,10 +4,10 @@ interface
 
 uses AllTypesInProject, WorkWithLists, WorkWithFiles, PlayList;
 
-Procedure MenuItem1_ReadLists(ArtistList: TAdrOfArtistList;
-  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
-  var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
-  var SongFile: TSongFile; var State: Integer);
+Procedure MenuItem1_ReadLists(var CurrSession: String;
+  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile; var State: Integer);
 
 Procedure MenuItem2_WatchLists(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
@@ -35,15 +35,15 @@ Procedure DeleteAllLists(var ArtistList: TAdrOfArtistList;
 
 implementation
 
-Procedure MenuItem1_ReadLists(ArtistList: TAdrOfArtistList;
-  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
-  var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
-  var SongFile: TSongFile; var State: Integer);
+Procedure MenuItem1_ReadLists(var CurrSession: String;
+  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile; var State: Integer);
 begin
   if State = 0 then
   begin
-    ReadAllListsFromFiles(State, ArtistList, AlbumList, SongList, ArtistFile,
-      AlbumFile, SongFile);
+    MenuReadFiles(State, CurrSession, ArtistList, AlbumList, SongList,
+      ArtistFile, AlbumFile, SongFile);
     if State = 1 then
       Writeln('Данные успешно прочитаны.')
     else
