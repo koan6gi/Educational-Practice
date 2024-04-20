@@ -16,6 +16,7 @@ var
   SongFile: TSongFile;
   Menu: Integer;
   StateOfFiles: Integer;
+  CurrSession: String;
 
 begin
   StateOfFiles := 0;
@@ -49,7 +50,7 @@ begin
     case Menu of
       1:
         begin
-          MenuItem1_ReadLists(ArtistList, AlbumList, SongList, ArtistFile,
+          MenuItem1_ReadLists(CurrSession, ArtistList, AlbumList, SongList, ArtistFile,
             AlbumFile, SongFile, StateOfFiles);
         end;
 
@@ -91,7 +92,7 @@ begin
 
       10:
         begin
-          ReWriteAllListsInFiles(ArtistList, AlbumList, SongList, ArtistFile,
+          ReWriteAllListsInFiles(CurrSession, ArtistList, AlbumList, SongList, ArtistFile,
             AlbumFile, SongFile);
         end;
     end;

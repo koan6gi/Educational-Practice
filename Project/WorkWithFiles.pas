@@ -5,10 +5,10 @@ interface
 uses AllTypesInProject;
 
 // ReWrite All Lists in files
-Procedure ReWriteAllListsInFiles(ArtistList: TAdrOfArtistList;
-  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
-  var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
-  var SongFile: TSongFile);
+Procedure ReWriteAllListsInFiles(var CurrSession: String;
+  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile);
 
 Procedure MenuReadFiles(var State: Integer; var CurrSession: String;
   ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
@@ -22,11 +22,11 @@ uses SysUtils, IOUtils;
 { \\\\\\\\\\ Work with ArtistFile ////////// }
 
 // Read ArtistList from file
-Procedure ReadArtistListFromFile(ArtistList: TAdrOfArtistList;
-  var ArtistFile: TArtistFile);
+Procedure ReadArtistListFromFile(var CurrSession: String;
+  ArtistList: TAdrOfArtistList; var ArtistFile: TArtistFile);
 
 begin
-  Assign(ArtistFile, 'ArtistFile');
+  Assign(ArtistFile, CurrSession + '\ArtistFile');
   Reset(ArtistFile);
 
   if Not(Eof(ArtistFile)) then
@@ -46,10 +46,10 @@ begin
 end;
 
 // ReWrite ArtistList in file
-Procedure ReWriteArtistListInFile(ArtistList: TAdrOfArtistList;
-  var ArtistFile: TArtistFile);
+Procedure ReWriteArtistListInFile(var CurrSession: String;
+  ArtistList: TAdrOfArtistList; var ArtistFile: TArtistFile);
 begin
-  Assign(ArtistFile, 'ArtistFile');
+  Assign(ArtistFile, CurrSession + '\ArtistFile');
   ReWrite(ArtistFile);
 
   ArtistList^.Artist.ID := ArtistList^.Max_Id;
@@ -67,10 +67,10 @@ end;
 { \\\\\\\\\\ Work with AlbumFile ////////// }
 
 // Read AlbumList from file
-Procedure ReadAlbumListFromFile(AlbumList: TAdrOfAlbumList;
-  var AlbumFile: TAlbumFile);
+Procedure ReadAlbumListFromFile(var CurrSession: String;
+  AlbumList: TAdrOfAlbumList; var AlbumFile: TAlbumFile);
 begin
-  Assign(AlbumFile, 'AlbumFile');
+  Assign(AlbumFile, CurrSession + '\AlbumFile');
   Reset(AlbumFile);
   if Not(Eof(AlbumFile)) then
   begin
@@ -89,10 +89,10 @@ begin
 end;
 
 // ReWrite AlbumList in file
-Procedure ReWriteAlbumListInFile(AlbumList: TAdrOfAlbumList;
-  var AlbumFile: TAlbumFile);
+Procedure ReWriteAlbumListInFile(var CurrSession: String;
+  AlbumList: TAdrOfAlbumList; var AlbumFile: TAlbumFile);
 begin
-  Assign(AlbumFile, 'AlbumFile');
+  Assign(AlbumFile, CurrSession + '\AlbumFile');
   ReWrite(AlbumFile);
 
   AlbumList^.Album.ID := AlbumList^.Max_Id;
@@ -110,10 +110,10 @@ end;
 { \\\\\\\\\\ Work with SongFile ////////// }
 
 // Read SongList from file
-Procedure ReadSongListFromFile(SongList: TAdrOfSongList;
-  var SongFile: TSongFile);
+Procedure ReadSongListFromFile(var CurrSession: String;
+  SongList: TAdrOfSongList; var SongFile: TSongFile);
 begin
-  Assign(SongFile, 'SongFile');
+  Assign(SongFile, CurrSession + '\SongFile');
   Reset(SongFile);
 
   if Not(Eof(SongFile)) then
@@ -133,10 +133,10 @@ begin
 end;
 
 // ReWrite SongList in file
-Procedure ReWriteSongListInFile(SongList: TAdrOfSongList;
-  var SongFile: TSongFile);
+Procedure ReWriteSongListInFile(var CurrSession: String;
+  SongList: TAdrOfSongList; var SongFile: TSongFile);
 begin
-  Assign(SongFile, 'SongFile');
+  Assign(SongFile, CurrSession + '\SongFile');
   ReWrite(SongFile);
 
   SongList^.Song.ID := SongList^.Max_Id;
@@ -151,10 +151,11 @@ begin
   Close(SongFile);
 end;
 
-Procedure CheckAllFiles(var State: Integer);
+Procedure CheckAllFiles(const CurrSession: String; var State: Integer);
 begin
-  if FileExists('ArtistFile') and FileExists('AlbumFile') and
-    FileExists('SongFile') then
+  if FileExists(CurrSession + '\ArtistFile') and
+    FileExists(CurrSession + '\AlbumFile') and
+    FileExists(CurrSession + '\SongFile') then
     State := 1
   Else
     State := 3;
@@ -162,29 +163,29 @@ begin
 end;
 
 // Read All Lists from files
-Procedure ReadAllListsFromFiles(var State: Integer;
+Procedure ReadAllListsFromFiles(var State: Integer; var CurrSession: String;
   ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
   var AlbumFile: TAlbumFile; var SongFile: TSongFile);
 begin
-  CheckAllFiles(State);
+  CheckAllFiles(CurrSession, State);
   if State = 1 then
   begin
-    ReadArtistListFromFile(ArtistList, ArtistFile);
-    ReadAlbumListFromFile(AlbumList, AlbumFile);
-    ReadSongListFromFile(SongList, SongFile);
+    ReadArtistListFromFile(CurrSession, ArtistList, ArtistFile);
+    ReadAlbumListFromFile(CurrSession, AlbumList, AlbumFile);
+    ReadSongListFromFile(CurrSession, SongList, SongFile);
   end;
 end;
 
 // ReWrite All Lists in files
-Procedure ReWriteAllListsInFiles(ArtistList: TAdrOfArtistList;
-  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
-  var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
-  var SongFile: TSongFile);
+Procedure ReWriteAllListsInFiles(var CurrSession: String;
+  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile);
 begin
-  ReWriteArtistListInFile(ArtistList, ArtistFile);
-  ReWriteAlbumListInFile(AlbumList, AlbumFile);
-  ReWriteSongListInFile(SongList, SongFile);
+  ReWriteArtistListInFile(CurrSession, ArtistList, ArtistFile);
+  ReWriteAlbumListInFile(CurrSession, AlbumList, AlbumFile);
+  ReWriteSongListInFile(CurrSession, SongList, SongFile);
 end;
 
 //
@@ -204,19 +205,19 @@ begin
 
 end;
 
-Function SearchInArr(const Arr: TArrOfDir; const item: Integer): Integer;
+Function SearchInArr(const Arr: TArrOfDir; const item: Integer): TDir;
 var
   Flag: Boolean;
   i: Integer;
 begin
   i := Low(Arr);
   Flag := true;
-  result := -1;
+  result.ID := -1;
   while Flag and (i <= High(Arr)) do
   begin
     if item = Arr[i].ID then
     begin
-      result := i;
+      result := Arr[i];
       Flag := false;
     end;
     Inc(i);
@@ -260,9 +261,33 @@ begin
           Flag := false;
           break;
         end;
-
   until Flag;
 
+  CurrSession := '.\files\' + NameSession;
+  TDirectory.CreateDirectory(CurrSession);
+
+end;
+
+Procedure ChooseSession(const ArrOfDirectories: TArrOfDir;
+  var CurrSession: String);
+var
+  Flag: Boolean;
+  IDSession: Integer;
+  Dir: TDir;
+begin
+  Flag := true;
+  Write('Введите номер сессии: ');
+  repeat
+    if Not(Flag) then
+      Write('Неверный формат ввода. Введите снова: ');
+
+    ReadNum(IDSession);
+
+    Dir := SearchInArr(ArrOfDirectories, IDSession);
+    if Dir.ID = -1 then
+      Flag := false;
+  until Flag;
+  CurrSession := Dir.Dir;
 end;
 
 //
@@ -285,7 +310,9 @@ begin
   end
   else
   begin
-
+    ChooseSession(ArrOfDirectories, CurrSession);
+    ReadAllListsFromFiles(State, CurrSession, ArtistList, AlbumList, SongList,
+      ArtistFile, AlbumFile, SongFile);
   end;
 end;
 
