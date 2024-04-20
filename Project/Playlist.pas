@@ -13,6 +13,7 @@ Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
 
 implementation
 
+// Бинарный поиск в массиве индексов
 Function SearchInArr(const ArrIn: TArrayOfIndexes; const item: Integer)
   : Integer;
 var
@@ -34,6 +35,7 @@ begin
 
 end;
 
+// Поменять два елемента списка местами
 Procedure Swap(var i, J);
 var
   Tmp: TAdrOfList;
@@ -49,6 +51,7 @@ begin
   B^.next.next := Tmp;
 end;
 
+// Компоратор исполнителей
 Function ArtistCompareTo(Self, o: TAdrOfList;
   const ArrIn: TArrayOfIndexes): Boolean;
 begin
@@ -58,6 +61,7 @@ begin
     result := Self^.Artist.Direction > o^.Artist.Direction;
 end;
 
+// Заполнить массив индексов альбомов и исполнителей
 Procedure FillArrOfIndexes(var L; var ArrIn: TArrayOfIndexes);
 var
   List: TAdrOfList;
@@ -75,6 +79,7 @@ begin
   end;
 end;
 
+// Компоратор альбомов
 Function AlbumCompareTo(Self, o: TAdrOfList;
   const ArrIn: TArrayOfIndexes): Boolean;
 var
@@ -91,6 +96,7 @@ begin
   end;
 end;
 
+// Компоратор песен
 Function SongCompareTo(Self, o: TAdrOfList;
   const ArrIn: TArrayOfIndexes): Boolean;
 var
@@ -107,6 +113,7 @@ begin
   end;
 end;
 
+// Сортировка прямым выбором для любого списка
 Procedure SelectionSort(var L; const ArrIn: TArrayOfIndexes;
   CompareTo: FCompareTo);
 var
@@ -129,6 +136,7 @@ begin
   end;
 end;
 
+// Процедура для сортировок всех списков разом
 Procedure SortAllLists(ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList);
 var
@@ -183,6 +191,7 @@ begin
 
 end;
 
+// Заполнить массив индексов исполнителей по направлению
 Procedure FillArrOfArtistInd(ArtistList: TAdrOfArtistList; Dir: TDataString;
   var ArrIn: TArrayOfIndexes);
 var
@@ -208,6 +217,7 @@ begin
   end;
 end;
 
+// Заполнить массив индексов альбомов с помощью массива исполнителей
 Procedure FillArrOfAlbumInd(AlbumList: TAdrOfAlbumList; Year: Integer;
   var ArrIndArt, ArrIndAlb: TArrayOfIndexes);
 var
@@ -238,6 +248,7 @@ begin
   end;
 end;
 
+// Заполнить список песен, которые подходят по году и направлению
 Procedure MakeListOfAllSong(SongList, ListOfAllSong: TAdrOfSongList;
   var ArrIndAlb: TArrayOfIndexes);
 var
@@ -267,11 +278,14 @@ begin
   end;
 end;
 
+// Процедура создания всех вариаций playlist-ов без повторений
 Procedure MakePlaylist(ListOfAllSong: TAdrOfSongList; const PLength: Integer;
   var Arr: TArrOfArrOfIndexes);
 var
   ArrInd: TArrayOfIndexes;
   i, Sum: Integer;
+  { Так как процедура рекурсивная, то создана внутренная
+    процедура для уменьшения количества переданных параметров }
   Procedure MPlaylist(LSong: TAdrOfSongList; i: Integer);
   var
     Flag: Boolean;
@@ -323,6 +337,7 @@ begin
   MPlaylist(ListOfAllSong, i);
 end;
 
+// Поиск данных песни по коду
 Function FindSong(SongList: TAdrOfSongList; ID: Integer): TSong;
 var
   Flag: Boolean;
@@ -338,6 +353,7 @@ begin
 
 end;
 
+// Процедура создания массива playlist-ов
 Procedure MakeArrOfPlaylists(ListOfAllSong: TAdrOfSongList;
   var ArrOfPlayLists: TArrOfPlaylists; PlaylistsArr: TArrOfArrOfIndexes);
 var
@@ -366,6 +382,7 @@ begin
 
 end;
 
+// Проверка на наличие кода исполнителя в массиве
 function IsArrHasID(Arr: TArrayOfIndexes; ID: Integer): Boolean;
 var
   i: Integer;
@@ -381,6 +398,7 @@ begin
 
 end;
 
+// Запись всех кодов альбомов из кодов песен
 Procedure CalcCountOfAlbum(ArrOfPlayLists: TArrOfPlaylists;
   var ArrOfArrAlbumIndexes: TArrOfArrOfIndexes);
 var
@@ -408,6 +426,7 @@ begin
   end;
 end;
 
+// Найти код исполнителя по коду альбома
 Function FindArtistID(AlbumList: TAdrOfAlbumList; ID: Integer): Integer;
 var
   Flag: Boolean;
@@ -423,6 +442,7 @@ begin
 
 end;
 
+// Записать количество исполнителей для сортировки
 Procedure WriteCountOfArtist(ArrOfPlayLists: TArrOfPlaylists;
   ArrOfArrArtistIndexes: TArrOfArrOfIndexes);
 var
@@ -441,6 +461,7 @@ begin
 
 end;
 
+// Рассчитать количество исполнителей, по количеству альбомов
 Procedure CalcCountOfArtist(ArrOfPlayLists: TArrOfPlaylists;
   AlbumList: TAdrOfAlbumList);
 var
@@ -474,6 +495,7 @@ begin
 
 end;
 
+// Сортировка Шелла для массива playlist-ов
 Procedure ShellSort(var A: TArrOfPlaylists);
 var
   gap, i, J, Len: Integer;
@@ -498,6 +520,7 @@ begin
   end;
 end;
 
+// Вывести все playlist-ы
 Procedure WatchAllPlaylists(ArrOfPlayLists: TArrOfPlaylists);
 var
   i: Integer;
@@ -506,6 +529,7 @@ begin
     WatchSongList(ArrOfPlayLists[i]);
 end;
 
+// 2-ой компоратор песен для сортировки по длине
 Function SongCompareTo2(Self, o: TAdrOfList;
   const ArrIn: TArrayOfIndexes): Boolean;
 
@@ -518,6 +542,7 @@ begin
   end;
 end;
 
+// Меню создания playlist-а
 Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
   var ArrOfPlayLists: TArrOfPlaylists);
@@ -550,7 +575,7 @@ begin
   ListOfAllSong^.Max_Id := 0;
 
   MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
-  { Для теста }
+
   SelectionSort(ListOfAllSong, [], SongCompareTo2);
   WatchSongList(ListOfAllSong);
 

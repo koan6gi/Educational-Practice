@@ -35,10 +35,6 @@ begin
     Read(ArtistFile, ArtistList^.Artist);
     ArtistList^.Max_Id := ArtistList^.Artist.ID;
 
-    New(ArtistList^.next);
-    ArtistList := ArtistList^.next;
-    Read(ArtistFile, ArtistList^.Artist);
-
     while Not(Eof(ArtistFile)) do
     begin
       New(ArtistList^.next);
@@ -125,10 +121,6 @@ begin
   begin
     Read(SongFile, SongList^.Song);
     SongList^.Max_Id := SongList^.Song.ID;
-
-    New(SongList^.next);
-    SongList := SongList^.next;
-    Read(SongFile, SongList^.Song);
 
     while Not(Eof(SongFile)) do
     begin
