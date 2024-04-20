@@ -10,7 +10,7 @@ Procedure ReWriteAllListsInFiles(var CurrSession: String;
   SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
   var AlbumFile: TAlbumFile; var SongFile: TSongFile);
 
-Procedure MenuReadFiles(var State: Integer; var CurrSession: String;
+Procedure MenuReadFiles(var State: TStateOfFile; var CurrSession: String;
   ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
   var AlbumFile: TAlbumFile; var SongFile: TSongFile);
@@ -151,25 +151,26 @@ begin
   Close(SongFile);
 end;
 
-Procedure CheckAllFiles(const CurrSession: String; var State: Integer);
+Procedure CheckAllFiles(const CurrSession: String; var State: TStateOfFile);
 begin
   if FileExists(CurrSession + '\ArtistFile') and
     FileExists(CurrSession + '\AlbumFile') and
     FileExists(CurrSession + '\SongFile') then
-    State := 1
-  Else
-    State := 3;
+    State := FileExist
+  else
+    State := FileNotExist;
 
 end;
 
 // Read All Lists from files
-Procedure ReadAllListsFromFiles(var State: Integer; var CurrSession: String;
-  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
-  SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
-  var AlbumFile: TAlbumFile; var SongFile: TSongFile);
+Procedure ReadAllListsFromFiles(var State: TStateOfFile;
+  var CurrSession: String; ArtistList: TAdrOfArtistList;
+  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
+  var ArtistFile: TArtistFile; var AlbumFile: TAlbumFile;
+  var SongFile: TSongFile);
 begin
   CheckAllFiles(CurrSession, State);
-  if State = 1 then
+  if State = FileExist then
   begin
     ReadArtistListFromFile(CurrSession, ArtistList, ArtistFile);
     ReadAlbumListFromFile(CurrSession, AlbumList, AlbumFile);
@@ -225,30 +226,25 @@ begin
 
 end;
 
-Type
-  TReqForInput = Set of Char;
-
 Procedure CreateNewSession(var CurrSession: String);
 var
   NameSession: String;
-  ReqForInput: TReqForInput;
   Flag: Boolean;
   i: Integer;
 begin
   Flag := true;
-  ReqForInput := [' ', 'A' .. 'Z', 'a' .. 'z', 'А' .. 'Я', 'а' .. 'я',
-    '0' .. '9'];
   Writeln('Введите имя новой сессии.');
   Writeln('Правила для ввода имени.');
   Writeln('Длина должна быть от 1 до 50 символов.');
   Writeln('В состав названия могут входить буквы английского');
-  Writeln('и русского алфавитов, числа и пробелы.');
+  Writeln('алфавита, числа и пробелы.');
   Write('Имя сессии: ');
   repeat
     if Not(Flag) then
       Write('Неверный формат ввода. Введите снова: ');
 
     Readln(NameSession);
+    Flag := true;
     if (Length(NameSession) = 0) or DirectoryExists('.\files\' + NameSession)
     then
     begin
@@ -256,7 +252,8 @@ begin
     end
     else
       for i := Low(NameSession) to High(NameSession) do
-        if Not(NameSession[i] in ReqForInput) then
+        if Not(CharInSet(NameSession[i], [' ', 'A' .. 'Z', 'a' .. 'z',
+          '0' .. '9'])) then
         begin
           Flag := false;
           break;
@@ -282,6 +279,7 @@ begin
       Write('Неверный формат ввода. Введите снова: ');
 
     ReadNum(IDSession);
+    Flag := true;
 
     Dir := SearchInArr(ArrOfDirectories, IDSession);
     if Dir.ID = -1 then
@@ -291,28 +289,43 @@ begin
 end;
 
 //
-Procedure MenuReadFiles(var State: Integer; var CurrSession: String;
+Procedure MenuReadFiles(var State: TStateOfFile; var CurrSession: String;
   ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
   var AlbumFile: TAlbumFile; var SongFile: TSongFile);
 var
-  i: Integer;
+  i, Menu: Integer;
   ArrOfDirectories: TArrOfDir;
+
 begin
   GetAllDirectories(ArrOfDirectories);
   Writeln('Меню чтения из файла.');
   for i := Low(ArrOfDirectories) to High(ArrOfDirectories) do
     Writeln(ArrOfDirectories[i].ID, ' ', ArrOfDirectories[i].Dir);
 
-  if Length(ArrOfDirectories) = 0 then
+  if (Length(ArrOfDirectories) = 0) or (State = ListChanged) then
   begin
     CreateNewSession(CurrSession);
   end
   else
   begin
-    ChooseSession(ArrOfDirectories, CurrSession);
-    ReadAllListsFromFiles(State, CurrSession, ArtistList, AlbumList, SongList,
-      ArtistFile, AlbumFile, SongFile);
+    Writeln('Выберите действие:');
+    Writeln('1. Выбрать существующую сессию.');
+    Writeln('2. Создать новую сессию.');
+    ReadNum(Menu);
+    case Menu of
+      1:
+        begin
+          ChooseSession(ArrOfDirectories, CurrSession);
+          ReadAllListsFromFiles(State, CurrSession, ArtistList, AlbumList,
+            SongList, ArtistFile, AlbumFile, SongFile);
+        end;
+      2:
+        begin
+          CreateNewSession(CurrSession);
+        end;
+    end;
+
   end;
 end;
 

@@ -3,6 +3,9 @@ unit AllTypesInProject;
 interface
 
 Type
+  TStateOfFile = (NoFileInformation, FileExist, FileNotExist, FileAlreadyRead,
+    ListChanged);
+
   TDir = record
     ID: Integer;
     Dir: String;

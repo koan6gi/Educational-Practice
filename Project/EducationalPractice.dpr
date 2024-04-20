@@ -3,7 +3,7 @@ program EducationalPractice;
 uses
   AllTypesInProject in 'AllTypesInProject.pas',
   WorkWithFiles in 'WorkWithFiles.pas',
-  WorkWithLists in 'WorkWithLists.pas',
+  WorkWithLsists in 'WorkWithLists.pas',
   MenuItems in 'MenuItems.pas',
   Playlist in 'Playlist.pas';
 
@@ -15,11 +15,11 @@ var
   AlbumFile: TAlbumFile;
   SongFile: TSongFile;
   Menu: Integer;
-  StateOfFiles: Integer;
+  StateOfFiles: TStateOfFile;
   CurrSession: String;
 
 begin
-  StateOfFiles := 0;
+  StateOfFiles := NoFileInformation;
 
   New(ArtistList);
   ArtistList^.Max_Id := 0;
@@ -50,8 +50,8 @@ begin
     case Menu of
       1:
         begin
-          MenuItem1_ReadLists(CurrSession, ArtistList, AlbumList, SongList, ArtistFile,
-            AlbumFile, SongFile, StateOfFiles);
+          MenuItem1_ReadLists(CurrSession, ArtistList, AlbumList, SongList,
+            ArtistFile, AlbumFile, SongFile, StateOfFiles);
         end;
 
       2:
@@ -71,7 +71,7 @@ begin
 
       5:
         begin
-          StateOfFiles := 2;
+          StateOfFiles := ListChanged;
           MenuItem5_Insert(ArtistList, AlbumList, SongList);
         end;
 
@@ -92,8 +92,8 @@ begin
 
       10:
         begin
-          ReWriteAllListsInFiles(CurrSession, ArtistList, AlbumList, SongList, ArtistFile,
-            AlbumFile, SongFile);
+          ReWriteAllListsInFiles(CurrSession, ArtistList, AlbumList, SongList,
+            ArtistFile, AlbumFile, SongFile);
         end;
     end;
   Until (Menu = 10) or (Menu = 9);

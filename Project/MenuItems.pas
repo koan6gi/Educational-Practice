@@ -7,7 +7,7 @@ uses AllTypesInProject, WorkWithLists, WorkWithFiles, PlayList;
 Procedure MenuItem1_ReadLists(var CurrSession: String;
   ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
-  var AlbumFile: TAlbumFile; var SongFile: TSongFile; var State: Integer);
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile; var State: TStateOfFile);
 
 Procedure MenuItem2_WatchLists(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
@@ -38,22 +38,37 @@ implementation
 Procedure MenuItem1_ReadLists(var CurrSession: String;
   ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
   SongList: TAdrOfSongList; var ArtistFile: TArtistFile;
-  var AlbumFile: TAlbumFile; var SongFile: TSongFile; var State: Integer);
+  var AlbumFile: TAlbumFile; var SongFile: TSongFile; var State: TStateOfFile);
+var
+  Flag: Boolean;
 begin
-  if State = 0 then
+  Flag := False;
+  if State = ListChanged then
   begin
-    MenuReadFiles(State, CurrSession, ArtistList, AlbumList, SongList,
-      ArtistFile, AlbumFile, SongFile);
-    if State = 1 then
-      Writeln('Данные успешно прочитаны.')
-    else
-      Writeln('Файлы не найдены. Были созданы новые. Возможность сохранения доступна.');
-    State := 1;
-  end
-  else if State = 1 then
-    Writeln('Данные уже были прочитаны или недоступны.')
-  else
-    Writeln('Были внесены изменения, для прочтения данных перезапустите программу.');
+    Flag := True;
+    State := NoFileInformation;
+  end;
+
+  case State of
+    NoFileInformation:
+      begin
+        if Flag then
+          State := ListChanged;
+
+        MenuReadFiles(State, CurrSession, ArtistList, AlbumList, SongList,
+          ArtistFile, AlbumFile, SongFile);
+
+        if State = FileExist then
+          Writeln('Данные успешно прочитаны.')
+        else
+          Writeln('Файлы не найдены. Были созданы новые в данной сессии. Возможность сохранения доступна.');
+        State := FileAlreadyRead;
+      end;
+    FileAlreadyRead:
+      begin
+        Writeln('Данные уже были прочитаны или недоступны.');
+      end;
+  end;
 end;
 
 Procedure MenuItem2_WatchLists(ArtistList: TAdrOfArtistList;
