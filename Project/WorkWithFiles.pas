@@ -42,7 +42,7 @@ begin
     end;
   end;
 
-  Close(ArtistFile);
+  CloseFile(ArtistFile);
 end;
 
 // ReWrite ArtistList in file
@@ -61,7 +61,7 @@ begin
     ArtistList := ArtistList^.next;
   end;
 
-  Close(ArtistFile);
+  CloseFile(ArtistFile);
 end;
 
 { \\\\\\\\\\ Work with AlbumFile ////////// }
@@ -85,7 +85,7 @@ begin
     end;
   end;
 
-  Close(AlbumFile);
+  CloseFile(AlbumFile);
 end;
 
 // ReWrite AlbumList in file
@@ -104,7 +104,7 @@ begin
     AlbumList := AlbumList^.next;
   end;
 
-  Close(AlbumFile);
+  CloseFile(AlbumFile);
 end;
 
 { \\\\\\\\\\ Work with SongFile ////////// }
@@ -129,7 +129,7 @@ begin
     end;
   end;
 
-  Close(SongFile);
+  CloseFile(SongFile);
 end;
 
 // ReWrite SongList in file
@@ -148,7 +148,7 @@ begin
     SongList := SongList^.next;
   end;
 
-  Close(SongFile);
+  CloseFile(SongFile);
 end;
 
 Procedure CheckAllFiles(const CurrSession: String; var State: TStateOfFile);
@@ -298,6 +298,9 @@ var
   ArrOfDirectories: TArrOfDir;
 
 begin
+  if Not(TDirectory.Exists('.\files')) then
+    TDirectory.CreateDirectory('.\files');
+
   GetAllDirectories(ArrOfDirectories);
   Writeln('Меню чтения из файла.');
   for i := Low(ArrOfDirectories) to High(ArrOfDirectories) do
