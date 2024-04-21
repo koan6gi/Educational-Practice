@@ -11,6 +11,11 @@ Procedure MakePlayListMenu(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList;
   var ArrOfPlayLists: TArrOfPlaylists);
 
+Procedure DeletePlaylists(var Arr: TArrOfPlaylists);
+
+Procedure WritePlaylistsInFile(const ArrOfPlayLists: TArrOfPlaylists;
+  const CurrSession: String);
+
 implementation
 
 // Бинарный поиск в массиве индексов
@@ -35,7 +40,7 @@ begin
 
 end;
 
-// Поменять два елемента списка местами
+// Поменять два элемента списка местами
 Procedure Swap(var i, J);
 var
   Tmp: TAdrOfList;
@@ -614,6 +619,41 @@ begin
 
   WatchAllPlaylists(ArrOfPlayLists);
 
+end;
+
+Procedure WritePlaylistsInFile(const ArrOfPlayLists: TArrOfPlaylists;
+  const CurrSession: String);
+var
+  i: Integer;
+  TmpSongList: TAdrOfSongList;
+  PlayListFile: TextFile;
+begin
+  AssignFile(PlayListFile, CurrSession + '\PlayListFile.txt');
+  Rewrite(PlayListFile);
+
+  Writeln(PlayListFile, 'Количество playlist-ов: ', Length(ArrOfPlayLists));
+  for i := Low(ArrOfPlayLists) to High(ArrOfPlayLists) do
+  begin
+    TmpSongList := ArrOfPlayLists[i];
+    Writeln(PlayListFile,
+      '|-----------|----------------------|-------------|--------------------|');
+    Writeln(PlayListFile,
+      '| Код песни |    Название песни    | Код альбома | Длительность песни |');
+    Writeln(PlayListFile,
+      '|-----------|----------------------|-------------|--------------------|');
+    while TmpSongList^.next <> nil do
+    begin
+      TmpSongList := TmpSongList^.next;
+      Writeln(PlayListFile, '|', TmpSongList^.Song.ID:10, ' |',
+        TmpSongList^.Song.Name:21, ' |', TmpSongList^.Song.ID_Album:12, ' |',
+        TmpSongList^.Song.Length:19, ' |');
+    end;
+    Writeln(PlayListFile,
+      '|-----------|----------------------|-------------|--------------------|');
+    Writeln(PlayListFile, '');
+  end;
+
+  CloseFile(PlayListFile);
 end;
 
 end.

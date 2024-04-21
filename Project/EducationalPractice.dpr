@@ -3,7 +3,7 @@ program EducationalPractice;
 uses
   AllTypesInProject in 'AllTypesInProject.pas',
   WorkWithFiles in 'WorkWithFiles.pas',
-  WorkWithLsists in 'WorkWithLists.pas',
+  WorkWithLists in 'WorkWithLists.pas',
   MenuItems in 'MenuItems.pas',
   Playlist in 'Playlist.pas';
 
@@ -16,7 +16,7 @@ var
   SongFile: TSongFile;
   Menu: Integer;
   StateOfFiles: TStateOfFile;
-  CurrSession: String;
+  CurrSession: String = '';
 
 begin
   StateOfFiles := NoFileInformation;
@@ -87,7 +87,7 @@ begin
 
       8:
         begin
-          MenuItem8_Playlist(ArtistList, AlbumList, SongList);
+          MenuItem8_Playlist(CurrSession, ArtistList, AlbumList, SongList);
         end;
 
       10:

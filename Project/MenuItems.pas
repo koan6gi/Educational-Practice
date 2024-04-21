@@ -27,8 +27,9 @@ Procedure MenuItem6_Delete(ArtistList: TAdrOfArtistList;
 Procedure MenuItem7_Edit(ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
 
-Procedure MenuItem8_Playlist(ArtistList: TAdrOfArtistList;
-  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+Procedure MenuItem8_Playlist(const CurrSession: String;
+  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList);
 
 Procedure DeleteAllLists(var ArtistList: TAdrOfArtistList;
   AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
@@ -193,12 +194,21 @@ begin
   until Menu = 0;
 end;
 
-Procedure MenuItem8_Playlist(ArtistList: TAdrOfArtistList;
-  AlbumList: TAdrOfAlbumList; SongList: TAdrOfSongList);
+Procedure MenuItem8_Playlist(const CurrSession: String;
+  ArtistList: TAdrOfArtistList; AlbumList: TAdrOfAlbumList;
+  SongList: TAdrOfSongList);
 var
-  Arr: TArrOfPlaylists;
+  ArrOfPlaylists: TArrOfPlaylists;
 begin
-  MakePlayListMenu(ArtistList, AlbumList, SongList, Arr);
+  if CurrSession = '' then
+    Writeln('Для создания playlist-а выберите существующую сессию или создайте новую.')
+  else
+  begin
+    Writeln('ВНИМАНИЕ, ЕСЛИ PLAYLIST УЖЕ БЫЛ СОЗДАН, ТО ЕГО ДАННЫЕ БУДУТ УТЕРЯНЫ.');
+    MakePlayListMenu(ArtistList, AlbumList, SongList, ArrOfPlaylists);
+    WritePlaylistsInFile(ArrOfPlaylists, CurrSession);
+    DeletePlaylists(ArrOfPlaylists);
+  end;
 end;
 
 Procedure DeleteAllLists(var ArtistList: TAdrOfArtistList;
