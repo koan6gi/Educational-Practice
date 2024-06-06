@@ -243,7 +243,7 @@ var
 begin
   repeat
     Writeln('Меню подпункта поиска в списке исполнителей:');
-    Writeln('1. Поиск по коду испонителя.');
+    Writeln('1. Поиск по коду исполнителя.');
     Writeln('2. Поиск по имени исполнителя.');
     Writeln('3. Поиск по стране исполнителя.');
     Writeln('4. Поиск по направлению исполнителя.');
@@ -304,7 +304,7 @@ var
   ID: Integer;
 begin
   WatchArtistList(ArtistList);
-  Write('Введите код исполнителя для редакирования: ');
+  Write('Введите код исполнителя для редактирования: ');
   readln(ID);
   Flag := False;
   while (ArtistList^.next <> nil) and not(Flag) do
@@ -612,7 +612,7 @@ var
   ID: Integer;
 begin
   WatchALbumList(AlbumList);
-  Write('Введите код альбома для редакирования: ');
+  Write('Введите код альбома для редактирования: ');
   ReadNum(ID);
   Flag := False;
   while (AlbumList^.next <> nil) and not(Flag) do
@@ -863,7 +863,7 @@ begin
     Writeln('1. Поиск по коду песни.');
     Writeln('2. Поиск по коду альбома песни.');
     Writeln('3. Поиск по названию песни.');
-    Writeln('4. Поиск по имени испонителя.');
+    Writeln('4. Поиск по имени исполнителя.');
     Writeln('0. Выйти из подпункта меню.');
     ReadNum(Menu);
     case Menu of
@@ -913,7 +913,7 @@ var
   ID: Integer;
 begin
   WatchSongList(SongList);
-  Write('Введите код песни для редакирования: ');
+  Write('Введите код песни для редактирования: ');
   ReadNum(ID);
   Flag := False;
   while (SongList^.next <> nil) and not(Flag) do

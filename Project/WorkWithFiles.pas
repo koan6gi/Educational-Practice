@@ -39,6 +39,7 @@ begin
       New(ArtistList^.next);
       ArtistList := ArtistList^.next;
       Read(ArtistFile, ArtistList^.Artist);
+      ArtistList^.next := nil;
     end;
   end;
 
@@ -82,6 +83,7 @@ begin
       New(AlbumList^.next);
       AlbumList := AlbumList^.next;
       Read(AlbumFile, AlbumList^.Album);
+      AlbumList^.next := nil;
     end;
   end;
 
@@ -126,6 +128,7 @@ begin
       New(SongList^.next);
       SongList := SongList^.next;
       Read(SongFile, SongList^.Song);
+      SongList^.next := nil;
     end;
   end;
 

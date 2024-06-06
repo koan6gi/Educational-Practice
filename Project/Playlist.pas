@@ -575,7 +575,7 @@ var
   Dir: TDirString;
   PLength, Year: Integer;
   ListOfAllSong: TAdrOfSongList;
-  PlaylistsArr: TArrOfArrOfIndexes;
+  PlaylistsInArrForm: TArrOfArrOfIndexes;
 
 begin
   SortAllLists(ArtistList, AlbumList, SongList);
@@ -601,16 +601,14 @@ begin
   MakeListOfAllSong(SongList, ListOfAllSong, ArrIndAlbum);
 
   SelectionSort(ListOfAllSong, [], SongCompareTo2);
-  { Для теста }
-  // WatchSongList(ListOfAllSong);
 
   SetLength(ArrIndArtist, 0);
   SetLength(ArrIndAlbum, 0);
 
-  MakePlaylist(ListOfAllSong, PLength, PlaylistsArr);
-  MakeArrOfPlaylists(ListOfAllSong, ArrOfPlayLists, PlaylistsArr);
+  MakePlaylist(ListOfAllSong, PLength, PlaylistsInArrForm);
+  MakeArrOfPlaylists(ListOfAllSong, ArrOfPlayLists, PlaylistsInArrForm);
 
-  SetLength(PlaylistsArr, 0);
+  SetLength(PlaylistsInArrForm, 0);
 
   CalcCountOfArtist(ArrOfPlayLists, AlbumList);
 
